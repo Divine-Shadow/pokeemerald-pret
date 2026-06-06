@@ -1,3 +1,8 @@
+- Docs/Planning: Record tracker export MVP validation evidence and implementation decisions (commit pending).
+- Tooling/Tracker: Restrict tracker wild encounters to map-backed groups (commit pending).
+- Tooling/Tracker: Make tracker location IDs section-derived and tolerate map sections without coordinates (commit pending).
+- Tooling/Tracker: Add a static PKCalc tracker export MVP and validator (commit pending).
+- Docs/Planning: Add a tracker export MVP execution plan for PKCalc-compatible static data (commit pending).
 - Gameplay/NPCs: Add subtle Condition Coach caution text for status-cleanup abilities and document ignored adjacent abilities (commit pending).
 - Tooling/Skills: Document unsupported-map handling for the NPC accessibility checker workflow (commit pending).
 - Tooling/Skills: Treat maps without static entrance seeds as unsupported in NPC accessibility audits (commit pending).
