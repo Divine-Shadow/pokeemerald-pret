@@ -1,3 +1,15 @@
+- Docs/Planning: Record PKCalc overlay export validation evidence and final outcome (commit pending).
+- Docs/Planning: Add an execution plan for PKCalc overlay export artifacts (commit pending).
+- Docs/Tracker: Document PKCalc overlay export targets, handoff paths, and manifest metadata (commit pending).
+- Tooling/Tracker: Add PKCalc overlay export and validation targets with auditable manifest generation (commit pending).
+- Docs/Planning: Record live PKCalc compatibility smoke validation evidence and final outcome (commit pending).
+- Docs/Planning: Add an execution plan for live PKCalc compatibility smoke verification (commit pending).
+- Docs/Tracker: Document the live PKCalc compatibility smoke target for generated tracker exports (commit pending).
+- Tooling/Tracker: Add a live PKCalc app smoke target that routes generated tracker artifacts into PKCalc's real data paths (commit pending).
+- Docs/Planning: Record build-time tracker export validation evidence and final outcome (commit pending).
+- Docs/Planning: Add an execution plan for build-time tracker export and browser smoke verification (commit pending).
+- Docs/Tracker: Document Makefile targets and Playwright Docker smoke verification for tracker exports (commit pending).
+- Tooling/Tracker: Add explicit Makefile targets and a Playwright smoke script for generated PKCalc tracker artifacts (commit pending).
 - Docs/Guidance: Clarify that verified work should be committed instead of waiting for final rebased patch-note hashes (commit pending).
 - Gameplay/Movement: Add a PC-available Skateboard key item that upgrades B-button running to a faster mid-bike speed (commit pending).
 - Docs/Gameplay: Document the Skateboard movement upgrade and starting PC availability (commit pending).
