@@ -118,6 +118,7 @@ static void PlayerWalkSlowStairs(u8 direction);
 static void UNUSED PlayerWalkSlow(u8 direction);
 static void PlayerRunSlow(u8 direction);
 static void PlayerRun(u8);
+static void PlayerSkateboard(u8);
 static void PlayerNotOnBikeCollide(u8);
 static void PlayerNotOnBikeCollideWithFarawayIslandMew(u8);
 
@@ -863,6 +864,8 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
     {
         if (ObjectMovingOnRockStairs(&gObjectEvents[gPlayerAvatar.objectEventId], direction))
             PlayerRunSlow(direction);
+        else if (PlayerHasSkateboard())
+            PlayerSkateboard(direction);
         else
             PlayerRun(direction);
 
@@ -1236,6 +1239,11 @@ static void PlayerRun(u8 direction)
     PlayerSetAnimId(GetPlayerRunMovementAction(direction), COPY_MOVE_WALK);
 }
 
+static void PlayerSkateboard(u8 direction)
+{
+    PlayerSetAnimId(GetPlayerSkateboardMovementAction(direction), COPY_MOVE_WALK);
+}
+
 void PlayerOnBikeCollide(u8 direction)
 {
     PlayCollisionSoundIfNotFacingWarp(direction);
@@ -1412,18 +1420,22 @@ u8 player_get_pos_including_state_based_drift(s16 *x, s16 *y)
         {
         case MOVEMENT_ACTION_WALK_NORMAL_DOWN:
         case MOVEMENT_ACTION_PLAYER_RUN_DOWN:
+        case MOVEMENT_ACTION_PLAYER_SKATEBOARD_DOWN:
             (*y)++;
             return TRUE;
         case MOVEMENT_ACTION_WALK_NORMAL_UP:
         case MOVEMENT_ACTION_PLAYER_RUN_UP:
+        case MOVEMENT_ACTION_PLAYER_SKATEBOARD_UP:
             (*y)--;
             return TRUE;
         case MOVEMENT_ACTION_WALK_NORMAL_LEFT:
         case MOVEMENT_ACTION_PLAYER_RUN_LEFT:
+        case MOVEMENT_ACTION_PLAYER_SKATEBOARD_LEFT:
             (*x)--;
             return TRUE;
         case MOVEMENT_ACTION_WALK_NORMAL_RIGHT:
         case MOVEMENT_ACTION_PLAYER_RUN_RIGHT:
+        case MOVEMENT_ACTION_PLAYER_SKATEBOARD_RIGHT:
             (*x)++;
             return TRUE;
         }

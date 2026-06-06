@@ -1,3 +1,5 @@
+- Gameplay/Movement: Add a PC-available Skateboard key item that upgrades B-button running to a faster mid-bike speed (commit pending).
+- Docs/Gameplay: Document the Skateboard movement upgrade and starting PC availability (commit pending).
 - Docs/Planning: Record tracker export MVP validation evidence and implementation decisions (commit pending).
 - Tooling/Tracker: Restrict tracker wild encounters to map-backed groups (commit pending).
 - Tooling/Tracker: Make tracker location IDs section-derived and tolerate map sections without coordinates (commit pending).

@@ -503,6 +503,7 @@ bool32 IsFollowerVisible(void);
 
 // run slow
 u8 GetPlayerRunSlowMovementAction(u32);
+u8 GetPlayerSkateboardMovementAction(u32);
 //sideways stairs
 u8 GetSidewaysStairsToRightDirection(s16, s16, u8);
 u8 GetSidewaysStairsToLeftDirection(s16, s16, u8);

@@ -1300,6 +1300,7 @@ const u8 gText_BoundaryCharmOn[] = _("The Extinction Charm has been\nturned on.{
 const u8 gText_BoundaryCharmOff[] = _("The Extinction Charm has been\nturned off.{PAUSE_UNTIL_PRESS}");
 const u8 gText_RadiantCharmOn[] = _("The Radiant Charm has been\nturned on.{PAUSE_UNTIL_PRESS}");
 const u8 gText_RadiantCharmOff[] = _("The Radiant Charm has been\nturned off.{PAUSE_UNTIL_PRESS}");
+const u8 gText_SkateboardPassive[] = _("Hold the B Button while moving\nto ride the Skateboard.{PAUSE_UNTIL_PRESS}");
 const u8 gText_BasePointsResetToZero[] = _("{STR_VAR_1}'s base points\nwere all reset to zero!{PAUSE_UNTIL_PRESS}");
 const u8 gText_AM[] = _("AM");
 const u8 gText_PM[] = _("PM");
