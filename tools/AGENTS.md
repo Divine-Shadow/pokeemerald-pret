@@ -16,5 +16,5 @@
 
 ## Documentation Requirements
 - Provide a brief `README.md` in each tool's directory describing its purpose, usage, and examples.
-- Whenever a new tool is added, update `PATCH_NOTES.md` with a summary entry referencing the commit.
+- Whenever a new tool is added, update `PATCH_NOTES.md` with a summary entry that follows the root patch-note guidance.
 - Use `make tools` to verify successful compilation before submitting changes.
