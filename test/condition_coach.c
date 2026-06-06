@@ -245,7 +245,7 @@ TEST("Condition Coach foreshadows abilities that may clean up status")
 TEST("Condition Coach ignores Heatproof and Synchronize for status advice")
 {
     u16 species, ability, choice;
-    u32 abilityNum;
+    u32 abilityNum = 0;
 
     PARAMETRIZE { species = SPECIES_BRONZOR; ability = ABILITY_HEATPROOF; abilityNum = 1; choice = CONDITION_COACH_CHOICE_BURN; }
     PARAMETRIZE { species = SPECIES_ABRA; ability = ABILITY_SYNCHRONIZE; abilityNum = 0; choice = CONDITION_COACH_CHOICE_POISON; }

@@ -1,3 +1,17 @@
+- Tests: Initialize Condition Coach's ability-number test local for clean GCC 15 Nix test builds (commit pending).
+- Tooling/Nix: Clean copied ROM and test object trees inside Nix derivations before building (commit pending).
+- Docs/Planning: Record Nix test-runner smoke, ROM build, flake check evidence, and full-suite caveat (commit pending).
+- Tooling/Nix: Use a focused uq4_12 Makefile test smoke for the flake test check while documenting full-suite failures (commit pending).
+- Tools/Tests: Prevent the mGBA ROM test hydra wrapper from dividing by a zero-column terminal width (commit pending).
+- Tooling/Nix: Force the packaged mGBA ROM test hydra wrapper to rebuild from source instead of stale local binaries (commit pending).
+- Tooling/Nix: Add Nix-built mGBA ROM test runner packages and flake checks for ROM and test builds (commit pending).
+- Docs/Nix: Document Nix test-suite and flake-check commands for NixOS users (commit pending).
+- Docs/Planning: Track the Nix test-runner and flake-check implementation plan (commit pending).
+- Docs/Planning: Record Nix flake build validation evidence and the mGBA test-runner caveat (commit pending).
+- Tooling/Nix: Anchor the flake derivation source to the flake directory for path-based builds (commit pending).
+- Tooling/Nix: Add a flake derivation for reproducible ROM builds without host DEVKITARM (commit pending).
+- Docs/Nix: Document nix build and nix develop workflows for NixOS users (commit pending).
+- Docs/Planning: Track the Nix flake build implementation and validation plan (commit pending).
 - Docs/Planning: Record PKCalc overlay export validation evidence and final outcome (commit pending).
 - Docs/Planning: Add an execution plan for PKCalc overlay export artifacts (commit pending).
 - Docs/Tracker: Document PKCalc overlay export targets, handoff paths, and manifest metadata (commit pending).
