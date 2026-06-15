@@ -1,3 +1,4 @@
+- UI: Shedinja split evolution now fills an actual empty party slot before party menu redraws (commit cafbfc1b14).
 - Docs/Planning: Record final Shared Power broad validation and completion audit evidence (commit 39560edd16).
 - Docs/Audit: Separate remaining Shared Power clarify-only policy questions from completed migration work (commit 39560edd16).
 - Docs/Planning: Record final Shared Power sweep audit reconciliation before broad validation (commit 39560edd16).
