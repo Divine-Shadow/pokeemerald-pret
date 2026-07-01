@@ -23,6 +23,14 @@ static void CreateAbilitySwapperTestMon(u16 species, u8 abilityNum)
     gSpecialVar_0x8006 = 0;
 }
 
+static void ExpectStringVar1MatchesFirstPartyMonNickname(void)
+{
+    u8 nickname[POKEMON_NAME_LENGTH + 1];
+
+    GetMonNickname(&gPlayerParty[0], nickname);
+    EXPECT(StringCompare(gStringVar1, nickname) == 0);
+}
+
 TEST("Ability Swapper previews the alternate ordinary ability")
 {
     CreateAbilitySwapperTestMon(SPECIES_BRELOOM, 0);
@@ -79,7 +87,9 @@ TEST("Ability Swapper refuses Pokemon with no second ordinary ability")
     ASSUME(GetSpeciesAbility(SPECIES_WOBBUFFET, 1) == ABILITY_NONE);
     EXPECT(AddBagItem(ITEM_HEART_SCALE, 1));
 
+    StringCopy(gStringVar1, COMPOUND_STRING("STALE"));
     EXPECT_EQ(AbilitySwapper_TrySwap(), ABILITY_SWAPPER_RESULT_NO_ORDINARY_SWAP);
+    ExpectStringVar1MatchesFirstPartyMonNickname();
     EXPECT_EQ(GetMonData(&gPlayerParty[0], MON_DATA_ABILITY_NUM), 0);
     EXPECT(CheckBagHasItem(ITEM_HEART_SCALE, 1));
 }
@@ -115,7 +125,9 @@ TEST("Ability Swapper refuses Hidden Ability Pokemon without downgrading them")
     ASSUME(GetSpeciesAbility(SPECIES_BRELOOM, 2) == ABILITY_TECHNICIAN);
     EXPECT(AddBagItem(ITEM_HEART_SCALE, 1));
 
+    StringCopy(gStringVar1, COMPOUND_STRING("STALE"));
     EXPECT_EQ(AbilitySwapper_TryPreview(), ABILITY_SWAPPER_RESULT_HIDDEN_ABILITY);
+    ExpectStringVar1MatchesFirstPartyMonNickname();
     EXPECT_EQ(AbilitySwapper_TrySwap(), ABILITY_SWAPPER_RESULT_HIDDEN_ABILITY);
     EXPECT_EQ(GetMonData(&gPlayerParty[0], MON_DATA_ABILITY_NUM), 2);
     EXPECT_EQ(GetMonAbility(&gPlayerParty[0]), ABILITY_TECHNICIAN);

@@ -1,6 +1,7 @@
 - Battle/Pacing: Halve ability pop-up idle time to reduce Shared Power banner drag (commit pending).
 - Field/Pacing: Let held A or B advance standard message prompts after text finishes (commit pending).
 - Battle/Pacing: Shorten battle message waits without changing move animation frames (commit pending).
+- Gameplay/Tests: Buffer Ability Swapper nicknames for refusal text and cover single-ability messaging (commit pending).
 - UI: Shedinja split evolution now fills an actual empty party slot before party menu redraws (commit cafbfc1b14).
 - Docs/Planning: Record final Shared Power broad validation and completion audit evidence (commit 39560edd16).
 - Docs/Audit: Separate remaining Shared Power clarify-only policy questions from completed migration work (commit 39560edd16).

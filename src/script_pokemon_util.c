@@ -625,6 +625,7 @@ static u16 AbilitySwapper_GetSelection(struct Pokemon **monOut, u8 *targetAbilit
     if (species == SPECIES_EGG || GetMonData(mon, MON_DATA_IS_EGG))
         return ABILITY_SWAPPER_RESULT_EGG;
 
+    GetMonNickname(mon, gStringVar1);
     abilityNum = GetMonData(mon, MON_DATA_ABILITY_NUM);
     if (abilityNum >= NUM_NORMAL_ABILITY_SLOTS)
         return ABILITY_SWAPPER_RESULT_HIDDEN_ABILITY;
@@ -635,7 +636,6 @@ static u16 AbilitySwapper_GetSelection(struct Pokemon **monOut, u8 *targetAbilit
     if (currentAbility == ABILITY_NONE || targetAbility == ABILITY_NONE || currentAbility == targetAbility)
         return ABILITY_SWAPPER_RESULT_NO_ORDINARY_SWAP;
 
-    GetMonNickname(mon, gStringVar1);
     StringCopy(gStringVar2, gAbilitiesInfo[currentAbility].name);
     StringCopy(gStringVar3, gAbilitiesInfo[targetAbility].name);
     gSpecialVar_0x8005 = targetAbilityNum;
