@@ -1755,9 +1755,9 @@ bool8 ScrCmd_closemessage(struct ScriptContext *ctx)
 
 static bool8 WaitForAorBPress(void)
 {
-    if (JOY_NEW(A_BUTTON))
+    if (JOY_NEW(A_BUTTON | B_BUTTON))
         return TRUE;
-    if (JOY_NEW(B_BUTTON))
+    if (HOLD_BUTTON_ADVANCES_TEXT && JOY_HELD(A_BUTTON | B_BUTTON))
         return TRUE;
     return FALSE;
 }

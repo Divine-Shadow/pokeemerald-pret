@@ -8,6 +8,7 @@ These notes cover gameplay rules and move access that are safe to know before st
 
 ## Battle Rules
 
+- Battle message pauses and ability pop-up idle time are shorter than vanilla, tightening battle pacing without changing move animation frames.
 - In-battle friendship/affection bonuses are disabled. High friendship no longer grants random survival, evasion, critical-hit, status-curing, or bonus Exp. effects in battle.
 - Drizzle, Drought, Sand Stream, and Snow Warning now set weather for the rest of the battle instead of for a limited number of turns.
 - Some trainers can be configured to have their battle team match the player's current level cap.
@@ -68,6 +69,7 @@ These notes cover gameplay rules and move access that are safe to know before st
 
 ## Field Rules
 
+- Holding A or B through the end of standard dialogue now advances the message prompt without requiring a fresh button press.
 - The regular Items bag pocket can hold up to 99 distinct item slots.
 - An Ability Swapper service can spend 1 Heart Scale to switch a party Pokemon between its two ordinary, non-hidden ability slots. It does not grant Hidden Abilities and will not alter a Pokemon that currently has its Hidden Ability.
 - Underwater route areas now show their route number in caught-location text, such as Route 127 Underwater.
