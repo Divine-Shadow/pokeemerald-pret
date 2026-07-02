@@ -332,6 +332,7 @@ RusturfTunnel_EventScript_Grunt::
 	waitmovement 0
 	removeobject LOCALID_RUSTURF_TUNNEL_BRINEY
 	removeobject LOCALID_RUSTURF_TUNNEL_PEEKO
+	call RusturfTunnel_EventScript_PersistPeekoRescue
 	clearflag FLAG_DEVON_GOODS_STOLEN
 	setflag FLAG_RECOVERED_DEVON_GOODS
 	setvar VAR_RUSTBORO_CITY_STATE, 4
@@ -339,6 +340,13 @@ RusturfTunnel_EventScript_Grunt::
 	setflag FLAG_HIDE_ROUTE_116_MR_BRINEY
 	release
 	end
+
+RusturfTunnel_EventScript_PersistPeekoRescue::
+	setflag FLAG_HIDE_RUSTURF_TUNNEL_AQUA_GRUNT
+	setflag FLAG_HIDE_RUSTURF_TUNNEL_BRINEY
+	setflag FLAG_HIDE_RUSTURF_TUNNEL_PEEKO
+	setvar VAR_RUSTURF_TUNNEL_STATE, 0
+	return
 
 RusturfTunnel_Movement_PushPlayerAsideForGrunt:
 	face_down
@@ -524,4 +532,3 @@ RusturfTunnel_Text_MikePostBattle:
 	.string "They halted development here to\n"
 	.string "protect POKéMON, right?\l"
 	.string "There's a feel-good story!$"
-

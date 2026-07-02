@@ -5,6 +5,7 @@
 #include "item.h"
 #include "overworld.h"
 #include "pokemon.h"
+#include "script.h"
 #include "wild_encounter.h"
 #include "test/test.h"
 #include "constants/item.h"
@@ -182,6 +183,25 @@ TEST("Extinction Charm suppresses claimed normal encounter areas")
     EXPECT(WasBoundaryCharmEncounterSuppressed());
     EXPECT(!Test_TryGenerateBoundaryFishingWildMonAtMapSec(&fishInfo, OLD_ROD, MAPSEC_ROUTE_102));
     EXPECT(WasBoundaryCharmEncounterSuppressed());
+}
+
+TEST("Extinction Charm passive encounters suppress silently but deliberate checks give feedback")
+{
+    ResetBoundaryCharmTestState();
+    ScriptContext_Stop();
+    SetBoundaryCharmActive(TRUE);
+    ClaimBoundaryCharmLocation(MAPSEC_ROUTE_102);
+
+    EXPECT(!Test_TryGenerateBoundaryWildMonAtMapSec(GetBoundaryCharmWaterMonsInfo(), WILD_AREA_WATER, MAPSEC_ROUTE_102));
+    EXPECT(WasBoundaryCharmEncounterSuppressed());
+    EXPECT(!Test_TryStartWildEncounterFailureFeedback(FALSE));
+    EXPECT(WasBoundaryCharmEncounterSuppressed());
+    EXPECT(!ScriptContext_IsEnabled());
+
+    EXPECT(Test_TryStartWildEncounterFailureFeedback(TRUE));
+    EXPECT(!WasBoundaryCharmEncounterSuppressed());
+    EXPECT(ScriptContext_IsEnabled());
+    ScriptContext_Stop();
 }
 
 TEST("Extinction Charm allows unclaimed normal encounter areas")

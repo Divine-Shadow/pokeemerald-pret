@@ -74,8 +74,9 @@ These notes cover gameplay rules and move access that are safe to know before st
 - Mirage Island is treated as its own caught location separate from Route 130 for met-location text, map displays, and Extinction Charm routing.
 - Hooked fishing encounters wait for the player to press A and no longer get away.
 - The Highlander Charm is a toggleable Key Item for no-duplicates routing. While turned on, normal land, water, fishing, Rock Smash, and Sweet Scent encounters are weighted only among evolutionary families you have not caught before. If a filtered pool has no legal family left, no battle starts and the game shows a message.
-- The Extinction Charm is a toggleable Key Item for one-capture-per-caught-location routing. While turned on, normal land, water, fishing, Rock Smash, and Sweet Scent encounters do not start in locations where you have already caught a Pokemon. Static captures count once caught, but static battles are not blocked before they start.
+- The Extinction Charm is a toggleable Key Item for one-capture-per-caught-location routing. While turned on, normal land, water, fishing, Rock Smash, and Sweet Scent encounters do not start in locations where you have already caught a Pokemon. Passive walking and surfing checks are suppressed silently; deliberate checks such as fishing, Rock Smash, and Sweet Scent still give feedback. Static captures count once caught, but static battles are not blocked before they start.
 - The Radiant Charm is a toggleable Key Item for cosmetic shiny routing. While turned on, eligible normal wild and static wild encounters are guaranteed shiny after all encounter rules have already allowed them. It does not change species, levels, encounter odds, locations, repel behavior, or catch legality.
+- The Shiny Charm can now affect starter Pokemon.
 
 ## Pokemon Center Services
 
@@ -140,4 +141,4 @@ These notes cover gameplay rules and move access that are safe to know before st
 - TMs formerly sold in Slateport, sold on Lilycove Department Store 4F, or offered as Mauville Game Corner prizes are now found through exploration instead of purchased with money or coins. Exact locations are spoiler-protected.
 - Held-item rewards now follow the item reward economy in [Item Reward Economy](design/item_reward_economy.md): eventually infinite items may be found early, mid-tier build items can be exploration/NPC rewards or late-shop stock, and strict competitive items are reserved for authored rewards.
 - Choice items, Eviolite, Focus Sash, Leftovers, Life Orb, and Assault Vest are not available from normal field loot, regular shops, exchange counters, or the wild-held-item broker.
-- Some underwhelming basic field consumables have been replaced with low-tier exploration rewards such as EV feathers, one-use Gems, and useful berries. Exact locations are spoiler-protected.
+- Since EVs are disabled, map pickup EV boosters have been replaced with other exploration rewards. Some underwhelming basic field consumables have also been replaced with low-tier rewards such as Pretty Feathers, one-use Gems, and useful berries. Exact locations are spoiler-protected.

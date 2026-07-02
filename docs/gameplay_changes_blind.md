@@ -17,6 +17,8 @@ This file contains gameplay changes that may affect routing or discoveries. Read
 - Winstrate Vito now waits near Victory Road's Pokemon League-side exit.
 - The Mauville City Mart now has a broker who unlocks a free shop of wild-held-item drops after seeing a Pokemon with item-stealing or item-swapping capability.
 - Former Slateport, Lilycove Department Store, and Mauville Game Corner TMs now appear as exploration rewards instead of purchases or coin prizes.
+- The Flying Gem has moved to a later Route 115 pickup.
+- Map pickup EV boosters have been replaced because EVs are disabled. Exact replacements are documented in [low_tier_field_rewards.md](low_tier_field_rewards.md).
 
 ## TM Locations
 
@@ -59,3 +61,4 @@ This file contains gameplay changes that may affect routing or discoveries. Read
 - Condition Coach Quick Feet advice now appears for every status prep option.
 - Gym guide NPCs now give non-spoiler tactical hints about the updated gym leader battle styles.
 - Gym guide NPCs now state each gym's level cap before the leader fight.
+- Birch's intro speech now uses the Birch-specific Pokemon line again.

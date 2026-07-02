@@ -891,7 +891,7 @@ static void CB2_GiveStarter(void)
 
     *GetVarPointer(VAR_STARTER_MON) = gSpecialVar_Result;
     starterMon = GetStarterPokemon(gSpecialVar_Result);
-    ScriptGiveMon(starterMon, 5, ITEM_NONE);
+    ScriptGiveMonWithNaturalShiny(starterMon, 5, ITEM_NONE);
     SetMonData(&gPlayerParty[0], MON_DATA_MET_LOCATION, &metLocation);
     SetMonData(&gPlayerParty[0], MON_DATA_MODERN_FATEFUL_ENCOUNTER, &isModernFatefulEncounter);
     ResetTasks();

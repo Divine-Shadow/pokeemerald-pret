@@ -1,10 +1,17 @@
 #include "global.h"
 #include "test/test.h"
 #include "test/overworld_script.h"
+#include "event_data.h"
+#include "main_menu.h"
 #include "script.h"
+#include "strings.h"
 #include "constants/decorations.h"
 #include "constants/field_move.h"
+#include "constants/flags.h"
 #include "constants/moves.h"
+#include "constants/vars.h"
+
+extern const u8 RusturfTunnel_EventScript_PersistPeekoRescue[];
 
 TEST("Script_HasNoEffect control flow")
 {
@@ -114,4 +121,27 @@ TEST("Script_HasNoEffect variables")
     EXPECT(!Script_HasNoEffect(getPlayerXYVariable1));
     EXPECT(!Script_HasNoEffect(getPlayerXYVariable2));
     EXPECT(!Script_HasNoEffect(checkCoinsVariable));
+}
+
+TEST("Rusturf rescue persistence script hides rescue objects for re-entry")
+{
+    FlagClear(FLAG_HIDE_RUSTURF_TUNNEL_AQUA_GRUNT);
+    FlagClear(FLAG_HIDE_RUSTURF_TUNNEL_BRINEY);
+    FlagClear(FLAG_HIDE_RUSTURF_TUNNEL_PEEKO);
+    VarSet(VAR_RUSTURF_TUNNEL_STATE, 3);
+
+    RUN_OVERWORLD_SCRIPT(
+        call RusturfTunnel_EventScript_PersistPeekoRescue;
+    );
+
+    EXPECT(FlagGet(FLAG_HIDE_RUSTURF_TUNNEL_AQUA_GRUNT));
+    EXPECT(FlagGet(FLAG_HIDE_RUSTURF_TUNNEL_BRINEY));
+    EXPECT(FlagGet(FLAG_HIDE_RUSTURF_TUNNEL_PEEKO));
+    EXPECT_EQ(VarGet(VAR_RUSTURF_TUNNEL_STATE), 0);
+}
+
+TEST("Birch intro uses the Birch-specific Pokemon text")
+{
+    EXPECT_EQ(Test_GetNewGameBirchPokemonText(), gText_Birch_Pokemon);
+    EXPECT_NE(Test_GetNewGameBirchPokemonText(), gText_ThisIsAPokemon);
 }

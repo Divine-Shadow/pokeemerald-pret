@@ -78,7 +78,7 @@
       "x": 11,
       "y": 39,
       "elevation": 3,
-      "item": "ITEM_IRON",
+      "item": "ITEM_NUGGET",
       "flag": "FLAG_HIDDEN_ITEM_UNDERWATER_126_IRON"
     },
     {

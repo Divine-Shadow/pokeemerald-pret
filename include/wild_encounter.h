@@ -77,6 +77,7 @@ bool32 Test_TryGenerateHighlanderWildMon(const struct WildPokemonInfo *wildMonIn
 bool32 Test_TryGenerateBoundaryWildMonAtMapSec(const struct WildPokemonInfo *wildMonInfo, enum WildPokemonArea area, u8 mapSec);
 bool32 Test_TryGenerateBoundaryFishingWildMonAtMapSec(const struct WildPokemonInfo *wildMonInfo, u8 rod, u8 mapSec);
 bool32 Test_TryGenerateUnfilteredWildMonAtMapSec(const struct WildPokemonInfo *wildMonInfo, enum WildPokemonArea area, u8 mapSec);
+bool32 Test_TryStartWildEncounterFailureFeedback(bool32 showBoundaryCharmFeedback);
 #endif
 
 #endif // GUARD_WILD_ENCOUNTER_H

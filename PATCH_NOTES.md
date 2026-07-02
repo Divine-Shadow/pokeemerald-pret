@@ -1,3 +1,12 @@
+- Tests: Add mGBA-backed coverage for Extinction Charm feedback, Rusturf rescue persistence, and Birch intro text wiring (commit pending).
+- Tests: Clean up starter Shiny Charm regression test state after each case (commit pending).
+- Gameplay/Items: Move Flying Gem later on Route 115 and restore the earlier Super Potion pickup (commit pending).
+- Gameplay/Items: Replace map pickup EV boosters with Pretty Feathers, Nuggets, or the moved Flying Gem because EVs are disabled (commit pending).
+- Docs/Items: Stop recommending EV feathers as low-tier field rewards while EVs are disabled (commit pending).
+- Gameplay/Charm: Suppress passive Extinction Charm walking and surfing popups while keeping deliberate encounter feedback (commit pending).
+- Gameplay/Starters: Let Shiny Charm rolls apply to starter Pokemon without changing ordinary gift Pokemon shiny behavior (commit pending).
+- Gameplay/Events: Persist Rusturf Tunnel Peeko rescue object state after the rescue sequence (commit pending).
+- Dialogue: Restore Birch intro speech to the Birch-specific Pokemon line (commit pending).
 - UI: Shedinja split evolution now fills an actual empty party slot before party menu redraws (commit cafbfc1b14).
 - Docs/Planning: Record final Shared Power broad validation and completion audit evidence (commit 39560edd16).
 - Docs/Audit: Separate remaining Shared Power clarify-only policy questions from completed migration work (commit 39560edd16).

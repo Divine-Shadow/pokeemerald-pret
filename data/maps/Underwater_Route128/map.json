@@ -41,7 +41,7 @@
       "x": 38,
       "y": 19,
       "elevation": 3,
-      "item": "ITEM_PROTEIN",
+      "item": "ITEM_NUGGET",
       "flag": "FLAG_HIDDEN_ITEM_UNDERWATER_128_PROTEIN"
     },
     {

@@ -211,7 +211,7 @@
       "x": 9,
       "y": 25,
       "elevation": 0,
-      "item": "ITEM_ZINC",
+      "item": "ITEM_NUGGET",
       "flag": "FLAG_HIDDEN_ITEM_MT_PYRE_SUMMIT_ZINC"
     },
     {

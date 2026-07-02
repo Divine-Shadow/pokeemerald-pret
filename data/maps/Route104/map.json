@@ -405,7 +405,7 @@
       "movement_range_x": 1,
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NONE",
-      "trainer_sight_or_berry_tree_id": "ITEM_SWIFT_FEATHER",
+      "trainer_sight_or_berry_tree_id": "ITEM_PRETTY_FEATHER",
       "script": "Common_EventScript_FindItem",
       "flag": "FLAG_ITEM_ROUTE_104_X_ACCURACY"
     },
@@ -591,7 +591,7 @@
       "x": 7,
       "y": 6,
       "elevation": 3,
-      "item": "ITEM_GENIUS_FEATHER",
+      "item": "ITEM_PRETTY_FEATHER",
       "flag": "FLAG_HIDDEN_ITEM_ROUTE_104_SUPER_POTION"
     },
     {
@@ -607,7 +607,7 @@
       "x": 14,
       "y": 55,
       "elevation": 3,
-      "item": "ITEM_RESIST_FEATHER",
+      "item": "ITEM_PRETTY_FEATHER",
       "flag": "FLAG_HIDDEN_ITEM_ROUTE_104_POTION"
     },
     {
@@ -615,7 +615,7 @@
       "x": 16,
       "y": 72,
       "elevation": 3,
-      "item": "ITEM_CLEVER_FEATHER",
+      "item": "ITEM_PRETTY_FEATHER",
       "flag": "FLAG_HIDDEN_ITEM_ROUTE_104_ANTIDOTE"
     },
     {

@@ -2,7 +2,10 @@
 #include "battle.h"
 #include "caps.h"
 #include "event_data.h"
+#include "item.h"
 #include "pokemon.h"
+#include "random.h"
+#include "script_pokemon_util.h"
 #include "test/overworld_script.h"
 #include "test/test.h"
 #include "constants/characters.h"
@@ -28,6 +31,17 @@ static void ClearLevelCapFlagsForTest(void)
 
     for (i = 0; i < ARRAY_COUNT(sLevelCapFlagsForTest); i++)
         FlagClear(sLevelCapFlagsForTest[i]);
+}
+
+static void ResetGiftShinyTestState(void)
+{
+    u32 i;
+
+    ClearBag();
+    ZeroPlayerPartyMons();
+    gPlayerPartyCount = 0;
+    for (i = 0; i < TRAINER_ID_LENGTH; i++)
+        gSaveBlock2Ptr->playerTrainerId[i] = 0;
 }
 
 TEST("MonSpritesGfxManager returns null sprite pointers after destroy")
@@ -219,6 +233,28 @@ TEST("EV items have no effect when EVs are disabled")
     EXPECT_EQ(TRUE, ExecuteTableBasedItemEffect(&mon, ITEM_HEALTH_FEATHER, 0, 0));
     EXPECT_EQ(100, GetMonData(&mon, MON_DATA_HP_EV));
     EXPECT_EQ(friendship, GetMonData(&mon, MON_DATA_FRIENDSHIP));
+}
+
+TEST("Default gift Pokemon stay non-shiny even if Shiny Charm rolls would succeed")
+{
+    ResetGiftShinyTestState();
+    EXPECT(AddBagItem(ITEM_SHINY_CHARM, 1));
+    SeedRng(3458);
+
+    EXPECT_EQ(ScriptGiveMon(SPECIES_RATTATA, 7, ITEM_NONE), MON_GIVEN_TO_PARTY);
+    EXPECT(!IsMonShiny(&gPlayerParty[0]));
+    ResetGiftShinyTestState();
+}
+
+TEST("Natural-shiny gift Pokemon preserve Shiny Charm rolls")
+{
+    ResetGiftShinyTestState();
+    EXPECT(AddBagItem(ITEM_SHINY_CHARM, 1));
+    SeedRng(3458);
+
+    EXPECT_EQ(ScriptGiveMonWithNaturalShiny(SPECIES_RATTATA, 7, ITEM_NONE), MON_GIVEN_TO_PARTY);
+    EXPECT(IsMonShiny(&gPlayerParty[0]));
+    ResetGiftShinyTestState();
 }
 
 TEST("Battles do not award EVs when EVs are disabled")

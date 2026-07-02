@@ -201,6 +201,7 @@ static void Task_NewGameBirchSpeech_WaitForSpriteFadeInWelcome(u8);
 static void NewGameBirchSpeech_ShowDialogueWindow(u8, u8);
 static void NewGameBirchSpeech_ClearWindow(u8);
 static void Task_NewGameBirchSpeech_ThisIsAPokemon(u8);
+static const u8 *GetNewGameBirchPokemonText(void);
 static void Task_NewGameBirchSpeech_MainSpeech(u8);
 static void NewGameBirchSpeech_WaitForThisIsPokemonText(struct TextPrinterTemplate *, u16);
 static void Task_NewGameBirchSpeech_AndYouAre(u8);
@@ -1427,11 +1428,23 @@ static void Task_NewGameBirchSpeech_ThisIsAPokemon(u8 taskId)
     if (!gPaletteFade.active && !RunTextPrintersAndIsPrinter0Active())
     {
         gTasks[taskId].func = Task_NewGameBirchSpeech_MainSpeech;
-        StringExpandPlaceholders(gStringVar4, gText_ThisIsAPokemon);
+        StringExpandPlaceholders(gStringVar4, GetNewGameBirchPokemonText());
         AddTextPrinterWithCallbackForMessage(TRUE, NewGameBirchSpeech_WaitForThisIsPokemonText);
         sBirchSpeechMainTaskId = taskId;
     }
 }
+
+static const u8 *GetNewGameBirchPokemonText(void)
+{
+    return gText_Birch_Pokemon;
+}
+
+#if TESTING
+const u8 *Test_GetNewGameBirchPokemonText(void)
+{
+    return GetNewGameBirchPokemonText();
+}
+#endif
 
 static void Task_NewGameBirchSpeech_MainSpeech(u8 taskId)
 {

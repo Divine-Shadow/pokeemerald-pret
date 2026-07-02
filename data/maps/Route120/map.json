@@ -851,7 +851,7 @@
       "x": 24,
       "y": 42,
       "elevation": 3,
-      "item": "ITEM_ZINC",
+      "item": "ITEM_NUGGET",
       "flag": "FLAG_HIDDEN_ITEM_ROUTE_120_ZINC"
     },
     {

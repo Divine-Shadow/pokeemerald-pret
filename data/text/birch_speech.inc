@@ -7,8 +7,7 @@ gText_Birch_Welcome::
 	.string "$"
 
 gText_Birch_Pokemon::
-	.string "This is what we call a “POKéMON.”\p"
-	.string "\n"
+	.string "This is what we call a “POKéMON.”{PAUSE 96}\p"
 	.string "$"
 
 gText_Birch_MainSpeech::

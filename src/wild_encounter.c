@@ -63,6 +63,7 @@ static bool8 TryGenerateWildMonAtMapSec(const struct WildPokemonInfo *wildMonInf
 static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, enum WildPokemonArea area, u8 flags);
 static bool8 TryGenerateFishingWildMonAtMapSec(const struct WildPokemonInfo *wildMonInfo, u8 rod, u16 *species, u8 mapSec);
 static bool8 TryGenerateFishingWildMon(const struct WildPokemonInfo *wildMonInfo, u8 rod, u16 *species);
+static bool32 TryStartWildEncounterFailureFeedback(bool32 showBoundaryCharmFeedback);
 #ifdef BUGFIX
 static bool8 TryGetAbilityInfluencedWildMonIndex(const struct WildPokemon *wildMon, u8 type, u16 ability, u8 *monIndex, u32 size);
 #else
@@ -360,6 +361,11 @@ bool32 Test_TryGenerateBoundaryFishingWildMonAtMapSec(const struct WildPokemonIn
 bool32 Test_TryGenerateUnfilteredWildMonAtMapSec(const struct WildPokemonInfo *wildMonInfo, enum WildPokemonArea area, u8 mapSec)
 {
     return TryGenerateWildMonAtMapSec(wildMonInfo, area, 0, mapSec);
+}
+
+bool32 Test_TryStartWildEncounterFailureFeedback(bool32 showBoundaryCharmFeedback)
+{
+    return TryStartWildEncounterFailureFeedback(showBoundaryCharmFeedback);
 }
 #endif
 
@@ -1008,6 +1014,16 @@ static bool8 AreLegendariesInSootopolisPreventingEncounters(void)
     return FlagGet(FLAG_LEGENDARIES_IN_SOOTOPOLIS);
 }
 
+static bool32 TryStartWildEncounterFailureFeedback(bool32 showBoundaryCharmFeedback)
+{
+    if (showBoundaryCharmFeedback && TryStartBoundaryCharmEncounterSuppressedScript())
+        return TRUE;
+    if (TryStartHighlanderCharmEmptyEncounterScript())
+        return TRUE;
+
+    return FALSE;
+}
+
 bool8 StandardWildEncounter(u16 curMetatileBehavior, u16 prevMetatileBehavior)
 {
     u32 headerId;
@@ -1101,11 +1117,7 @@ bool8 StandardWildEncounter(u16 curMetatileBehavior, u16 prevMetatileBehavior)
                     return TRUE;
                 }
 
-                if (TryStartBoundaryCharmEncounterSuppressedScript())
-                    return TRUE;
-                if (TryStartHighlanderCharmEmptyEncounterScript())
-                    return TRUE;
-                return FALSE;
+                return TryStartWildEncounterFailureFeedback(FALSE);
             }
         }
         else if (MetatileBehavior_IsWaterWildEncounter(curMetatileBehavior) == TRUE
@@ -1150,11 +1162,7 @@ bool8 StandardWildEncounter(u16 curMetatileBehavior, u16 prevMetatileBehavior)
                     return TRUE;
                 }
 
-                if (TryStartBoundaryCharmEncounterSuppressedScript())
-                    return TRUE;
-                if (TryStartHighlanderCharmEmptyEncounterScript())
-                    return TRUE;
-                return FALSE;
+                return TryStartWildEncounterFailureFeedback(FALSE);
             }
         }
     }
@@ -1267,11 +1275,7 @@ bool8 SweetScentWildEncounter(void)
                 SetUpMassOutbreakEncounter(0);
             else if (TryGenerateWildMon(gWildMonHeaders[headerId].encounterTypes[timeOfDay].landMonsInfo, WILD_AREA_LAND, WILD_CHECK_HIGHLANDER | WILD_CHECK_BOUNDARY) != TRUE)
             {
-                if (TryStartBoundaryCharmEncounterSuppressedScript())
-                    return TRUE;
-                if (TryStartHighlanderCharmEmptyEncounterScript())
-                    return TRUE;
-                return FALSE;
+                return TryStartWildEncounterFailureFeedback(TRUE);
             }
 
             BattleSetup_StartWildBattle();
@@ -1294,11 +1298,7 @@ bool8 SweetScentWildEncounter(void)
 
             if (TryGenerateWildMon(gWildMonHeaders[headerId].encounterTypes[timeOfDay].waterMonsInfo, WILD_AREA_WATER, WILD_CHECK_HIGHLANDER | WILD_CHECK_BOUNDARY) != TRUE)
             {
-                if (TryStartBoundaryCharmEncounterSuppressedScript())
-                    return TRUE;
-                if (TryStartHighlanderCharmEmptyEncounterScript())
-                    return TRUE;
-                return FALSE;
+                return TryStartWildEncounterFailureFeedback(TRUE);
             }
 
             BattleSetup_StartWildBattle();

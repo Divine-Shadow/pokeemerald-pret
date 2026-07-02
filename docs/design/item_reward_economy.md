@@ -20,7 +20,7 @@ Preferred sources:
 - NPC gifts
 - Later repeatable systems such as berry growth or the wild-held-item broker
 
-Low-tier field rewards are the preferred replacement for basic potions, status heals, repels, and X items once those pickups stop feeling useful. Good low-tier examples include EV feathers, one-use Gems, Sitrus/Lum/Leppa-style berries, and other small build-adjacent rewards.
+Low-tier field rewards are the preferred replacement for basic potions, status heals, repels, and X items once those pickups stop feeling useful. Good low-tier examples include Pretty Feathers, one-use Gems, Sitrus/Lum/Leppa-style berries, and other small build-adjacent rewards.
 
 ### Mid-Tier Build Items
 
