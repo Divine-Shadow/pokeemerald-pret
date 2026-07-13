@@ -14640,6 +14640,22 @@ const struct Item gItemsInfo[] =
         .iconPic = gItemIcon_PokeshiDoll,
         .iconPalette = gItemIconPalette_PokeshiDoll,
     },
+
+    [ITEM_SKATEBOARD] =
+    {
+        .name = ITEM_NAME("Skateboard"),
+        .price = 0,
+        .importance = 1,
+        .description = COMPOUND_STRING(
+            "Use B Button to\n"
+            "ride faster than\n"
+            "running shoes."),
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Skateboard,
+        .iconPic = gItemIcon_Bicycle,
+        .iconPalette = gItemIconPalette_Bicycle,
+    },
 };
 
 #undef ITEM_NAME

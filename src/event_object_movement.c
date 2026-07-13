@@ -1036,6 +1036,13 @@ const u8 gPlayerRunMovementActions[] = {
     [DIR_WEST] = MOVEMENT_ACTION_PLAYER_RUN_LEFT,
     [DIR_EAST] = MOVEMENT_ACTION_PLAYER_RUN_RIGHT,
 };
+const u8 gPlayerSkateboardMovementActions[] = {
+    [DIR_NONE] = MOVEMENT_ACTION_PLAYER_SKATEBOARD_DOWN,
+    [DIR_SOUTH] = MOVEMENT_ACTION_PLAYER_SKATEBOARD_DOWN,
+    [DIR_NORTH] = MOVEMENT_ACTION_PLAYER_SKATEBOARD_UP,
+    [DIR_WEST] = MOVEMENT_ACTION_PLAYER_SKATEBOARD_LEFT,
+    [DIR_EAST] = MOVEMENT_ACTION_PLAYER_SKATEBOARD_RIGHT,
+};
 const u8 gJump2MovementActions[] = {
     MOVEMENT_ACTION_JUMP_2_DOWN,
     MOVEMENT_ACTION_JUMP_2_DOWN,
@@ -5770,6 +5777,10 @@ bool8 FollowablePlayerMovement_Step(struct ObjectEvent *objectEvent, struct Spri
     {
         objectEvent->movementActionId = GetWalkFastMovementAction(direction);
     }
+    else if (gSprites[gPlayerAvatar.spriteId].data[4] == MOVE_SPEED_FAST_2)
+    {
+        objectEvent->movementActionId = GetRideWaterCurrentMovementAction(direction);
+    }
     else
     {
         objectEvent->movementActionId = GetWalkNormalMovementAction(direction);
@@ -6632,6 +6643,7 @@ static const u8 sActionIdToCopyableMovement[] = {
     [MOVEMENT_ACTION_JUMP_2_DOWN ... MOVEMENT_ACTION_JUMP_2_RIGHT] = COPY_MOVE_JUMP2,
     [MOVEMENT_ACTION_WALK_FAST_DOWN ... MOVEMENT_ACTION_WALK_FAST_RIGHT] = COPY_MOVE_WALK,
     [MOVEMENT_ACTION_RIDE_WATER_CURRENT_DOWN ... MOVEMENT_ACTION_PLAYER_RUN_RIGHT] = COPY_MOVE_WALK,
+    [MOVEMENT_ACTION_PLAYER_SKATEBOARD_DOWN ... MOVEMENT_ACTION_PLAYER_SKATEBOARD_RIGHT] = COPY_MOVE_WALK,
     // Not a typo; follower needs to take an action with a duration == JUMP's,
     // and JUMP2 here will lead to WALK_SLOW later
     [MOVEMENT_ACTION_JUMP_DOWN ... MOVEMENT_ACTION_JUMP_RIGHT] = COPY_MOVE_JUMP2,
@@ -6759,6 +6771,7 @@ dirn_to_anim(GetRideWaterCurrentMovementAction, gRideWaterCurrentMovementActions
 dirn_to_anim(GetWalkFasterMovementAction, gWalkFasterMovementActions);
 dirn_to_anim(GetSlideMovementAction, gSlideMovementActions);
 dirn_to_anim(GetPlayerRunMovementAction, gPlayerRunMovementActions);
+dirn_to_anim(GetPlayerSkateboardMovementAction, gPlayerSkateboardMovementActions);
 dirn_to_anim(GetJump2MovementAction, gJump2MovementActions);
 dirn_to_anim(GetJumpInPlaceMovementAction, gJumpInPlaceMovementActions);
 dirn_to_anim(GetJumpInPlaceTurnAroundMovementAction, gJumpInPlaceTurnAroundMovementActions);
@@ -6909,6 +6922,12 @@ static void InitMovementNormal(struct ObjectEvent *objectEvent, struct Sprite *s
 static void StartRunningAnim(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 direction)
 {
     InitNpcForMovement(objectEvent, sprite, direction, MOVE_SPEED_FAST_1);
+    SetStepAnimHandleAlternation(objectEvent, sprite, GetRunningDirectionAnimNum(objectEvent->facingDirection));
+}
+
+static void StartSkateboardAnim(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 direction)
+{
+    InitNpcForMovement(objectEvent, sprite, direction, MOVE_SPEED_FAST_2);
     SetStepAnimHandleAlternation(objectEvent, sprite, GetRunningDirectionAnimNum(objectEvent->facingDirection));
 }
 
@@ -8146,6 +8165,36 @@ bool8 MovementAction_PlayerRunRight_Step1(struct ObjectEvent *objectEvent, struc
         return TRUE;
     }
     return FALSE;
+}
+
+bool8 MovementAction_PlayerSkateboardDown_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    StartSkateboardAnim(objectEvent, sprite, DIR_SOUTH);
+    return MovementAction_PlayerRunDown_Step1(objectEvent, sprite);
+}
+
+bool8 MovementAction_PlayerSkateboardUp_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    StartSkateboardAnim(objectEvent, sprite, DIR_NORTH);
+    return MovementAction_PlayerRunUp_Step1(objectEvent, sprite);
+}
+
+bool8 MovementAction_PlayerSkateboardLeft_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    if (objectEvent->directionOverwrite)
+        StartSkateboardAnim(objectEvent, sprite, objectEvent->directionOverwrite);
+    else
+        StartSkateboardAnim(objectEvent, sprite, DIR_WEST);
+    return MovementAction_PlayerRunLeft_Step1(objectEvent, sprite);
+}
+
+bool8 MovementAction_PlayerSkateboardRight_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    if (objectEvent->directionOverwrite)
+        StartSkateboardAnim(objectEvent, sprite, objectEvent->directionOverwrite);
+    else
+        StartSkateboardAnim(objectEvent, sprite, DIR_EAST);
+    return MovementAction_PlayerRunRight_Step1(objectEvent, sprite);
 }
 
 void StartSpriteAnimInDirection(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 direction, u8 animNum)

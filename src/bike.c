@@ -4,9 +4,11 @@
 #include "field_player_avatar.h"
 #include "fieldmap.h"
 #include "field_specials.h"
+#include "item.h"
 #include "metatile_behavior.h"
 #include "overworld.h"
 #include "sound.h"
+#include "constants/items.h"
 #include "constants/songs.h"
 
 // this file's functions
@@ -1050,10 +1052,19 @@ s16 GetPlayerSpeed(void)
         return machSpeeds[gPlayerAvatar.bikeFrameCounter];
     else if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_ACRO_BIKE)
         return PLAYER_SPEED_FASTER;
-    else if (gPlayerAvatar.flags & (PLAYER_AVATAR_FLAG_SURFING | PLAYER_AVATAR_FLAG_DASH))
+    else if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
+        return PLAYER_SPEED_FAST;
+    else if ((gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_DASH) && PlayerHasSkateboard())
+        return PLAYER_SPEED_FASTER;
+    else if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_DASH)
         return PLAYER_SPEED_FAST;
     else
         return PLAYER_SPEED_NORMAL;
+}
+
+bool32 PlayerHasSkateboard(void)
+{
+    return CheckBagHasItem(ITEM_SKATEBOARD, 1);
 }
 
 void Bike_HandleBumpySlopeJump(void)

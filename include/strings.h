@@ -2414,6 +2414,7 @@ extern const u8 gText_BoundaryCharmOn[];
 extern const u8 gText_BoundaryCharmOff[];
 extern const u8 gText_RadiantCharmOn[];
 extern const u8 gText_RadiantCharmOff[];
+extern const u8 gText_SkateboardPassive[];
 
 extern const u8 gText_BasePointsResetToZero[];
 

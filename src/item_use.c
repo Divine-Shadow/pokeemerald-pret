@@ -336,6 +336,14 @@ void ItemUseOutOfBattle_RadiantCharm(u8 taskId)
     }
 }
 
+void ItemUseOutOfBattle_Skateboard(u8 taskId)
+{
+    if (!gTasks[taskId].data[2])
+        DisplayItemMessageOnField(taskId, gText_SkateboardPassive, Task_CloseCantUseKeyItemMessage);
+    else
+        DisplayItemMessage(taskId, FONT_NORMAL, gText_SkateboardPassive, CloseItemMessage);
+}
+
 void ItemUseOutOfBattle_Bike(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;

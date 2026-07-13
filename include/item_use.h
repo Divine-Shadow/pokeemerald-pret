@@ -41,6 +41,7 @@ void ItemUseOutOfBattle_ExpShare(u8 taskId);
 void ItemUseOutOfBattle_HighlanderCharm(u8 taskId);
 void ItemUseOutOfBattle_BoundaryCharm(u8 taskId);
 void ItemUseOutOfBattle_RadiantCharm(u8 taskId);
+void ItemUseOutOfBattle_Skateboard(u8 taskId);
 void ItemUseInBattle_BagMenu(u8 taskId);
 void ItemUseInBattle_PartyMenu(u8 taskId);
 void ItemUseInBattle_PartyMenuChooseMove(u8 taskId);

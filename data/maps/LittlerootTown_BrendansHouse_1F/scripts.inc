@@ -326,6 +326,23 @@ PlayersHouse_1F_Text_GoIntroduceYourselfNextDoor:
 	.string "He lives right next door, so you should\n"
 	.string "go over and introduce yourself.$"
 
+PlayersHouse_1F_Text_WearTheseRunningShoes:
+	.string "MOM: Before you head out, honey,\n"
+	.string "take these RUNNING SHOES.\p"
+	.string "They'll put a zip in your step!$"
+
+PlayersHouse_1F_Text_SwitchShoesWithRunningShoes:
+	.string "{PLAYER} switched shoes with the\n"
+	.string "RUNNING SHOES.$"
+
+PlayersHouse_1F_Text_ExplainRunningShoes:
+	.string "MOM: Those shoes came with\n"
+	.string "instructions.\p"
+	.string "“Press the B Button while wearing these\n"
+	.string "RUNNING SHOES to run extra-fast!\p"
+	.string "“Slip on these RUNNING SHOES and race\n"
+	.string "in the great outdoors!”$"
+
 PlayersHouse_1F_Text_SeeYouHoney:
 	.string "MOM: See you, honey!$"
 
