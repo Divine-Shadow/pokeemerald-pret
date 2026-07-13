@@ -1,7 +1,7 @@
-- Docs/Gameplay: Document the Skateboard movement upgrade and revised Littleroot reward timing (commit pending).
-- Gameplay/Progression: Have Mom give the Running Shoes after the opening TV scene and the Skateboard at the former Running Shoes event (commit pending).
-- Gameplay/Movement: Restore the Skateboard key item and its faster B-button movement upgrade on this branch (commit pending).
-- Gameplay/Maps: Move the Littleroot Radiant Charm kid out of Professor Birch's lab wall (commit pending).
+- Docs/Gameplay: Document the Skateboard movement upgrade and revised Littleroot reward timing (commit 1ae9609116).
+- Gameplay/Progression: Have Mom give the Running Shoes after the opening TV scene and the Skateboard at the former Running Shoes event (commit 1ae9609116).
+- Gameplay/Movement: Restore the Skateboard key item and its faster B-button movement upgrade on this branch (commit 1ae9609116).
+- Gameplay/Maps: Move the Littleroot Radiant Charm kid out of Professor Birch's lab wall (commit 1ae9609116).
 - Tests: Add mGBA-backed coverage for Extinction Charm feedback, Rusturf rescue persistence, and Birch intro text wiring (commit a0f119008a).
 - Tests: Clean up starter Shiny Charm regression test state after each case (commit a0f119008a).
 - Gameplay/Items: Move Flying Gem later on Route 115 and restore the earlier Super Potion pickup (commit a0f119008a).
