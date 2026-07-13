@@ -248,6 +248,13 @@ MossdeepCity_EventScript_BlackBelt::
 	msgbox MossdeepCity_Text_SootopolisNewGymLeader, MSGBOX_NPC
 	end
 
+MossdeepCity_EventScript_GymEntranceGuard::
+	lock
+	faceplayer
+	msgbox MossdeepCity_Text_GymEntranceGuard, MSGBOX_DEFAULT
+	release
+	end
+
 MossdeepCity_EventScript_Scott::
 	lock
 	faceplayer
@@ -426,3 +433,11 @@ MossdeepCity_Text_SootopolisNewGymLeader:
 	.string "People tell me the new LEADER once\n"
 	.string "mentored WALLACE.$"
 
+MossdeepCity_Text_GymEntranceGuard:
+	.string "Sorry, TRAINER.\n"
+	.string "MOSSDEEP GYM is only accepting\l"
+	.string "challengers with six BADGES.\p"
+	.string "If you haven't earned FORTREE's\n"
+	.string "FEATHER BADGE, head back west.\p"
+	.string "The last TRAINER to win here was\n"
+	.string "WINSTRATE VITO.$"

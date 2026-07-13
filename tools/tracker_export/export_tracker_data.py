@@ -55,6 +55,10 @@ SPECIAL_CONSTANT_NAMES = {
     "U_TURN": "U-turn",
 }
 
+SPECIAL_DISPLAY_NAMES = {
+    "Double Edge": "Double-Edge",
+}
+
 FISHING_METHODS = {
     "old_rod": "oldrod",
     "good_rod": "goodrod",
@@ -369,8 +373,10 @@ def normalize_display_name(value: str) -> str:
     if value in SPECIAL_CONSTANT_NAMES:
         return SPECIAL_CONSTANT_NAMES[value]
     if "_" in value:
-        return " ".join(format_constant_word(word) for word in value.split("_"))
-    return re.sub(r"\s+", " ", value)
+        value = " ".join(format_constant_word(word) for word in value.split("_"))
+    else:
+        value = re.sub(r"\s+", " ", value)
+    return SPECIAL_DISPLAY_NAMES.get(value, value)
 
 
 def format_constant_word(word: str) -> str:

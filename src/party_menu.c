@@ -413,6 +413,9 @@ static void Task_StopLearningMoveYesNo(u8);
 static void Task_HandleStopLearningMoveYesNoInput(u8);
 static void Task_TryLearningNextMoveAfterText(u8);
 static void BufferMonStatsToTaskData(struct Pokemon *, s16 *);
+static bool8 DoesTrainingCandyStopForMove(struct Pokemon *, u8);
+static bool8 DoesTrainingCandyStopForEvolution(struct Pokemon *, u8);
+static void ItemUseCB_TrainingCandy(u8, TaskFunc);
 static void UpdateMonDisplayInfoAfterRareCandy(u8, struct Pokemon *);
 static void Task_DisplayLevelUpStatsPg1(u8);
 static void DisplayLevelUpStatsPg1(u8);
@@ -5720,6 +5723,118 @@ static void UNUSED DisplayExpPoints(u8 taskId, TaskFunc task, u8 holdEffectParam
     gTasks[taskId].func = task;
 }
 
+static bool8 DoesTrainingCandyStopForMove(struct Pokemon *mon, u8 level)
+{
+    u32 i;
+    u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
+    const struct LevelUpMove *learnset = GetSpeciesLevelUpLearnset(species);
+
+    for (i = 0; learnset[i].move != LEVEL_UP_MOVE_END; i++)
+    {
+        if (learnset[i].level == level && learnset[i].level != 0 && !MonKnowsMove(mon, learnset[i].move))
+            return TRUE;
+    }
+
+    return FALSE;
+}
+
+static bool8 DoesTrainingCandyStopForEvolution(struct Pokemon *mon, u8 level)
+{
+    u8 originalLevel = GetMonData(mon, MON_DATA_LEVEL, NULL);
+    u32 targetSpecies;
+    bool32 canStopEvo = TRUE;
+
+    SetMonData(mon, MON_DATA_LEVEL, &level);
+    targetSpecies = GetEvolutionTargetSpecies(mon, EVO_MODE_NORMAL, ITEM_NONE, NULL, &canStopEvo, CHECK_EVO);
+    SetMonData(mon, MON_DATA_LEVEL, &originalLevel);
+
+    return targetSpecies != SPECIES_NONE;
+}
+
+u8 GetTrainingCandyTargetLevel(struct Pokemon *mon)
+{
+    u8 level;
+    u8 currentLevel = GetMonData(mon, MON_DATA_LEVEL, NULL);
+    u8 targetLevel = min(GetCurrentLevelCap(), MAX_LEVEL);
+
+    if (currentLevel >= targetLevel)
+        return currentLevel;
+
+    for (level = currentLevel + 1; level <= targetLevel; level++)
+    {
+        if (DoesTrainingCandyStopForMove(mon, level) || DoesTrainingCandyStopForEvolution(mon, level))
+            return level;
+    }
+
+    return targetLevel;
+}
+
+bool8 TryUseTrainingCandy(struct Pokemon *mon, u8 partyIndex, u8 *levelsGained)
+{
+    u8 i;
+    u8 currentLevel = GetMonData(mon, MON_DATA_LEVEL, NULL);
+    u8 targetLevel = GetTrainingCandyTargetLevel(mon);
+
+    if (levelsGained != NULL)
+        *levelsGained = 0;
+
+    if (targetLevel <= currentLevel)
+        return FALSE;
+
+    if (!CheckBagHasItem(ITEM_RARE_CANDY, targetLevel - currentLevel))
+        return FALSE;
+
+    for (i = currentLevel; i < targetLevel; i++)
+    {
+        if (ExecuteTableBasedItemEffect(mon, ITEM_RARE_CANDY, partyIndex, 0))
+            return FALSE;
+    }
+
+    RemoveBagItem(ITEM_RARE_CANDY, targetLevel - currentLevel);
+    if (levelsGained != NULL)
+        *levelsGained = targetLevel - currentLevel;
+
+    return TRUE;
+}
+
+static void ItemUseCB_TrainingCandy(u8 taskId, TaskFunc task)
+{
+    struct Pokemon *mon = &gPlayerParty[gPartyMenu.slotId];
+    struct PartyMenuInternal *ptr = sPartyMenuInternal;
+    s16 *arrayPtr = ptr->data;
+    bool8 cannotUseEffect;
+    u8 levelsGained;
+
+    sInitialLevel = GetMonData(mon, MON_DATA_LEVEL);
+    BufferMonStatsToTaskData(mon, arrayPtr);
+    cannotUseEffect = !TryUseTrainingCandy(mon, gPartyMenu.slotId, &levelsGained);
+    BufferMonStatsToTaskData(mon, &ptr->data[NUM_STATS]);
+
+    PlaySE(SE_SELECT);
+    if (cannotUseEffect)
+    {
+        sInitialLevel = 0;
+        sFinalLevel = 0;
+        gPartyMenuUseExitCallback = FALSE;
+        DisplayPartyMenuMessage(gText_WontHaveEffect, TRUE);
+        ScheduleBgCopyTilemapToVram(2);
+        gTasks[taskId].func = task;
+        return;
+    }
+
+    sFinalLevel = GetMonData(mon, MON_DATA_LEVEL, NULL);
+    gPartyMenuUseExitCallback = TRUE;
+    UpdateMonDisplayInfoAfterRareCandy(gPartyMenu.slotId, mon);
+    RemoveBagItem(gSpecialVar_ItemId, 1);
+    GetMonNickname(mon, gStringVar1);
+    PlayFanfareByFanfareNum(FANFARE_LEVEL_UP);
+    ConvertIntToDecimalStringN(gStringVar2, sFinalLevel, STR_CONV_MODE_LEFT_ALIGN, 3);
+    StringExpandPlaceholders(gStringVar4, gText_PkmnElevatedToLvVar2);
+    DisplayPartyMenuMessage(gStringVar4, TRUE);
+    ScheduleBgCopyTilemapToVram(2);
+    gTasks[taskId].func = Task_DisplayLevelUpStatsPg1;
+}
+
 void ItemUseCB_RareCandy(u8 taskId, TaskFunc task)
 {
     struct Pokemon *mon = &gPlayerParty[gPartyMenu.slotId];
@@ -5728,6 +5843,12 @@ void ItemUseCB_RareCandy(u8 taskId, TaskFunc task)
     u16 *itemPtr = &gSpecialVar_ItemId;
     bool8 cannotUseEffect;
     u8 holdEffectParam = GetItemHoldEffectParam(*itemPtr);
+
+    if (*itemPtr == ITEM_TRAINING_CANDY)
+    {
+        ItemUseCB_TrainingCandy(taskId, task);
+        return;
+    }
 
     sInitialLevel = GetMonData(mon, MON_DATA_LEVEL);
     if (!(B_RARE_CANDY_CAP && sInitialLevel >= GetCurrentLevelCap()))

@@ -198,6 +198,19 @@ ALL_LEARNABLES_JSON := $(LEARNSET_HELPERS_BUILD_DIR)/all_learnables.json
 TRACKER_EXPORT_DIR := $(BUILD_DIR)/tracker_export
 TRACKER_OVERLAY_DIR := $(TRACKER_EXPORT_DIR)/pkcalc_overlay
 TRACKER_EXPORT_TOOL_DIR := $(TOOLS_DIR)/tracker_export
+TRACKER_COVERAGE_REPORT := $(TRACKER_EXPORT_DIR)/coverage_report.json
+TRACKER_REFERENCE_REPORT := $(TRACKER_EXPORT_DIR)/reference_report.json
+TRACKER_LIVE_REFERENCE_REPORT := $(TRACKER_EXPORT_DIR)/live_reference_report.json
+TRACKER_DATA_MIGRATION_DIR := $(TRACKER_EXPORT_DIR)/data_migration
+TRACKER_DATA_MIGRATION_MAPPING_REPORT := $(TRACKER_DATA_MIGRATION_DIR)/pkcalc_catalog_mapping_report.json
+TRACKER_NATURES_MIGRATION_REPORT := $(TRACKER_DATA_MIGRATION_DIR)/natures_migration_validation_report.json
+TRACKER_ABILITY_IDENTITY_REPORT := $(TRACKER_DATA_MIGRATION_DIR)/ability_identity_gap_report.json
+TRACKER_HELD_ITEM_IDENTITY_REPORT := $(TRACKER_DATA_MIGRATION_DIR)/held_item_identity_gap_report.json
+TRACKER_MOVE_METADATA_REPORT := $(TRACKER_DATA_MIGRATION_DIR)/move_metadata_gap_report.json
+TRACKER_BUNDLE_DIR := $(TRACKER_EXPORT_DIR)/release_bundle
+TRACKER_BUNDLE_ARCHIVE := $(TRACKER_EXPORT_DIR)/pkcalc_tracker_release_bundle.tar.gz
+TRACKER_BUNDLE_CHECK_DIR := $(TRACKER_EXPORT_DIR)/bundle_check
+PKCALC_COMPAT_CONTRACT ?= $(TRACKER_EXPORT_TOOL_DIR)/pkcalc_compat_contract.json
 PLAYWRIGHT_IMAGE ?= mcr.microsoft.com/playwright:v1.55.0-noble
 PLAYWRIGHT_PACKAGE ?= playwright@1.55.0
 PKCALC_URL ?= https://pkcalc.anastarawneh.com/
@@ -223,8 +236,8 @@ MAKEFLAGS += --no-print-directory
 # Delete files that weren't built properly
 .DELETE_ON_ERROR:
 
-RULES_NO_SCAN += libagbsyscall clean clean-assets tidy tidymodern tidycheck generated clean-generated tracker-export tracker-export-check tracker-export-overlay tracker-export-overlay-check tracker-export-smoke tracker-export-site-smoke
-.PHONY: all rom agbcc modern compare check debug tracker-export tracker-export-check tracker-export-overlay tracker-export-overlay-check tracker-export-smoke tracker-export-site-smoke
+RULES_NO_SCAN += libagbsyscall clean clean-assets tidy tidymodern tidycheck generated clean-generated tracker-export tracker-export-check tracker-export-coverage-check tracker-export-reference-check tracker-export-live-reference-check tracker-export-data-migration-shape-audit tracker-export-natures-migration-check tracker-export-identity-migration-check tracker-export-move-metadata-migration-check tracker-export-overlay tracker-export-overlay-check tracker-export-smoke tracker-export-site-smoke tracker-export-compat-check tracker-export-bundle tracker-export-bundle-check
+.PHONY: all rom agbcc modern compare check debug tracker-export tracker-export-check tracker-export-coverage-check tracker-export-reference-check tracker-export-live-reference-check tracker-export-data-migration-shape-audit tracker-export-natures-migration-check tracker-export-identity-migration-check tracker-export-move-metadata-migration-check tracker-export-overlay tracker-export-overlay-check tracker-export-smoke tracker-export-site-smoke tracker-export-compat-check tracker-export-bundle tracker-export-bundle-check
 .PHONY: $(RULES_NO_SCAN)
 
 infoshell = $(foreach line, $(shell $1 | sed "s/ /__SPACE__/g"), $(info $(subst __SPACE__, ,$(line))))
@@ -381,17 +394,47 @@ tracker-export:
 tracker-export-check:
 	python3 $(TRACKER_EXPORT_TOOL_DIR)/validate_tracker_export.py --output-dir $(TRACKER_EXPORT_DIR)
 
+tracker-export-coverage-check: tracker-export-check
+	python3 $(TRACKER_EXPORT_TOOL_DIR)/audit_tracker_export_coverage.py --output-dir $(TRACKER_EXPORT_DIR) --report $(TRACKER_COVERAGE_REPORT)
+
+tracker-export-reference-check: tracker-export-check
+	python3 $(TRACKER_EXPORT_TOOL_DIR)/audit_tracker_export_references.py --output-dir $(TRACKER_EXPORT_DIR) --report $(TRACKER_REFERENCE_REPORT)
+
+tracker-export-live-reference-check: tracker-export-reference-check tracker-export-overlay-check
+	docker run --rm -e PKCALC_URL="$(PKCALC_URL)" -v "$$(pwd):/workspace" -w /workspace $(PLAYWRIGHT_IMAGE) sh -lc 'mkdir -p /tmp/pwprobe && cd /tmp/pwprobe && npm init -y >/dev/null && PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm install $(PLAYWRIGHT_PACKAGE) >/dev/null && NODE_PATH=/tmp/pwprobe/node_modules node /workspace/$(TRACKER_EXPORT_TOOL_DIR)/live_reference_tracker_export_playwright.cjs --output-dir /workspace/$(TRACKER_EXPORT_DIR) --adapter-root /workspace/$(TRACKER_OVERLAY_DIR) --reference-report /workspace/$(TRACKER_REFERENCE_REPORT) --report /workspace/$(TRACKER_LIVE_REFERENCE_REPORT) --contract /workspace/$(PKCALC_COMPAT_CONTRACT) --url "$$PKCALC_URL"'
+
+tracker-export-data-migration-shape-audit:
+	python3 $(TRACKER_EXPORT_TOOL_DIR)/export_pkcalc_data_migration.py --output-dir $(TRACKER_DATA_MIGRATION_DIR)
+	docker run --rm -e PKCALC_URL="$(PKCALC_URL)" -v "$$(pwd):/workspace" -w /workspace $(PLAYWRIGHT_IMAGE) sh -lc 'mkdir -p /tmp/pwprobe && cd /tmp/pwprobe && npm init -y >/dev/null && PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm install $(PLAYWRIGHT_PACKAGE) >/dev/null && NODE_PATH=/tmp/pwprobe/node_modules node /workspace/$(TRACKER_EXPORT_TOOL_DIR)/pkcalc_data_migration_playwright.cjs --input-dir /workspace/$(TRACKER_DATA_MIGRATION_DIR) --mapping-report /workspace/$(TRACKER_DATA_MIGRATION_MAPPING_REPORT) --validation-report /workspace/$(TRACKER_NATURES_MIGRATION_REPORT) --ability-gap-report /workspace/$(TRACKER_ABILITY_IDENTITY_REPORT) --held-item-gap-report /workspace/$(TRACKER_HELD_ITEM_IDENTITY_REPORT) --move-gap-report /workspace/$(TRACKER_MOVE_METADATA_REPORT) --url "$$PKCALC_URL"'
+
+tracker-export-natures-migration-check: tracker-export-data-migration-shape-audit
+	python3 $(TRACKER_EXPORT_TOOL_DIR)/validate_pkcalc_data_migration.py --input-dir $(TRACKER_DATA_MIGRATION_DIR) --mapping-report $(TRACKER_DATA_MIGRATION_MAPPING_REPORT) --validation-report $(TRACKER_NATURES_MIGRATION_REPORT)
+
+tracker-export-identity-migration-check: tracker-export-data-migration-shape-audit
+	python3 $(TRACKER_EXPORT_TOOL_DIR)/validate_pkcalc_data_migration.py --input-dir $(TRACKER_DATA_MIGRATION_DIR) --mapping-report $(TRACKER_DATA_MIGRATION_MAPPING_REPORT) --validation-report $(TRACKER_NATURES_MIGRATION_REPORT) --ability-gap-report $(TRACKER_ABILITY_IDENTITY_REPORT) --held-item-gap-report $(TRACKER_HELD_ITEM_IDENTITY_REPORT) --require-identity
+
+tracker-export-move-metadata-migration-check: tracker-export-data-migration-shape-audit
+	python3 $(TRACKER_EXPORT_TOOL_DIR)/validate_pkcalc_data_migration.py --input-dir $(TRACKER_DATA_MIGRATION_DIR) --mapping-report $(TRACKER_DATA_MIGRATION_MAPPING_REPORT) --validation-report $(TRACKER_NATURES_MIGRATION_REPORT) --move-gap-report $(TRACKER_MOVE_METADATA_REPORT) --require-move-metadata
+
 tracker-export-overlay: tracker-export-check
 	python3 $(TRACKER_EXPORT_TOOL_DIR)/export_pkcalc_overlay.py --input-dir $(TRACKER_EXPORT_DIR) --output-dir $(TRACKER_OVERLAY_DIR)
 
 tracker-export-overlay-check: tracker-export-overlay
 	python3 $(TRACKER_EXPORT_TOOL_DIR)/validate_pkcalc_overlay.py --tracker-dir $(TRACKER_EXPORT_DIR) --overlay-dir $(TRACKER_OVERLAY_DIR)
 
+tracker-export-bundle: tracker-export-coverage-check tracker-export-live-reference-check tracker-export-overlay-check
+	python3 $(TRACKER_EXPORT_TOOL_DIR)/export_pkcalc_bundle.py --tracker-dir $(TRACKER_EXPORT_DIR) --overlay-dir $(TRACKER_OVERLAY_DIR) --coverage-report $(TRACKER_COVERAGE_REPORT) --reference-report $(TRACKER_REFERENCE_REPORT) --live-reference-report $(TRACKER_LIVE_REFERENCE_REPORT) --contract $(PKCALC_COMPAT_CONTRACT) --bundle-dir $(TRACKER_BUNDLE_DIR) --bundle $(TRACKER_BUNDLE_ARCHIVE)
+
+tracker-export-bundle-check: tracker-export-bundle
+	python3 $(TRACKER_EXPORT_TOOL_DIR)/validate_pkcalc_bundle.py --bundle $(TRACKER_BUNDLE_ARCHIVE) --work-dir $(TRACKER_BUNDLE_CHECK_DIR)
+
 tracker-export-smoke: tracker-export-check
 	docker run --rm -v "$$(pwd):/workspace" -w /workspace $(PLAYWRIGHT_IMAGE) sh -lc 'mkdir -p /tmp/pwprobe && cd /tmp/pwprobe && npm init -y >/dev/null && PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm install $(PLAYWRIGHT_PACKAGE) >/dev/null && NODE_PATH=/tmp/pwprobe/node_modules node /workspace/$(TRACKER_EXPORT_TOOL_DIR)/smoke_tracker_export_playwright.cjs --output-dir /workspace/$(TRACKER_EXPORT_DIR)'
 
 tracker-export-site-smoke: tracker-export-overlay-check
-	docker run --rm -e PKCALC_URL="$(PKCALC_URL)" -v "$$(pwd):/workspace" -w /workspace $(PLAYWRIGHT_IMAGE) sh -lc 'mkdir -p /tmp/pwprobe && cd /tmp/pwprobe && npm init -y >/dev/null && PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm install $(PLAYWRIGHT_PACKAGE) >/dev/null && NODE_PATH=/tmp/pwprobe/node_modules node /workspace/$(TRACKER_EXPORT_TOOL_DIR)/site_smoke_tracker_export_playwright.cjs --adapter-root /workspace/$(TRACKER_OVERLAY_DIR) --url "$$PKCALC_URL"'
+	docker run --rm -e PKCALC_URL="$(PKCALC_URL)" -v "$$(pwd):/workspace" -w /workspace $(PLAYWRIGHT_IMAGE) sh -lc 'mkdir -p /tmp/pwprobe && cd /tmp/pwprobe && npm init -y >/dev/null && PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm install $(PLAYWRIGHT_PACKAGE) >/dev/null && NODE_PATH=/tmp/pwprobe/node_modules node /workspace/$(TRACKER_EXPORT_TOOL_DIR)/site_smoke_tracker_export_playwright.cjs --adapter-root /workspace/$(TRACKER_OVERLAY_DIR) --contract /workspace/$(PKCALC_COMPAT_CONTRACT) --url "$$PKCALC_URL"'
+
+tracker-export-compat-check: tracker-export-site-smoke
 
 
 %.s:   ;

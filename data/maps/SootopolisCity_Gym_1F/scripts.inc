@@ -196,6 +196,7 @@ SootopolisCity_Gym_1F_Text_GymGuideAdvice:
 SootopolisCity_Gym_1F_Text_GymGuidePostVictory:
 	.string "Yow! You've beaten even JUAN, who\n"
 	.string "was supposedly the best in all HOENN!\p"
+	.string "Your next level cap is Lv. 58.\p"
 	.string "Okay! Check out your TRAINER CARD.\p"
 	.string "If you've gotten all the BADGES, you're\n"
 	.string "set for the POKéMON LEAGUE challenge!$"

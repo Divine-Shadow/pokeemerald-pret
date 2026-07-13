@@ -2,6 +2,9 @@
 #include "battle.h"
 #include "caps.h"
 #include "event_data.h"
+#include "item.h"
+#include "party_menu.h"
+#include "player_pc.h"
 #include "pokemon.h"
 #include "test/overworld_script.h"
 #include "test/test.h"
@@ -288,6 +291,109 @@ TEST("EXP Candies respect the hard level cap")
     EXPECT_EQ(FALSE, cannotUse);
     EXPECT_EQ(levelCap, level);
     EXPECT_EQ(cappedExp, exp);
+}
+
+TEST("Training Candy stops at the next unlearned level-up move")
+{
+    u8 level, levelsGained;
+    struct Pokemon mon;
+
+    ASSUME(B_LEVEL_CAP_TYPE == LEVEL_CAP_FLAG_LIST);
+
+    ClearLevelCapFlagsForTest();
+    ClearBag();
+    CreateMon(&mon, SPECIES_CHARMANDER, 5, 0, FALSE, 0, OT_ID_PRESET, 0);
+    EXPECT(AddBagItem(ITEM_RARE_CANDY, 10));
+
+    EXPECT_EQ(8, GetTrainingCandyTargetLevel(&mon));
+    EXPECT(TryUseTrainingCandy(&mon, 0, &levelsGained));
+    level = GetMonData(&mon, MON_DATA_LEVEL);
+    ClearLevelCapFlagsForTest();
+
+    EXPECT_EQ(8, level);
+    EXPECT_EQ(3, levelsGained);
+    EXPECT_EQ(7, CountTotalItemQuantityInBag(ITEM_RARE_CANDY));
+}
+
+TEST("Training Candy stops at the current level cap")
+{
+    u8 level, levelsGained;
+    u32 levelCap;
+    struct Pokemon mon;
+
+    ASSUME(B_LEVEL_CAP_TYPE == LEVEL_CAP_FLAG_LIST);
+
+    ClearLevelCapFlagsForTest();
+    ClearBag();
+    levelCap = GetCurrentLevelCap();
+    ASSUME(levelCap > 10);
+    CreateMon(&mon, SPECIES_WOBBUFFET, 10, 0, FALSE, 0, OT_ID_PRESET, 0);
+    EXPECT(AddBagItem(ITEM_RARE_CANDY, levelCap - 10));
+
+    EXPECT_EQ(levelCap, GetTrainingCandyTargetLevel(&mon));
+    EXPECT(TryUseTrainingCandy(&mon, 0, &levelsGained));
+    level = GetMonData(&mon, MON_DATA_LEVEL);
+    ClearLevelCapFlagsForTest();
+
+    EXPECT_EQ(levelCap, level);
+    EXPECT_EQ(levelCap - 10, levelsGained);
+    EXPECT_EQ(0, CountTotalItemQuantityInBag(ITEM_RARE_CANDY));
+}
+
+TEST("Training Candy stops at the next level-based evolution")
+{
+    u8 level, levelsGained;
+    bool32 canStopEvo = TRUE;
+    struct Pokemon mon;
+
+    ASSUME(B_LEVEL_CAP_TYPE == LEVEL_CAP_FLAG_LIST);
+
+    ClearLevelCapFlagsForTest();
+    ClearBag();
+    CreateMon(&mon, SPECIES_CATERPIE, 5, 0, FALSE, 0, OT_ID_PRESET, 0);
+    EXPECT(AddBagItem(ITEM_RARE_CANDY, 10));
+
+    EXPECT_EQ(7, GetTrainingCandyTargetLevel(&mon));
+    EXPECT(TryUseTrainingCandy(&mon, 0, &levelsGained));
+    level = GetMonData(&mon, MON_DATA_LEVEL);
+    ClearLevelCapFlagsForTest();
+
+    EXPECT_EQ(7, level);
+    EXPECT_EQ(2, levelsGained);
+    EXPECT_EQ(8, CountTotalItemQuantityInBag(ITEM_RARE_CANDY));
+    EXPECT_EQ(SPECIES_METAPOD, GetEvolutionTargetSpecies(&mon, EVO_MODE_NORMAL, ITEM_NONE, NULL, &canStopEvo, CHECK_EVO));
+}
+
+TEST("Training Candy has no effect without enough Rare Candies")
+{
+    u8 level, levelsGained;
+    struct Pokemon mon;
+
+    ASSUME(B_LEVEL_CAP_TYPE == LEVEL_CAP_FLAG_LIST);
+
+    ClearLevelCapFlagsForTest();
+    ClearBag();
+    CreateMon(&mon, SPECIES_CATERPIE, 5, 0, FALSE, 0, OT_ID_PRESET, 0);
+    EXPECT(AddBagItem(ITEM_RARE_CANDY, 1));
+
+    EXPECT_EQ(7, GetTrainingCandyTargetLevel(&mon));
+    EXPECT(!TryUseTrainingCandy(&mon, 0, &levelsGained));
+    level = GetMonData(&mon, MON_DATA_LEVEL);
+    ClearLevelCapFlagsForTest();
+
+    EXPECT_EQ(5, level);
+    EXPECT_EQ(0, levelsGained);
+    EXPECT_EQ(1, CountTotalItemQuantityInBag(ITEM_RARE_CANDY));
+}
+
+TEST("New game PC starts with Training Candies")
+{
+    CpuFastFill(0, gSaveBlock1Ptr->pcItems, sizeof(gSaveBlock1Ptr->pcItems));
+
+    NewGameInitPCItems();
+
+    EXPECT(CheckPCHasItem(ITEM_TRAINING_CANDY, 999));
+    EXPECT(!CheckPCHasItem(ITEM_TRAINING_CANDY, 1000));
 }
 
 TEST("Status1 round-trips through BoxPokemon")

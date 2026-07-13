@@ -1,7 +1,7 @@
 #include "global.h"
 #include "test/battle.h"
 
-SINGLE_BATTLE_TEST("Drought sets up sun for 5 turns (Gen6+)")
+SINGLE_BATTLE_TEST("Drought sets up permanent sun (Gen6+)")
 {
     GIVEN {
         WITH_CONFIG(GEN_CONFIG_ABILITY_WEATHER, GEN_6);
@@ -13,17 +13,19 @@ SINGLE_BATTLE_TEST("Drought sets up sun for 5 turns (Gen6+)")
         TURN { MOVE(player, MOVE_CELEBRATE); MOVE(opponent, MOVE_CELEBRATE); }
         TURN { MOVE(player, MOVE_CELEBRATE); MOVE(opponent, MOVE_CELEBRATE); }
         TURN { MOVE(player, MOVE_CELEBRATE); MOVE(opponent, MOVE_CELEBRATE); }
+        TURN { MOVE(player, MOVE_CELEBRATE); MOVE(opponent, MOVE_CELEBRATE); }
     } SCENE {
         ABILITY_POPUP(player, ABILITY_DROUGHT);
         MESSAGE("The sunlight is strong.");
         MESSAGE("The sunlight is strong.");
         MESSAGE("The sunlight is strong.");
         MESSAGE("The sunlight is strong.");
-        MESSAGE("The sunlight faded.");
+        MESSAGE("The sunlight is strong.");
+        NOT MESSAGE("The sunlight faded.");
     }
 }
 
-SINGLE_BATTLE_TEST("Drought sets up sun for 8 turns with Heat Rock (Gen6+)")
+SINGLE_BATTLE_TEST("Drought ignores Heat Rock because entry sun is permanent")
 {
     GIVEN {
         WITH_CONFIG(GEN_CONFIG_ABILITY_WEATHER, GEN_6);
@@ -47,7 +49,8 @@ SINGLE_BATTLE_TEST("Drought sets up sun for 8 turns with Heat Rock (Gen6+)")
         MESSAGE("The sunlight is strong.");
         MESSAGE("The sunlight is strong.");
         MESSAGE("The sunlight is strong.");
-        MESSAGE("The sunlight faded.");
+        MESSAGE("The sunlight is strong.");
+        NOT MESSAGE("The sunlight faded.");
     }
 }
 

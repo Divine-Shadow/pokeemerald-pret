@@ -133,6 +133,7 @@ RustboroCity_Gym_Text_GymGuideAdvice:
 RustboroCity_Gym_Text_GymGuidePostVictory:
 	.string "Whoa! What a breathtaking victory!\n"
 	.string "My cheering must've worked!\p"
+	.string "Your next level cap is Lv. 19.\p"
 	.string "Great!\n"
 	.string "Check your TRAINER CARD.\p"
 	.string "The STONE BADGE you got should be\n"

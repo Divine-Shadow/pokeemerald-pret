@@ -161,6 +161,9 @@ TEST("Condition Coach rejects Eggs")
     SetMonData(&gPlayerParty[0], MON_DATA_IS_EGG, &isEgg);
     CalculatePlayerPartyCount();
     gSpecialVar_0x8004 = 0;
+    gSpecialVar_0x8005 = CONDITION_COACH_CHOICE_BURN;
+    gSpecialVar_0x8006 = CONDITION_COACH_HINT_NONE;
+    SetConditionCoachBadgeCount(NUM_BADGES);
 
     EXPECT_EQ(TryConditionCoachChoice(CONDITION_COACH_CHOICE_BURN), CONDITION_COACH_RESULT_EGG);
     EXPECT_EQ(GetMonData(&gPlayerParty[0], MON_DATA_STATUS), STATUS1_NONE);

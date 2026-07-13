@@ -5862,23 +5862,27 @@ bool32 CanSetNonVolatileStatus(u32 battlerAtk, u32 battlerDef, u32 abilityAtk, u
         {
             battleScript = BattleScript_NotAffected;
         }
-        else if (option == RUN_SCRIPT) // Check only important during battle execution for moves
+        else
         {
-            CalcTypeEffectivenessMultiplierHelper(gCurrentMove, GetBattleMoveType(gCurrentMove), battlerAtk, battlerDef, abilityAtk, abilityDef, TRUE);
-            if (gBattleStruct->moveResultFlags[battlerDef] & MOVE_RESULT_NO_EFFECT)
+            if (option == RUN_SCRIPT) // Check only important during battle execution for moves
             {
-                battleScript = BattleScript_ButItFailed;
+                CalcTypeEffectivenessMultiplierHelper(gCurrentMove, GetBattleMoveType(gCurrentMove), battlerAtk, battlerDef, abilityAtk, abilityDef, TRUE);
+                if (gBattleStruct->moveResultFlags[battlerDef] & MOVE_RESULT_NO_EFFECT)
+                {
+                    battleScript = BattleScript_ButItFailed;
+                }
+                else if (GetMoveCategory(gCurrentMove) == DAMAGE_CATEGORY_STATUS)
+                {
+                    gBattleStruct->moveResultFlags[battlerDef] &= ~(MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE);
+                }
             }
-            else if (GetMoveCategory(gCurrentMove) == DAMAGE_CATEGORY_STATUS)
+
+            if (battleScript == NULL && abilityDef == ABILITY_LIMBER)
             {
-                gBattleStruct->moveResultFlags[battlerDef] &= ~(MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE);
+                abilityAffected = TRUE;
+                gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_ABILITY_PREVENTS_MOVE_PARALYSIS;
+                battleScript = BattleScript_ImmunityProtected;
             }
-        }
-        else if (abilityDef == ABILITY_LIMBER)
-        {
-            abilityAffected = TRUE;
-            gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_ABILITY_PREVENTS_MOVE_PARALYSIS;
-            battleScript = BattleScript_ImmunityProtected;
         }
         break;
     case MOVE_EFFECT_BURN:

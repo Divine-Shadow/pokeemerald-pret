@@ -24,6 +24,8 @@ Use this skill for gameplay-content work in this repository. Keep technical impl
 
 ## NPC and map-object placement
 
+When adding a new NPC, default to making them a named NPC with a role-specific local id, script label, and dialogue labels, and create/use a new role-specific sprite instead of reusing a stock sprite. The exception is when the task is explicitly about an already-existing named NPC; in that case, preserve that NPC's identity and sprite unless the user asks for a sprite change.
+
 When adding, moving, or removing checkable NPC object events in `data/maps/*/map.json`, run the bundled static accessibility checker on each touched map before final validation:
 
 ```bash

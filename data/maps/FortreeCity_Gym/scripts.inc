@@ -152,7 +152,8 @@ FortreeCity_Gym_Text_GymGuideAdvice:
 
 FortreeCity_Gym_Text_GymGuidePostVictory:
 	.string "You did it!\n"
-	.string "You've achieved liftoff!$"
+	.string "You've achieved liftoff!\p"
+	.string "Your next level cap is Lv. 42.$"
 
 FortreeCity_Gym_Text_JaredIntro:
 	.string "Behold the elegant battle style of\n"

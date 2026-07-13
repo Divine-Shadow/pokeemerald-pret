@@ -1,3 +1,79 @@
+- Gameplay/Items: Add Training Candy as a PC-stocked QoL candy that spends Rare Candies to stop at the next move, evolution, or level cap (commit pending).
+- Gameplay/Items: Fix bag item removal across split stacks so only the requested quantity is removed and slots compact correctly (commit pending).
+- Gameplay/Maps: Move the Littleroot Radiant Charm kid off the lab building tile onto reachable ground (commit pending).
+- Docs/Planning: Record final PKCalc move metadata migration proof evidence (commit pending).
+- Docs/Planning: Record PKCalc move metadata proof implementation progress (commit pending).
+- Docs/Tracker: Document PKCalc move metadata migration proof artifacts and validation target (commit pending).
+- Build/Tracker: Add an opt-in PKCalc move metadata migration validation target (commit pending).
+- Tooling/Tracker: Validate PKCalc move metadata proof artifacts with reported live gaps (commit pending).
+- Tooling/Tracker: Compare generated move metadata against live PKCalc move catalogs with a gap report (commit pending).
+- Tooling/Tracker: Resolve config-dependent move type and category metadata during PKCalc export (commit pending).
+- Tooling/Tracker: Generate repo-derived PKCalc move metadata proof artifacts (commit pending).
+- Docs/Planning: Add an execution plan for PKCalc move metadata migration proof artifacts (commit pending).
+- Gameplay/Movement: Make Running Shoes and Skateboard movement toggle with B instead of requiring B to be held (commit pending).
+- Docs/Planning: Record the successful artifact-free full Nix flake check (commit pending).
+- Docs/Planning: Record explicit PKCalc identity gap fields and rerun validation (commit pending).
+- Tooling/Tracker: Validate explicit customRepoOnly and incompatibleIds identity gap fields (commit pending).
+- Tooling/Tracker: Name PKCalc identity report repo-only and incompatible-id gap fields explicitly (commit pending).
+- Docs/Planning: Record final PKCalc identity catalog validation evidence and outcome (commit pending).
+- Docs/Planning: Record PKCalc identity catalog implementation evidence (commit pending).
+- Docs/Tracker: Document PKCalc ability and held-item identity migration checks (commit pending).
+- Build/Tracker: Add an opt-in PKCalc identity migration validation target (commit pending).
+- Tooling/Tracker: Generate PKCalc ability and held-item identity catalogs with live gap reports (commit pending).
+- Docs/Planning: Add an execution plan for PKCalc ability and held-item identity catalog proofs (commit pending).
+- Docs/Planning: Record PKCalc data-migration validation evidence and Docker tool rebuild recovery (commit pending).
+- Docs/Planning: Record focused Condition Coach Nix validation after rebuilding host tools (commit pending).
+- Docs/Planning: Record the clean flake derivation Condition Coach isolation failure (commit pending).
+- Tests: Initialize Condition Coach egg rejection prerequisites for clean Nix test derivations (commit pending).
+- Docs/Planning: Record the full Nix test-suite pass and flake full-check promotion (commit pending).
+- Docs/Nix: Describe flake checks as running the full Nix test suite instead of a smoke (commit pending).
+- Tooling/Nix: Promote the flake test check from the uq4_12 smoke to full make check (commit pending).
+- Docs/Planning: Record full-suite Nix failures, focused fixes, and targeted validation evidence (commit pending).
+- Docs/Tracker: Document PKCalc data-migration shape audit and natures proof commands (commit pending).
+- Tooling/Tracker: Treat Plus/Minus ability maps as primitive catalogs in data-migration shape audits (commit pending).
+- Tooling/Tracker: Avoid mistaking ability id maps for structured PKCalc catalog entries (commit pending).
+- Tooling/Tracker: Refine PKCalc data-migration shape summaries for map-to-string catalogs (commit pending).
+- Tooling/Tracker: Improve PKCalc data-migration live catalog shape summaries for array-backed catalogs (commit pending).
+- Tooling/Tracker: Add PKCalc data-migration shape audit and natures proof validation targets (commit pending).
+- Docs/Planning: Add an execution plan for the first PKCalc data-migration proof slice (commit pending).
+- Docs/Planning: Record live PKCalc reference audit validation evidence and Docker tool recovery (commit pending).
+- Battle/Tests: Update the smart-switching fixture for Rhyhorn choosing Rock Tomb when it ties Bulldoze in AI scoring (commit pending).
+- Battle/Tests: Give every battler explicit Speed in the Booster Energy finite-sun fixture (commit pending).
+- Battle/Tests: Switch the Booster Energy Protosynthesis fixture into finite sun before asserting item activation after expiry (commit pending).
+- Docs/Tracker: Document live PKCalc reference auditing and bundled proof artifacts (commit pending).
+- Build/Tracker: Require live PKCalc reference validation before packaging tracker bundles (commit pending).
+- Tooling/Tracker: Include live PKCalc reference reports in tracker release bundles (commit pending).
+- Tooling/Tracker: Add a Playwright live PKCalc reference-resolution audit target (commit pending).
+- Docs/Planning: Record live PKCalc reference catalog probing and implementation decisions (commit pending).
+- Docs/Planning: Add an execution plan for live PKCalc reference-resolution auditing (commit pending).
+- Battle/Tests: Focus the Booster Energy sun-expiry fixture on item timing after finite sun fades (commit pending).
+- Battle/Tests: Let the Protosynthesis holder set finite sun in the Booster Energy expiry fixture (commit pending).
+- Battle/Tests: Give the Booster Energy sun-expiry fixture an explicit idle move after Sunny Day (commit pending).
+- Battle/Tests: Align weather and accuracy fixtures with permanent entry weather and current move data (commit pending).
+- Battle/Status: Let Limber block Thunder Wave after status-move type checks allow paralysis (commit pending).
+- Tooling/Nix: Add linker and runtime library settings so Nix-built host tools run during full checks (commit pending).
+- Docs/Planning: Add an execution plan for promoting Nix flake checks to the full test suite (commit pending).
+- Docs/Planning: Record tracker export reference audit validation evidence and Docker tool rebuild recovery (commit pending).
+- Docs/Planning: Add an execution plan for tracker export reference-integrity auditing (commit pending).
+- Docs/Tracker: Document tracker export reference auditing and bundle inclusion (commit pending).
+- Tooling/Tracker: Add tracker export reference-integrity auditing and include its report in release bundles (commit pending).
+- Tooling/Tracker: Canonicalize Double-Edge tracker move references during export normalization (commit pending).
+- Docs/Planning: Record tracker export release bundle validation evidence and Docker tool rebuild recovery (commit pending).
+- Docs/Planning: Add an execution plan for auditable tracker release bundles (commit pending).
+- Docs/Tracker: Document tracker export bundle generation and validation artifacts (commit pending).
+- Tooling/Tracker: Add auditable PKCalc tracker release bundle generation and validation commands (commit pending).
+- Docs/Planning: Record tracker export coverage audit validation evidence and Docker tool rebuild recovery (commit pending).
+- Docs/Planning: Add an execution plan for tracker export coverage auditing (commit pending).
+- Docs/Tracker: Document tracker export coverage auditing and its generated report (commit pending).
+- Tooling/Tracker: Add a tracker export coverage audit command for trainer and map-backed encounter completeness (commit pending).
+- Docs/Planning: Record PKCalc compatibility drift guardrail validation evidence and final outcome (commit pending).
+- Docs/Planning: Add an execution plan for PKCalc compatibility drift guardrails (commit pending).
+- Docs/Tracker: Document PKCalc compatibility contract drift diagnostics and the named drift-check target (commit pending).
+- Tooling/Tracker: Add a PKCalc compatibility contract and explicit live-site drift diagnostics (commit pending).
+- Docs/Planning: Record PKCalc overlay export validation evidence and final outcome (commit pending).
+- Docs/Planning: Add an execution plan for PKCalc overlay export artifacts (commit pending).
+- Docs/Tracker: Document PKCalc overlay export targets, handoff paths, and manifest metadata (commit pending).
+- Tooling/Tracker: Add PKCalc overlay export and validation targets with auditable manifest generation (commit pending).
 - Tests: Initialize Condition Coach's ability-number test local for clean GCC 15 Nix test builds (commit pending).
 - Tooling/Nix: Clean copied ROM and test object trees inside Nix derivations before building (commit pending).
 - Docs/Planning: Record Nix test-runner smoke, ROM build, flake check evidence, and full-suite caveat (commit pending).
@@ -7,26 +83,27 @@
 - Tooling/Nix: Add Nix-built mGBA ROM test runner packages and flake checks for ROM and test builds (commit pending).
 - Docs/Nix: Document Nix test-suite and flake-check commands for NixOS users (commit pending).
 - Docs/Planning: Track the Nix test-runner and flake-check implementation plan (commit pending).
+- Docs/Planning: Record live PKCalc compatibility smoke validation evidence and final outcome (commit pending).
+- Docs/Planning: Add an execution plan for live PKCalc compatibility smoke verification (commit pending).
+- Docs/Tracker: Document the live PKCalc compatibility smoke target for generated tracker exports (commit pending).
+- Tooling/Tracker: Add a live PKCalc app smoke target that routes generated tracker artifacts into PKCalc's real data paths (commit pending).
 - Docs/Planning: Record Nix flake build validation evidence and the mGBA test-runner caveat (commit pending).
 - Tooling/Nix: Anchor the flake derivation source to the flake directory for path-based builds (commit pending).
 - Tooling/Nix: Add a flake derivation for reproducible ROM builds without host DEVKITARM (commit pending).
 - Docs/Nix: Document nix build and nix develop workflows for NixOS users (commit pending).
 - Docs/Planning: Track the Nix flake build implementation and validation plan (commit pending).
-- Docs/Planning: Record PKCalc overlay export validation evidence and final outcome (commit pending).
-- Docs/Planning: Add an execution plan for PKCalc overlay export artifacts (commit pending).
-- Docs/Tracker: Document PKCalc overlay export targets, handoff paths, and manifest metadata (commit pending).
-- Tooling/Tracker: Add PKCalc overlay export and validation targets with auditable manifest generation (commit pending).
-- Docs/Planning: Record live PKCalc compatibility smoke validation evidence and final outcome (commit pending).
-- Docs/Planning: Add an execution plan for live PKCalc compatibility smoke verification (commit pending).
-- Docs/Tracker: Document the live PKCalc compatibility smoke target for generated tracker exports (commit pending).
-- Tooling/Tracker: Add a live PKCalc app smoke target that routes generated tracker artifacts into PKCalc's real data paths (commit pending).
+- Docs/Guidance: Clarify that verified work should be committed instead of waiting for final rebased patch-note hashes (commit pending).
+- Gameplay/Movement: Add a PC-available Skateboard key item that upgrades B-button running to a faster mid-bike speed (commit pending).
+- Docs/Gameplay: Document the Skateboard movement upgrade and starting PC availability (commit pending).
+- Gameplay/NPCs: Add post-victory gym guide dialogue that states the next level cap (commit pending).
 - Docs/Planning: Record build-time tracker export validation evidence and final outcome (commit pending).
 - Docs/Planning: Add an execution plan for build-time tracker export and browser smoke verification (commit pending).
 - Docs/Tracker: Document Makefile targets and Playwright Docker smoke verification for tracker exports (commit pending).
 - Tooling/Tracker: Add explicit Makefile targets and a Playwright smoke script for generated PKCalc tracker artifacts (commit pending).
-- Docs/Guidance: Clarify that verified work should be committed instead of waiting for final rebased patch-note hashes (commit pending).
-- Gameplay/Movement: Add a PC-available Skateboard key item that upgrades B-button running to a faster mid-bike speed (commit pending).
-- Docs/Gameplay: Document the Skateboard movement upgrade and starting PC availability (commit pending).
+- Dialogue: Professor Birch now explains Shared Power during the new-game intro (commit pending).
+- Tooling/Skills: Require new NPC work to default to named NPCs with role-specific sprites unless updating an existing named NPC (commit pending).
+- Docs/Gameplay: Document that Mossdeep Gym requires the Feather Badge before challenging Tate and Liza (commit pending).
+- Gameplay/NPCs: Add a Mossdeep Gym entrance guard who requires the Feather Badge before challenging Tate and Liza (commit pending).
 - Docs/Planning: Record tracker export MVP validation evidence and implementation decisions (commit pending).
 - Tooling/Tracker: Restrict tracker wild encounters to map-backed groups (commit pending).
 - Tooling/Tracker: Make tracker location IDs section-derived and tolerate map sections without coordinates (commit pending).

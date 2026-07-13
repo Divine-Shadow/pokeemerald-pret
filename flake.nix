@@ -35,6 +35,14 @@
             pkgs.libpng
             pkgs.zlib
           ];
+          toolRuntimeLibraries = [
+            pkgs.stdenv.cc.cc.lib
+            pkgs.libpng
+            pkgs.zlib
+          ];
+          toolRuntimeLibraryPath = pkgs.lib.makeLibraryPath toolRuntimeLibraries;
+          toolRuntimeLibrarySearchFlags = pkgs.lib.concatMapStringsSep " " (pkg: "-L${pkg}/lib") toolRuntimeLibraries;
+          toolNixLDFLAGS = pkgs.lib.optionalString pkgs.stdenv.isLinux "-dynamic-linker ${pkgs.stdenv.cc.bintools.dynamicLinker} -rpath ${toolRuntimeLibraryPath} ${toolRuntimeLibrarySearchFlags}";
         in
         rec {
           mgba-rom-test = pkgs.stdenv.mkDerivation {
@@ -136,6 +144,7 @@
             buildInputs = commonBuildInputs;
 
             DEVKITARM = pkgs.gcc-arm-embedded;
+            NIX_LDFLAGS = toolNixLDFLAGS;
 
             dontConfigure = true;
             enableParallelBuilding = true;
@@ -166,8 +175,8 @@
             };
           };
 
-          pokeemerald-test-smoke = pkgs.stdenv.mkDerivation {
-            pname = "pokeemerald-expansion-shared-power-test-smoke";
+          pokeemerald-test = pkgs.stdenv.mkDerivation {
+            pname = "pokeemerald-expansion-shared-power-test";
             version = "0-unstable";
 
             src = ./.;
@@ -182,6 +191,7 @@
             buildInputs = commonBuildInputs;
 
             DEVKITARM = pkgs.gcc-arm-embedded;
+            NIX_LDFLAGS = toolNixLDFLAGS;
 
             dontConfigure = true;
             enableParallelBuilding = true;
@@ -191,7 +201,7 @@
 
               touch .histignore
               make tidycheck clean-tools clean-check-tools
-              make -j"$NIX_BUILD_CORES" NO_MULTIBOOT=1 TESTS="uq4_12" check
+              make -j"$NIX_BUILD_CORES" NO_MULTIBOOT=1 check
 
               runHook postBuild
             '';
@@ -200,13 +210,13 @@
               runHook preInstall
 
               mkdir -p "$out"
-              printf 'make check TESTS="uq4_12" passed under Nix\n' > "$out/check-passed.txt"
+              printf 'make check passed under Nix\n' > "$out/check-passed.txt"
 
               runHook postInstall
             '';
 
             meta = {
-              description = "Shared Power pokeemerald-expansion Nix test-runner smoke check";
+              description = "Shared Power pokeemerald-expansion full Nix test-suite check";
               platforms = systems;
             };
           };
@@ -217,7 +227,7 @@
 
       checks = forAllSystems (system: {
         rom-build = self.packages.${system}.pokeemerald;
-        test = self.packages.${system}.pokeemerald-test-smoke;
+        test = self.packages.${system}.pokeemerald-test;
       });
 
       devShells = forAllSystems (
@@ -225,6 +235,15 @@
         let
           pkgs = import nixpkgs { inherit system; };
           packages = self.packages.${system};
+          toolRuntimeLibraries = [
+            pkgs.stdenv.cc.cc.lib
+            pkgs.libpng
+            pkgs.zlib
+          ];
+          toolRuntimeLibraryPath = pkgs.lib.makeLibraryPath toolRuntimeLibraries;
+          toolRuntimeLibrarySearchFlags = pkgs.lib.concatMapStringsSep " " (pkg: "-L${pkg}/lib") toolRuntimeLibraries;
+          toolNixLDFLAGS = pkgs.lib.optionalString pkgs.stdenv.isLinux "-dynamic-linker ${pkgs.stdenv.cc.bintools.dynamicLinker} -rpath ${toolRuntimeLibraryPath} ${toolRuntimeLibrarySearchFlags}";
+          linuxDynamicLinker = pkgs.lib.optionalString pkgs.stdenv.isLinux "${pkgs.stdenv.cc.bintools.dynamicLinker}";
         in
         {
           default = pkgs.mkShell {
@@ -243,6 +262,10 @@
             ];
 
             DEVKITARM = pkgs.gcc-arm-embedded;
+            LD_LIBRARY_PATH = pkgs.lib.optionalString pkgs.stdenv.isLinux toolRuntimeLibraryPath;
+            NIX_LD = linuxDynamicLinker;
+            NIX_LDFLAGS = toolNixLDFLAGS;
+            NIX_LD_LIBRARY_PATH = pkgs.lib.optionalString pkgs.stdenv.isLinux toolRuntimeLibraryPath;
             ROMTEST = "${packages.mgba-rom-test}/bin/mgba-rom-test";
           };
         }

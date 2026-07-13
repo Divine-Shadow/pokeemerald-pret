@@ -273,7 +273,8 @@ MauvilleCity_Gym_Text_GymGuideAdvice:
 
 MauvilleCity_Gym_Text_GymGuidePostVictory:
 	.string "Whoa, you're electrifying!\n"
-	.string "You've powered the door open!$"
+	.string "You've powered the door open!\p"
+	.string "Your next level cap is Lv. 29.$"
 
 MauvilleCity_Gym_Text_KirkIntro:
 	.string "My electric soul, it'll shatter your\n"

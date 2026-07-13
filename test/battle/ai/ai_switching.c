@@ -1252,7 +1252,7 @@ AI_SINGLE_BATTLE_TEST("AI_FLAG_SMART_SWITCHING: AI won't send out defensive mon 
             SpDefenseIV(31);
             SpeedIV(31); }
     } WHEN {
-        TURN { MOVE(player, MOVE_WATER_PULSE); EXPECT_MOVE(opponent, MOVE_BULLDOZE); EXPECT_SEND_OUT(opponent, 1); }
+        TURN { MOVE(player, MOVE_WATER_PULSE); EXPECT_MOVE(opponent, MOVE_ROCK_TOMB); EXPECT_SEND_OUT(opponent, 1); }
         TURN { MOVE(player, MOVE_WATER_PULSE); EXPECT_MOVE(opponent, MOVE_BULLDOZE); }
     }
 }

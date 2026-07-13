@@ -60,13 +60,14 @@ SINGLE_BATTLE_TEST("Protosynthesis ability pop up activates only once during the
 
     GIVEN {
         PLAYER(SPECIES_WALKING_WAKE) { Ability(ABILITY_PROTOSYNTHESIS); }
-        OPPONENT(SPECIES_NINETALES) { Ability(ABILITY_DROUGHT); };
+        OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
-        for (turns = 0; turns < 5; turns++)
+        TURN { MOVE(opponent, MOVE_SUNNY_DAY); }
+        for (turns = 0; turns < 4; turns++)
             TURN {}
         TURN { MOVE(opponent, MOVE_SUNNY_DAY); }
     } SCENE {
-        ABILITY_POPUP(opponent, ABILITY_DROUGHT);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SUNNY_DAY, opponent);
         ABILITY_POPUP(player, ABILITY_PROTOSYNTHESIS);
         MESSAGE("The harsh sunlight activated Walking Wake's Protosynthesis!");
         MESSAGE("Walking Wake's Sp. Atk was heightened!");

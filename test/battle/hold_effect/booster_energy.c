@@ -38,16 +38,17 @@ SINGLE_BATTLE_TEST("Booster Energy will activate Quark Drive after Electric Terr
 SINGLE_BATTLE_TEST("Booster Energy will activate Protosynthesis after harsh sunlight ends")
 {
     GIVEN {
-        PLAYER(SPECIES_RAGING_BOLT) { Attack(100); Defense(100); Speed(100); SpAttack(110); SpDefense(100); Ability(ABILITY_PROTOSYNTHESIS); Item(ITEM_BOOSTER_ENERGY); }
-        OPPONENT(SPECIES_TORKOAL) { Speed(100); Ability(ABILITY_DROUGHT); };
+        PLAYER(SPECIES_WOBBUFFET) { Speed(100); Moves(MOVE_CELEBRATE); }
+        PLAYER(SPECIES_RAGING_BOLT) { Attack(100); Defense(100); Speed(100); SpAttack(110); SpDefense(100); Ability(ABILITY_PROTOSYNTHESIS); Item(ITEM_BOOSTER_ENERGY); Moves(MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(100); Moves(MOVE_SUNNY_DAY, MOVE_CELEBRATE); }
     } WHEN {
-        TURN {}
-        TURN {}
+        TURN { MOVE(player, MOVE_CELEBRATE); MOVE(opponent, MOVE_SUNNY_DAY); }
+        TURN { SWITCH(player, 1); MOVE(opponent, MOVE_CELEBRATE); }
         TURN {}
         TURN {}
         TURN {}
     } SCENE {
-        ABILITY_POPUP(opponent, ABILITY_DROUGHT);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SUNNY_DAY, opponent);
         NONE_OF {
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
             MESSAGE("Raging Bolt used its Booster Energy to activate Protosynthesis!");

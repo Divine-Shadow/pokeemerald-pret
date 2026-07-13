@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "description": "Compatibility assumptions for routing this repository's generated tracker data through the live PKCalc app.",
+  "app": {
+    "defaultUrl": "https://pkcalc.anastarawneh.com/"
+  },
+  "requestPaths": {
+    "party": "/js/data/party_order.js",
+    "sets": "/js/data/sets.js",
+    "locations": "/js/data/dex/locations.js"
+  },
+  "constants": {
+    "SETDEX_PK": "object",
+    "PARTY_ORDER_PK": "object",
+    "LOCATIONS": "object"
+  },
+  "appGlobals": {
+    "$": "function",
+    "getSetOptions": "function",
+    "loadDexEntry": "function",
+    "SETDEX": "object"
+  },
+  "dataRoutes": {
+    "setdexSource": "SETDEX",
+    "setdexGenerationIndex": 4,
+    "setdexConstant": "SETDEX_PK",
+    "partyOrderSource": "partyOrder",
+    "partyOrderConstant": "PARTY_ORDER_PK"
+  },
+  "smokeInputs": {
+    "generationSelector": ".gen",
+    "generationValue": "4",
+    "trainerLabel": "Hiker Sawyer [TRAINER_SAWYER_1]",
+    "setOptionId": "Geodude (Hiker Sawyer [TRAINER_SAWYER_1])",
+    "setSpecies": "Geodude",
+    "locationEntry": "location/route101",
+    "locationId": "route101",
+    "locationName": "Route 101",
+    "locationCoord": [4, 10],
+    "expectedRenderedRows": 12,
+    "expectedRenderedSpecies": ["Wurmple", "Poochyena"]
+  },
+  "timeouts": {
+    "navigationMs": 90000,
+    "contractReadyMs": 60000
+  }
+}

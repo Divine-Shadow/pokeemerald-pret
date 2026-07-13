@@ -35,7 +35,7 @@ Run the full repository test suite through the same Nix runner:
 nix develop -c make NO_MULTIBOOT=1 check
 ```
 
-Run all flake checks, including the ROM build and Nix test-runner smoke:
+Run all flake checks, including the ROM build and full Nix test suite:
 
 ```bash
 nix flake check

@@ -357,11 +357,13 @@ bool32 AddBagItem(u16 itemId, u16 count)
 
 static bool32 NONNULL BagPocket_RemoveItem(struct BagPocket *pocket, u16 itemId, u16 count)
 {
-    u32 itemLookupIndex, itemRemoveIndex = 0, totalQuantity = 0;
+    u32 itemLookupIndex, itemRemoveIndex = 0;
+    u16 remainingCount = count;
+    bool32 emptiedSlot = FALSE;
     struct ItemSlot tempItem;
     u16 *tempPocketSlotQuantities = AllocZeroed(sizeof(u16) * pocket->capacity);
 
-    for (itemLookupIndex = 0; itemLookupIndex < pocket->capacity && totalQuantity < count; itemLookupIndex++)
+    for (itemLookupIndex = 0; itemLookupIndex < pocket->capacity && remainingCount > 0; itemLookupIndex++)
     {
         tempItem = BagPocket_GetSlotData(pocket, itemLookupIndex);
         if (tempItem.itemId == itemId)
@@ -371,12 +373,21 @@ static bool32 NONNULL BagPocket_RemoveItem(struct BagPocket *pocket, u16 itemId,
                 itemRemoveIndex = itemLookupIndex + 1;
 
             // Gather quantities (+ 1 to tempPocketSlotQuantities so that even if setting to 0 we know which indices to target)
-            totalQuantity += tempItem.quantity;
-            tempPocketSlotQuantities[itemLookupIndex] = (tempItem.quantity <= count ? 0 : tempItem.quantity - count) + 1;
+            if (tempItem.quantity <= remainingCount)
+            {
+                remainingCount -= tempItem.quantity;
+                tempPocketSlotQuantities[itemLookupIndex] = 1;
+                emptiedSlot = TRUE;
+            }
+            else
+            {
+                tempPocketSlotQuantities[itemLookupIndex] = tempItem.quantity - remainingCount + 1;
+                remainingCount = 0;
+            }
         }
     }
 
-    if (totalQuantity >= count) // We have enough of the item
+    if (remainingCount == 0) // We have enough of the item
     {
         if (CurMapIsSecretBase() == TRUE)
         {
@@ -390,13 +401,13 @@ static bool32 NONNULL BagPocket_RemoveItem(struct BagPocket *pocket, u16 itemId,
             if (tempPocketSlotQuantities[itemRemoveIndex] > 0)
                 BagPocket_SetSlotItemIdAndCount(pocket, itemRemoveIndex, itemId, tempPocketSlotQuantities[itemRemoveIndex] - 1);
         }
+
+        if (emptiedSlot)
+            BagPocket_CompactItems(pocket);
     }
 
-    if (totalQuantity == count)
-        BagPocket_CompactItems(pocket);
-
     Free(tempPocketSlotQuantities);
-    return totalQuantity >= count;
+    return remainingCount == 0;
 }
 
 bool32 RemoveBagItem(u16 itemId, u16 count)
