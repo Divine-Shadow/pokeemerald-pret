@@ -328,9 +328,9 @@ TEST("EXP Candies respect the hard level cap")
     EXPECT_EQ(cappedExp, exp);
 }
 
-TEST("Training Candy stops at the next unlearned level-up move")
+TEST("Training Kit stops at the next unlearned level-up move and remains reusable")
 {
-    u8 level, levelsGained;
+    u8 level, levelsGained, stopReason;
     struct Pokemon mon;
 
     ASSUME(B_LEVEL_CAP_TYPE == LEVEL_CAP_FLAG_LIST);
@@ -338,21 +338,24 @@ TEST("Training Candy stops at the next unlearned level-up move")
     ClearLevelCapFlagsForTest();
     ClearBag();
     CreateMon(&mon, SPECIES_CHARMANDER, 5, 0, FALSE, 0, OT_ID_PRESET, 0);
+    EXPECT(AddBagItem(ITEM_TRAINING_KIT, 1));
     EXPECT(AddBagItem(ITEM_RARE_CANDY, 10));
 
-    EXPECT_EQ(8, GetTrainingCandyTargetLevel(&mon));
-    EXPECT(TryUseTrainingCandy(&mon, 0, &levelsGained));
+    EXPECT_EQ(8, GetTrainingKitTargetLevel(&mon, &stopReason));
+    EXPECT_EQ(TRAINING_KIT_STOP_MOVE, stopReason);
+    EXPECT(TryUseTrainingKit(&mon, 0, &levelsGained));
     level = GetMonData(&mon, MON_DATA_LEVEL);
     ClearLevelCapFlagsForTest();
 
     EXPECT_EQ(8, level);
     EXPECT_EQ(3, levelsGained);
     EXPECT_EQ(7, CountTotalItemQuantityInBag(ITEM_RARE_CANDY));
+    EXPECT_EQ(1, CountTotalItemQuantityInBag(ITEM_TRAINING_KIT));
 }
 
-TEST("Training Candy stops at the current level cap")
+TEST("Training Kit stops at the current level cap")
 {
-    u8 level, levelsGained;
+    u8 level, levelsGained, stopReason;
     u32 levelCap;
     struct Pokemon mon;
 
@@ -365,8 +368,9 @@ TEST("Training Candy stops at the current level cap")
     CreateMon(&mon, SPECIES_WOBBUFFET, 10, 0, FALSE, 0, OT_ID_PRESET, 0);
     EXPECT(AddBagItem(ITEM_RARE_CANDY, levelCap - 10));
 
-    EXPECT_EQ(levelCap, GetTrainingCandyTargetLevel(&mon));
-    EXPECT(TryUseTrainingCandy(&mon, 0, &levelsGained));
+    EXPECT_EQ(levelCap, GetTrainingKitTargetLevel(&mon, &stopReason));
+    EXPECT_EQ(TRAINING_KIT_STOP_LEVEL_CAP, stopReason);
+    EXPECT(TryUseTrainingKit(&mon, 0, &levelsGained));
     level = GetMonData(&mon, MON_DATA_LEVEL);
     ClearLevelCapFlagsForTest();
 
@@ -375,9 +379,9 @@ TEST("Training Candy stops at the current level cap")
     EXPECT_EQ(0, CountTotalItemQuantityInBag(ITEM_RARE_CANDY));
 }
 
-TEST("Training Candy stops at the next level-based evolution")
+TEST("Training Kit stops at the next level-based evolution")
 {
-    u8 level, levelsGained;
+    u8 level, levelsGained, stopReason;
     bool32 canStopEvo = TRUE;
     struct Pokemon mon;
 
@@ -388,8 +392,9 @@ TEST("Training Candy stops at the next level-based evolution")
     CreateMon(&mon, SPECIES_CATERPIE, 5, 0, FALSE, 0, OT_ID_PRESET, 0);
     EXPECT(AddBagItem(ITEM_RARE_CANDY, 10));
 
-    EXPECT_EQ(7, GetTrainingCandyTargetLevel(&mon));
-    EXPECT(TryUseTrainingCandy(&mon, 0, &levelsGained));
+    EXPECT_EQ(7, GetTrainingKitTargetLevel(&mon, &stopReason));
+    EXPECT_EQ(TRAINING_KIT_STOP_EVOLUTION, stopReason);
+    EXPECT(TryUseTrainingKit(&mon, 0, &levelsGained));
     level = GetMonData(&mon, MON_DATA_LEVEL);
     ClearLevelCapFlagsForTest();
 
@@ -399,7 +404,7 @@ TEST("Training Candy stops at the next level-based evolution")
     EXPECT_EQ(SPECIES_METAPOD, GetEvolutionTargetSpecies(&mon, EVO_MODE_NORMAL, ITEM_NONE, NULL, &canStopEvo, CHECK_EVO));
 }
 
-TEST("Training Candy has no effect without enough Rare Candies")
+TEST("Training Kit has no effect without enough Rare Candies")
 {
     u8 level, levelsGained;
     struct Pokemon mon;
@@ -411,8 +416,8 @@ TEST("Training Candy has no effect without enough Rare Candies")
     CreateMon(&mon, SPECIES_CATERPIE, 5, 0, FALSE, 0, OT_ID_PRESET, 0);
     EXPECT(AddBagItem(ITEM_RARE_CANDY, 1));
 
-    EXPECT_EQ(7, GetTrainingCandyTargetLevel(&mon));
-    EXPECT(!TryUseTrainingCandy(&mon, 0, &levelsGained));
+    EXPECT_EQ(7, GetTrainingKitTargetLevel(&mon, NULL));
+    EXPECT(!TryUseTrainingKit(&mon, 0, &levelsGained));
     level = GetMonData(&mon, MON_DATA_LEVEL);
     ClearLevelCapFlagsForTest();
 
@@ -421,14 +426,17 @@ TEST("Training Candy has no effect without enough Rare Candies")
     EXPECT_EQ(1, CountTotalItemQuantityInBag(ITEM_RARE_CANDY));
 }
 
-TEST("New game PC starts with Training Candies")
+TEST("New game PC starts with one reusable Training Kit")
 {
     CpuFastFill(0, gSaveBlock1Ptr->pcItems, sizeof(gSaveBlock1Ptr->pcItems));
 
     NewGameInitPCItems();
 
-    EXPECT(CheckPCHasItem(ITEM_TRAINING_CANDY, 999));
-    EXPECT(!CheckPCHasItem(ITEM_TRAINING_CANDY, 1000));
+    EXPECT(CheckPCHasItem(ITEM_TRAINING_KIT, 1));
+    EXPECT(!CheckPCHasItem(ITEM_TRAINING_KIT, 2));
+    EXPECT_EQ(POCKET_KEY_ITEMS, GetItemPocket(ITEM_TRAINING_KIT));
+    EXPECT(GetItemImportance(ITEM_TRAINING_KIT));
+    EXPECT_EQ(ITEM_USE_PARTY_MENU, GetItemType(ITEM_TRAINING_KIT));
 }
 
 TEST("Status1 round-trips through BoxPokemon")

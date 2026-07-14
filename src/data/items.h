@@ -14657,20 +14657,19 @@ const struct Item gItemsInfo[] =
         .iconPalette = gItemIconPalette_Bicycle,
     },
 
-    [ITEM_TRAINING_CANDY] =
+    [ITEM_TRAINING_KIT] =
     {
-        .name = ITEM_NAME("Training Candy"),
-        .pluralName = ITEM_PLURAL_NAME("Training Candies"),
+        .name = ITEM_NAME("Training Kit"),
         .price = 0,
+        .importance = 1,
         .description = COMPOUND_STRING(
-            "Levels up to the\n"
-            "next move, evo,\n"
-            "or level cap."),
-        .pocket = POCKET_ITEMS,
+            "Uses Rare Candies\n"
+            "to reach the next\n"
+            "move, evo, or cap."),
+        .pocket = POCKET_KEY_ITEMS,
         .sortType = ITEM_TYPE_LEVEL_UP_ITEM,
         .type = ITEM_USE_PARTY_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_RareCandy,
-        .flingPower = 30,
         .iconPic = gItemIcon_RareCandy,
         .iconPalette = gItemIconPalette_RareCandy,
     },

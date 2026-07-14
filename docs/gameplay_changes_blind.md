@@ -4,7 +4,7 @@ This file contains gameplay changes that may affect routing or discoveries. Read
 
 ## Early Resources
 
-- Rare Candies, Training Candies, Master Balls, and Max Repels are available from the player's PC. The Highlander Charm and Extinction Charm start in the Key Items pocket and are off until used.
+- Rare Candies, the reusable Training Kit, Master Balls, and Max Repels are available from the player's PC. The Highlander Charm and Extinction Charm start in the Key Items pocket and are off until used.
 - Mom gives the Running Shoes after the opening TV scene and the Skateboard at her former Running Shoes sendoff after the Pokédex.
 - A kid in Littleroot Town gives the Radiant Charm once. It starts off and can be toggled from the Key Items pocket.
 - The Old Rod is now given by a Fisherman in Oldale Town instead of Dewford Town.

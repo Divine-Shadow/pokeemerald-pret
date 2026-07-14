@@ -5,7 +5,7 @@ These notes cover gameplay rules and move access that are safe to know before st
 ## Progression Rules
 
 - Hard level caps are enabled and advance by badge progression. Rare Candies and Exp. Candies cannot raise Pokemon past the current cap.
-- Training Candy is a QoL leveling item that spends one Rare Candy per level gained and stops at the next unlearned level-up move, the next normal level-up evolution, or the current level cap, whichever comes first.
+- The reusable Training Kit previews its target and Rare Candy cost, then spends one Rare Candy per level gained and stops at the next unlearned level-up move, the next normal level-up evolution, or the current level cap, whichever comes first.
 - Mossdeep Gym requires the Feather Badge before Tate and Liza will accept a challenge.
 
 ## Battle Rules

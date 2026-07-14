@@ -69,8 +69,14 @@ bool8 MonKnowsMove(struct Pokemon *mon, u16 move);
 bool8 BoxMonKnowsMove(struct BoxPokemon *boxMon, u16 move);
 void ItemUseCB_TMHM(u8 taskId, TaskFunc task);
 void ItemUseCB_RareCandy(u8 taskId, TaskFunc task);
-u8 GetTrainingCandyTargetLevel(struct Pokemon *mon);
-bool8 TryUseTrainingCandy(struct Pokemon *mon, u8 partyIndex, u8 *levelsGained);
+enum TrainingKitStopReason
+{
+    TRAINING_KIT_STOP_LEVEL_CAP,
+    TRAINING_KIT_STOP_MOVE,
+    TRAINING_KIT_STOP_EVOLUTION,
+};
+u8 GetTrainingKitTargetLevel(struct Pokemon *mon, u8 *stopReason);
+bool8 TryUseTrainingKit(struct Pokemon *mon, u8 partyIndex, u8 *levelsGained);
 void ItemUseCB_DynamaxCandy(u8 taskId, TaskFunc task);
 void ItemUseCB_SacredAsh(u8 taskId, TaskFunc task);
 void ItemUseCB_EvolutionStone(u8 taskId, TaskFunc task);
