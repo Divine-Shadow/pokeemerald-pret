@@ -681,6 +681,8 @@ int main(int argc, char *argv[])
                 perror("ioctl TIOCGWINSZ failed");
                 exit(2);
             }
+            if (winsize.ws_col == 0)
+                winsize.ws_col = 80;
             int scrollback = 0;
             for (int i = 0; i < nrunners; i++)
             {

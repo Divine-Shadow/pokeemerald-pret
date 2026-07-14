@@ -4,7 +4,7 @@ This file contains gameplay changes that may affect routing or discoveries. Read
 
 ## Early Resources
 
-- Rare Candies, Master Balls, and Max Repels are available from the player's PC. The Highlander Charm and Extinction Charm start in the Key Items pocket and are off until used.
+- Rare Candies, Training Candies, Master Balls, and Max Repels are available from the player's PC. The Highlander Charm and Extinction Charm start in the Key Items pocket and are off until used.
 - Mom gives the Running Shoes after the opening TV scene and the Skateboard at her former Running Shoes sendoff after the Pokédex.
 - A kid in Littleroot Town gives the Radiant Charm once. It starts off and can be toggled from the Key Items pocket.
 - The Old Rod is now given by a Fisherman in Oldale Town instead of Dewford Town.
@@ -58,8 +58,9 @@ This file contains gameplay changes that may affect routing or discoveries. Read
 
 ## Dialogue
 
+- Professor Birch now explains Shared Power during the new-game intro.
 - Condition Coach now gives a subtle caution when status prep may not stay in place.
 - Condition Coach Quick Feet advice now appears for every status prep option.
 - Gym guide NPCs now give non-spoiler tactical hints about the updated gym leader battle styles.
-- Gym guide NPCs now state each gym's level cap before the leader fight.
+- Gym guide NPCs now state each gym's level cap before the leader fight and the next cap after victory.
 - Birch's intro speech now uses the Birch-specific Pokemon line again.

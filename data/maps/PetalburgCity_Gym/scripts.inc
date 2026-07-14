@@ -1351,6 +1351,7 @@ PetalburgCity_Gym_Text_GymGuideAdvice:
 PetalburgCity_Gym_Text_GymGuidePostVictory:
 	.string "{PLAYER}! Whoa! You've overcome even\n"
 	.string "your own father!\p"
+	.string "Your next level cap is Lv. 33.\p"
 	.string "Like, whoa!\n"
 	.string "What a stunning turn of events!$"
 

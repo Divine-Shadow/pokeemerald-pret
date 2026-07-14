@@ -161,6 +161,9 @@ TEST("Condition Coach rejects Eggs")
     SetMonData(&gPlayerParty[0], MON_DATA_IS_EGG, &isEgg);
     CalculatePlayerPartyCount();
     gSpecialVar_0x8004 = 0;
+    gSpecialVar_0x8005 = CONDITION_COACH_CHOICE_BURN;
+    gSpecialVar_0x8006 = CONDITION_COACH_HINT_NONE;
+    SetConditionCoachBadgeCount(NUM_BADGES);
 
     EXPECT_EQ(TryConditionCoachChoice(CONDITION_COACH_CHOICE_BURN), CONDITION_COACH_RESULT_EGG);
     EXPECT_EQ(GetMonData(&gPlayerParty[0], MON_DATA_STATUS), STATUS1_NONE);
@@ -245,7 +248,7 @@ TEST("Condition Coach foreshadows abilities that may clean up status")
 TEST("Condition Coach ignores Heatproof and Synchronize for status advice")
 {
     u16 species, ability, choice;
-    u32 abilityNum;
+    u32 abilityNum = 0;
 
     PARAMETRIZE { species = SPECIES_BRONZOR; ability = ABILITY_HEATPROOF; abilityNum = 1; choice = CONDITION_COACH_CHOICE_BURN; }
     PARAMETRIZE { species = SPECIES_ABRA; ability = ABILITY_SYNCHRONIZE; abilityNum = 0; choice = CONDITION_COACH_CHOICE_POISON; }

@@ -57,6 +57,7 @@ struct SpinData
 };
 
 static EWRAM_DATA u8 sSpinStartFacingDir = 0;
+static EWRAM_DATA bool8 sRunningShoesToggleEnabled = FALSE;
 EWRAM_DATA struct ObjectEvent gObjectEvents[OBJECT_EVENTS_COUNT] = {};
 EWRAM_DATA struct PlayerAvatar gPlayerAvatar = {};
 EWRAM_DATA struct SpinData gPlayerSpinData = {};
@@ -87,8 +88,9 @@ static bool8 ForcedMovement_MatJump(void);
 static bool8 ForcedMovement_MatSpin(void);
 static bool8 ForcedMovement_MuddySlope(void);
 
-static void MovePlayerNotOnBike(u8, u16);
+static void MovePlayerNotOnBike(u8, u16, u16);
 static u8 CheckMovementInputNotOnBike(u8);
+static void UpdateRunningShoesToggle(u16);
 static void PlayerNotOnBikeNotMoving(u8, u16);
 static void PlayerNotOnBikeTurningInPlace(u8, u16);
 static void PlayerNotOnBikeMoving(u8, u16);
@@ -443,7 +445,7 @@ static void MovePlayerAvatarUsingKeypadInput(u8 direction, u16 newKeys, u16 held
     if (gPlayerAvatar.flags & (PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE))
         MovePlayerOnBike(direction, newKeys, heldKeys);
     else
-        MovePlayerNotOnBike(direction, heldKeys);
+        MovePlayerNotOnBike(direction, newKeys, heldKeys);
 }
 
 static void PlayerAllowForcedMovementIfMovingSameDirection(void)
@@ -650,8 +652,9 @@ static bool8 ForcedMovement_MuddySlope(void)
     }
 }
 
-static void MovePlayerNotOnBike(u8 direction, u16 heldKeys)
+static void MovePlayerNotOnBike(u8 direction, u16 newKeys, u16 heldKeys)
 {
+    UpdateRunningShoesToggle(newKeys);
     sPlayerNotOnBikeFuncs[CheckMovementInputNotOnBike(direction)](direction, heldKeys);
 }
 
@@ -663,6 +666,12 @@ static u8 CheckMovementInputNotOnBike(u8 direction)
         return gPlayerAvatar.runningState = TURN_DIRECTION;
     else
         return gPlayerAvatar.runningState = MOVING;
+}
+
+static void UpdateRunningShoesToggle(u16 newKeys)
+{
+    if ((newKeys & B_BUTTON) && FlagGet(FLAG_SYS_B_DASH) && (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_ON_FOOT))
+        sRunningShoesToggleEnabled ^= TRUE;
 }
 
 static void PlayerNotOnBikeNotMoving(u8 direction, u16 heldKeys)
@@ -859,7 +868,7 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
         return;
     }
 
-    if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER) && (heldKeys & B_BUTTON) && FlagGet(FLAG_SYS_B_DASH)
+    if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER) && sRunningShoesToggleEnabled && FlagGet(FLAG_SYS_B_DASH)
      && IsRunningDisallowed(gObjectEvents[gPlayerAvatar.objectEventId].currentMetatileBehavior) == 0 && !FollowerNPCComingThroughDoor())
     {
         if (ObjectMovingOnRockStairs(&gObjectEvents[gPlayerAvatar.objectEventId], direction))

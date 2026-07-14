@@ -300,6 +300,7 @@ DewfordTown_Gym_Text_GymGuideAdvice:
 
 DewfordTown_Gym_Text_GymGuidePostVictory:
 	.string "Whoah! It's turned too bright in here!\p"
+	.string "Your next level cap is Lv. 24.\p"
 	.string "Your future is bright, too!$"
 
 DewfordTown_Gym_Text_TakaoIntro:

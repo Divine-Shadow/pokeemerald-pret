@@ -194,7 +194,8 @@ LavaridgeTown_Gym_1F_Text_GymGuideAdvice:
 	.string "Mind the hot sand, then go for it!$"
 
 LavaridgeTown_Gym_1F_Text_GymGuidePostVictory:
-	.string "Yow! That was a scorching-hot battle!$"
+	.string "Yow! That was a scorching-hot battle!\p"
+	.string "Your next level cap is Lv. 31.$"
 
 LavaridgeTown_Gym_1F_Text_ColeIntro:
 	.string "Owowowowow!\n"

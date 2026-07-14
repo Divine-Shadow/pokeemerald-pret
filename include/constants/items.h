@@ -997,11 +997,12 @@
 #define ITEM_BOUNDARY_CHARM 830
 #define ITEM_RADIANT_CHARM 831
 #define ITEM_SKATEBOARD 832
+#define ITEM_TRAINING_CANDY 833
 
 // HOPO BERRY
 // LEGEND PLATE
 
-#define ITEMS_COUNT 833
+#define ITEMS_COUNT 834
 #define ITEM_FIELD_ARROW ITEMS_COUNT
 
 // A special item id associated with "Cancel"/"Exit" etc. in a list of items or decorations

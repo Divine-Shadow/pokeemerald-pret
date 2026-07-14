@@ -949,8 +949,8 @@ LittlerootTown_Text_GiveSkateboard:
 	.string "adventure, take this SKATEBOARD!$"
 
 LittlerootTown_Text_ExplainSkateboard:
-	.string "MOM: Hold the B Button while moving\n"
-	.string "to ride your SKATEBOARD.\p"
+	.string "MOM: Press the B Button while moving\n"
+	.string "to toggle your SKATEBOARD.\p"
 	.string "It'll carry you even faster than your\n"
 	.string "RUNNING SHOES!$"
 

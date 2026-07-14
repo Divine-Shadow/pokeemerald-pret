@@ -384,7 +384,8 @@ MossdeepCity_Gym_Text_GymGuideAdvice:
 
 MossdeepCity_Gym_Text_GymGuidePostVictory:
 	.string "Wow, you're astounding!\n"
-	.string "You're one great TRAINER!$"
+	.string "You're one great TRAINER!\p"
+	.string "Your next level cap is Lv. 46.$"
 
 MossdeepCity_Gym_Text_PrestonIntro:
 	.string "Battles hinge on the strength of your\n"

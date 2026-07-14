@@ -14647,14 +14647,32 @@ const struct Item gItemsInfo[] =
         .price = 0,
         .importance = 1,
         .description = COMPOUND_STRING(
-            "Use B Button to\n"
-            "ride faster than\n"
-            "running shoes."),
+            "Press B Button\n"
+            "to toggle faster\n"
+            "running."),
         .pocket = POCKET_KEY_ITEMS,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_Skateboard,
         .iconPic = gItemIcon_Bicycle,
         .iconPalette = gItemIconPalette_Bicycle,
+    },
+
+    [ITEM_TRAINING_CANDY] =
+    {
+        .name = ITEM_NAME("Training Candy"),
+        .pluralName = ITEM_PLURAL_NAME("Training Candies"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Levels up to the\n"
+            "next move, evo,\n"
+            "or level cap."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_LEVEL_UP_ITEM,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_RareCandy,
+        .flingPower = 30,
+        .iconPic = gItemIcon_RareCandy,
+        .iconPalette = gItemIconPalette_RareCandy,
     },
 };
 

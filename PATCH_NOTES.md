@@ -1,3 +1,113 @@
+- Repo/Git: Reconcile accumulated work onto canonical main and remove stale branch divergence (commit pending).
+- Gameplay/Items: Add Training Candy as a PC-stocked QoL candy that spends Rare Candies to stop at the next move, evolution, or level cap (commit dfe6df93de).
+- Gameplay/Items: Fix bag item removal across split stacks so only the requested quantity is removed and slots compact correctly (commit dfe6df93de).
+- Docs/Planning: Record final PKCalc move metadata migration proof evidence (commit dfe6df93de).
+- Docs/Planning: Record PKCalc move metadata proof implementation progress (commit dfe6df93de).
+- Docs/Tracker: Document PKCalc move metadata migration proof artifacts and validation target (commit dfe6df93de).
+- Build/Tracker: Add an opt-in PKCalc move metadata migration validation target (commit dfe6df93de).
+- Tooling/Tracker: Validate PKCalc move metadata proof artifacts with reported live gaps (commit dfe6df93de).
+- Tooling/Tracker: Compare generated move metadata against live PKCalc move catalogs with a gap report (commit dfe6df93de).
+- Tooling/Tracker: Resolve config-dependent move type and category metadata during PKCalc export (commit dfe6df93de).
+- Tooling/Tracker: Generate repo-derived PKCalc move metadata proof artifacts (commit dfe6df93de).
+- Docs/Planning: Add an execution plan for PKCalc move metadata migration proof artifacts (commit dfe6df93de).
+- Gameplay/Movement: Make Running Shoes and Skateboard movement toggle with B instead of requiring B to be held (commit dfe6df93de).
+- Docs/Planning: Record the successful artifact-free full Nix flake check (commit dfe6df93de).
+- Docs/Planning: Record explicit PKCalc identity gap fields and rerun validation (commit dfe6df93de).
+- Tooling/Tracker: Validate explicit customRepoOnly and incompatibleIds identity gap fields (commit dfe6df93de).
+- Tooling/Tracker: Name PKCalc identity report repo-only and incompatible-id gap fields explicitly (commit dfe6df93de).
+- Docs/Planning: Record final PKCalc identity catalog validation evidence and outcome (commit dfe6df93de).
+- Docs/Planning: Record PKCalc identity catalog implementation evidence (commit dfe6df93de).
+- Docs/Tracker: Document PKCalc ability and held-item identity migration checks (commit dfe6df93de).
+- Build/Tracker: Add an opt-in PKCalc identity migration validation target (commit dfe6df93de).
+- Tooling/Tracker: Generate PKCalc ability and held-item identity catalogs with live gap reports (commit dfe6df93de).
+- Docs/Planning: Add an execution plan for PKCalc ability and held-item identity catalog proofs (commit dfe6df93de).
+- Docs/Planning: Record PKCalc data-migration validation evidence and Docker tool rebuild recovery (commit dfe6df93de).
+- Docs/Planning: Record focused Condition Coach Nix validation after rebuilding host tools (commit dfe6df93de).
+- Docs/Planning: Record the clean flake derivation Condition Coach isolation failure (commit dfe6df93de).
+- Tests: Initialize Condition Coach egg rejection prerequisites for clean Nix test derivations (commit dfe6df93de).
+- Docs/Planning: Record the full Nix test-suite pass and flake full-check promotion (commit dfe6df93de).
+- Docs/Nix: Describe flake checks as running the full Nix test suite instead of a smoke (commit dfe6df93de).
+- Tooling/Nix: Promote the flake test check from the uq4_12 smoke to full make check (commit dfe6df93de).
+- Docs/Planning: Record full-suite Nix failures, focused fixes, and targeted validation evidence (commit dfe6df93de).
+- Docs/Tracker: Document PKCalc data-migration shape audit and natures proof commands (commit dfe6df93de).
+- Tooling/Tracker: Treat Plus/Minus ability maps as primitive catalogs in data-migration shape audits (commit dfe6df93de).
+- Tooling/Tracker: Avoid mistaking ability id maps for structured PKCalc catalog entries (commit dfe6df93de).
+- Tooling/Tracker: Refine PKCalc data-migration shape summaries for map-to-string catalogs (commit dfe6df93de).
+- Tooling/Tracker: Improve PKCalc data-migration live catalog shape summaries for array-backed catalogs (commit dfe6df93de).
+- Tooling/Tracker: Add PKCalc data-migration shape audit and natures proof validation targets (commit dfe6df93de).
+- Docs/Planning: Add an execution plan for the first PKCalc data-migration proof slice (commit dfe6df93de).
+- Docs/Planning: Record live PKCalc reference audit validation evidence and Docker tool recovery (commit dfe6df93de).
+- Battle/Tests: Update the smart-switching fixture for Rhyhorn choosing Rock Tomb when it ties Bulldoze in AI scoring (commit dfe6df93de).
+- Battle/Tests: Give every battler explicit Speed in the Booster Energy finite-sun fixture (commit dfe6df93de).
+- Battle/Tests: Switch the Booster Energy Protosynthesis fixture into finite sun before asserting item activation after expiry (commit dfe6df93de).
+- Docs/Tracker: Document live PKCalc reference auditing and bundled proof artifacts (commit dfe6df93de).
+- Build/Tracker: Require live PKCalc reference validation before packaging tracker bundles (commit dfe6df93de).
+- Tooling/Tracker: Include live PKCalc reference reports in tracker release bundles (commit dfe6df93de).
+- Tooling/Tracker: Add a Playwright live PKCalc reference-resolution audit target (commit dfe6df93de).
+- Docs/Planning: Record live PKCalc reference catalog probing and implementation decisions (commit dfe6df93de).
+- Docs/Planning: Add an execution plan for live PKCalc reference-resolution auditing (commit dfe6df93de).
+- Battle/Tests: Focus the Booster Energy sun-expiry fixture on item timing after finite sun fades (commit dfe6df93de).
+- Battle/Tests: Let the Protosynthesis holder set finite sun in the Booster Energy expiry fixture (commit dfe6df93de).
+- Battle/Tests: Give the Booster Energy sun-expiry fixture an explicit idle move after Sunny Day (commit dfe6df93de).
+- Battle/Tests: Align weather and accuracy fixtures with permanent entry weather and current move data (commit dfe6df93de).
+- Battle/Status: Let Limber block Thunder Wave after status-move type checks allow paralysis (commit dfe6df93de).
+- Tooling/Nix: Add linker and runtime library settings so Nix-built host tools run during full checks (commit dfe6df93de).
+- Docs/Planning: Add an execution plan for promoting Nix flake checks to the full test suite (commit dfe6df93de).
+- Docs/Planning: Record tracker export reference audit validation evidence and Docker tool rebuild recovery (commit dfe6df93de).
+- Docs/Planning: Add an execution plan for tracker export reference-integrity auditing (commit dfe6df93de).
+- Docs/Tracker: Document tracker export reference auditing and bundle inclusion (commit dfe6df93de).
+- Tooling/Tracker: Add tracker export reference-integrity auditing and include its report in release bundles (commit dfe6df93de).
+- Tooling/Tracker: Canonicalize Double-Edge tracker move references during export normalization (commit dfe6df93de).
+- Docs/Planning: Record tracker export release bundle validation evidence and Docker tool rebuild recovery (commit dfe6df93de).
+- Docs/Planning: Add an execution plan for auditable tracker release bundles (commit dfe6df93de).
+- Docs/Tracker: Document tracker export bundle generation and validation artifacts (commit dfe6df93de).
+- Tooling/Tracker: Add auditable PKCalc tracker release bundle generation and validation commands (commit dfe6df93de).
+- Docs/Planning: Record tracker export coverage audit validation evidence and Docker tool rebuild recovery (commit dfe6df93de).
+- Docs/Planning: Add an execution plan for tracker export coverage auditing (commit dfe6df93de).
+- Docs/Tracker: Document tracker export coverage auditing and its generated report (commit dfe6df93de).
+- Tooling/Tracker: Add a tracker export coverage audit command for trainer and map-backed encounter completeness (commit dfe6df93de).
+- Docs/Planning: Record PKCalc compatibility drift guardrail validation evidence and final outcome (commit dfe6df93de).
+- Docs/Planning: Add an execution plan for PKCalc compatibility drift guardrails (commit dfe6df93de).
+- Docs/Tracker: Document PKCalc compatibility contract drift diagnostics and the named drift-check target (commit dfe6df93de).
+- Tooling/Tracker: Add a PKCalc compatibility contract and explicit live-site drift diagnostics (commit dfe6df93de).
+- Docs/Planning: Record PKCalc overlay export validation evidence and final outcome (commit dfe6df93de).
+- Docs/Planning: Add an execution plan for PKCalc overlay export artifacts (commit dfe6df93de).
+- Docs/Tracker: Document PKCalc overlay export targets, handoff paths, and manifest metadata (commit dfe6df93de).
+- Tooling/Tracker: Add PKCalc overlay export and validation targets with auditable manifest generation (commit dfe6df93de).
+- Tests: Initialize Condition Coach's ability-number test local for clean GCC 15 Nix test builds (commit 57ee254cbe).
+- Tooling/Nix: Clean copied ROM and test object trees inside Nix derivations before building (commit 57ee254cbe).
+- Docs/Planning: Record Nix test-runner smoke, ROM build, flake check evidence, and full-suite caveat (commit 57ee254cbe).
+- Tooling/Nix: Use a focused uq4_12 Makefile test smoke for the flake test check while documenting full-suite failures (commit 57ee254cbe).
+- Tools/Tests: Prevent the mGBA ROM test hydra wrapper from dividing by a zero-column terminal width (commit 57ee254cbe).
+- Tooling/Nix: Force the packaged mGBA ROM test hydra wrapper to rebuild from source instead of stale local binaries (commit 57ee254cbe).
+- Tooling/Nix: Add Nix-built mGBA ROM test runner packages and flake checks for ROM and test builds (commit 57ee254cbe).
+- Docs/Nix: Document Nix test-suite and flake-check commands for NixOS users (commit 57ee254cbe).
+- Docs/Planning: Track the Nix test-runner and flake-check implementation plan (commit 57ee254cbe).
+- Docs/Planning: Record live PKCalc compatibility smoke validation evidence and final outcome (commit dfe6df93de).
+- Docs/Planning: Add an execution plan for live PKCalc compatibility smoke verification (commit dfe6df93de).
+- Docs/Tracker: Document the live PKCalc compatibility smoke target for generated tracker exports (commit dfe6df93de).
+- Tooling/Tracker: Add a live PKCalc app smoke target that routes generated tracker artifacts into PKCalc's real data paths (commit dfe6df93de).
+- Docs/Planning: Record Nix flake build validation evidence and the mGBA test-runner caveat (commit 57ee254cbe).
+- Tooling/Nix: Anchor the flake derivation source to the flake directory for path-based builds (commit 57ee254cbe).
+- Tooling/Nix: Add a flake derivation for reproducible ROM builds without host DEVKITARM (commit 57ee254cbe).
+- Docs/Nix: Document nix build and nix develop workflows for NixOS users (commit 57ee254cbe).
+- Docs/Planning: Track the Nix flake build implementation and validation plan (commit 57ee254cbe).
+- Docs/Guidance: Clarify that verified work should be committed instead of waiting for final rebased patch-note hashes (commit dfe6df93de).
+- Gameplay/NPCs: Add post-victory gym guide dialogue that states the next level cap (commit dfe6df93de).
+- Docs/Planning: Record build-time tracker export validation evidence and final outcome (commit 0efd10d053).
+- Docs/Planning: Add an execution plan for build-time tracker export and browser smoke verification (commit 0efd10d053).
+- Docs/Tracker: Document Makefile targets and Playwright Docker smoke verification for tracker exports (commit 0efd10d053).
+- Tooling/Tracker: Add explicit Makefile targets and a Playwright smoke script for generated PKCalc tracker artifacts (commit 0efd10d053).
+- Dialogue: Professor Birch now explains Shared Power during the new-game intro (commit dfe6df93de).
+- Tooling/Skills: Require new NPC work to default to named NPCs with role-specific sprites unless updating an existing named NPC (commit dfe6df93de).
+- Docs/Gameplay: Document that Mossdeep Gym requires the Feather Badge before challenging Tate and Liza (commit dfe6df93de).
+- Gameplay/NPCs: Add a Mossdeep Gym entrance guard who requires the Feather Badge before challenging Tate and Liza (commit dfe6df93de).
+- Docs/Planning: Record tracker export MVP validation evidence and implementation decisions (commit ee3c3e0041).
+- Tooling/Tracker: Restrict tracker wild encounters to map-backed groups (commit ee3c3e0041).
+- Tooling/Tracker: Make tracker location IDs section-derived and tolerate map sections without coordinates (commit ee3c3e0041).
+- Tooling/Tracker: Add a static PKCalc tracker export MVP and validator (commit ee3c3e0041).
+- Docs/Planning: Add a tracker export MVP execution plan for PKCalc-compatible static data (commit ee3c3e0041).
+
 - Docs/Gameplay: Document the Skateboard movement upgrade and revised Littleroot reward timing (commit 1ae9609116).
 - Gameplay/Progression: Have Mom give the Running Shoes after the opening TV scene and the Skateboard at the former Running Shoes event (commit 1ae9609116).
 - Gameplay/Movement: Restore the Skateboard key item and its faster B-button movement upgrade on this branch (commit 1ae9609116).
@@ -714,33 +824,33 @@
 - Tests/Battle: Cover Shared Power pooled priority for Prankster, Gale Wings, and stacked Prankster plus Triage (commit 15d3430a64).
 - Battle/Shared Power: Let pooled Prankster, Gale Wings, and Triage contribute additive move priority modifiers (commit 15d3430a64).
 - Docs/Planning: Add an ExecPlan for migrating Shared Power pooled priority modifiers from the ability audit (commit 15d3430a64).
-- Gameplay/NPCs: Add subtle Condition Coach caution text for status-cleanup abilities and document ignored adjacent abilities (commit pending).
-- Tooling/Skills: Document unsupported-map handling for the NPC accessibility checker workflow (commit pending).
-- Tooling/Skills: Treat maps without static entrance seeds as unsupported in NPC accessibility audits (commit pending).
-- Tooling/Skills: Bundle an NPC accessibility checker with the gameplay updater skill for map-object placement validation (commit pending).
-- Docs/Release: Add patch distribution format research and application tooling guidance (commit pending).
-- Gameplay/NPCs: Add gym guide dialogue that states each gym's level cap before the leader fight (commit pending).
-- Gameplay/NPCs: Expand Condition Coach Quick Feet advice to every status prep option (commit pending).
-- Gameplay/Maps: Treat Mirage Island as its own Route 130 caught location for map displays and Extinction Charm routing (commit pending).
-- Battle/Tests: Apply pooled Shared Power Pixilate to move effectiveness indicators and cover Hyper Voice (commit pending).
-- Gameplay/Encounters: Move Highlander Charm toggle and empty-pool signal state into a dedicated charm module (commit pending).
-- Docs/Planning: Record Ability Swapper validation evidence and build results (commit pending).
-- Docs/Planning: Record Radiant Charm validation evidence and completion audit (commit pending).
-- Docs/Planning: Record Radiant Charm implementation progress before validation (commit pending).
-- Docs/Gameplay: Document Radiant Charm shiny encounter mode and Littleroot gift availability (commit pending).
-- Tests: Cover Radiant Charm saved toggle, wild/static shiny forcing, gift exclusion, and charm blocking interactions (commit pending).
-- Gameplay/Maps: Add a Littleroot Town kid who gives the Radiant Charm once (commit pending).
-- Gameplay/Encounters: Force eligible wild and static encounters shiny while Radiant Charm is active (commit pending).
-- Gameplay/Items: Add Radiant Charm saved toggle item plumbing and messages (commit pending).
-- Docs/Planning: Add Radiant Charm execution plan for shiny encounter toggle implementation (commit pending).
-- Gameplay/Pokemon: Remove Yanmega Hurricane level-up access (commit pending).
-- Docs/Gameplay: Document the Ability Swapper rule and Fallarbor placement notes (commit pending).
-- Tests: Cover Ability Swapper preview, payment, non-hidden slot eligibility, and refusal cases (commit pending).
-- Gameplay/NPCs: Add the Fallarbor Move Relearner house Ability Swapper NPC and dialogue (commit pending).
-- Gameplay/NPCs: Add script specials for Heart Scale non-hidden ability swapping (commit pending).
-- Docs/Planning: Add the Fallarbor Ability Swapper execution plan (commit pending).
-- Gameplay/Pokemon: Remove Metagross Swords Dance level-up and tutor access (commit pending).
-- Gameplay/Items: Replace Route 119's duplicate Flying Gem pickup with a Prism Scale (commit pending).
+- Gameplay/NPCs: Add subtle Condition Coach caution text for status-cleanup abilities and document ignored adjacent abilities (commit a4dd8f2ba2).
+- Tooling/Skills: Document unsupported-map handling for the NPC accessibility checker workflow (commit a4dd8f2ba2).
+- Tooling/Skills: Treat maps without static entrance seeds as unsupported in NPC accessibility audits (commit a4dd8f2ba2).
+- Tooling/Skills: Bundle an NPC accessibility checker with the gameplay updater skill for map-object placement validation (commit a4dd8f2ba2).
+- Docs/Release: Add patch distribution format research and application tooling guidance (commit 93874be6d4).
+- Gameplay/NPCs: Add gym guide dialogue that states each gym's level cap before the leader fight (commit a4dd8f2ba2).
+- Gameplay/NPCs: Expand Condition Coach Quick Feet advice to every status prep option (commit a4dd8f2ba2).
+- Gameplay/Maps: Treat Mirage Island as its own Route 130 caught location for map displays and Extinction Charm routing (commit a4dd8f2ba2).
+- Battle/Tests: Apply pooled Shared Power Pixilate to move effectiveness indicators and cover Hyper Voice (commit a4dd8f2ba2).
+- Gameplay/Encounters: Move Highlander Charm toggle and empty-pool signal state into a dedicated charm module (commit a4dd8f2ba2).
+- Docs/Planning: Record Ability Swapper validation evidence and build results (commit a4dd8f2ba2).
+- Docs/Planning: Record Radiant Charm validation evidence and completion audit (commit a4dd8f2ba2).
+- Docs/Planning: Record Radiant Charm implementation progress before validation (commit a4dd8f2ba2).
+- Docs/Gameplay: Document Radiant Charm shiny encounter mode and Littleroot gift availability (commit a4dd8f2ba2).
+- Tests: Cover Radiant Charm saved toggle, wild/static shiny forcing, gift exclusion, and charm blocking interactions (commit a4dd8f2ba2).
+- Gameplay/Maps: Add a Littleroot Town kid who gives the Radiant Charm once (commit a4dd8f2ba2).
+- Gameplay/Encounters: Force eligible wild and static encounters shiny while Radiant Charm is active (commit a4dd8f2ba2).
+- Gameplay/Items: Add Radiant Charm saved toggle item plumbing and messages (commit a4dd8f2ba2).
+- Docs/Planning: Add Radiant Charm execution plan for shiny encounter toggle implementation (commit a4dd8f2ba2).
+- Gameplay/Pokemon: Remove Yanmega Hurricane level-up access (commit a4dd8f2ba2).
+- Docs/Gameplay: Document the Ability Swapper rule and Fallarbor placement notes (commit a4dd8f2ba2).
+- Tests: Cover Ability Swapper preview, payment, non-hidden slot eligibility, and refusal cases (commit a4dd8f2ba2).
+- Gameplay/NPCs: Add the Fallarbor Move Relearner house Ability Swapper NPC and dialogue (commit a4dd8f2ba2).
+- Gameplay/NPCs: Add script specials for Heart Scale non-hidden ability swapping (commit a4dd8f2ba2).
+- Docs/Planning: Add the Fallarbor Ability Swapper execution plan (commit a4dd8f2ba2).
+- Gameplay/Pokemon: Remove Metagross Swords Dance level-up and tutor access (commit a4dd8f2ba2).
+- Gameplay/Items: Replace Route 119's duplicate Flying Gem pickup with a Prism Scale (commit 6d9705a3b9).
 - Gameplay/Items: Rename the Boundary Charm to Extinction Charm in player-facing text (commit 83f7bb90b2).
 - Docs/Planning: Record Extinction Charm validation evidence and audit result (commit 83f7bb90b2).
 - Docs/Tests: Document Extinction Charm behavior and cover its saved toggle, claims, and encounter filters (commit 83f7bb90b2).
@@ -760,11 +870,11 @@
 - Gameplay/Items: Add the passive Highlander Charm item and starting PC copy (commit aba5867665).
 - Docs/Planning: Add Highlander Charm execution plan (commit aba5867665).
 - Tooling/Codex: Enable yolo sandbox and approval defaults for shared-power Codex configs (commit dfd7ac03a4).
-- Docs/Shared Power: Capture clarified ability audit decisions for pooled priority, AI pools, native mutation, and form gates (commit pending).
-- Docs/Shared Power: Add an ability usage audit for native, effective, attribution, and clarification callsites (commit pending).
+- Docs/Shared Power: Capture clarified ability audit decisions for pooled priority, AI pools, native mutation, and form gates (commit e83cdb52bb).
+- Docs/Shared Power: Add an ability usage audit for native, effective, attribution, and clarification callsites (commit 8983df6cb8).
 - Tooling/Codex: Add local autonomy contract skill and enable goal mode (commit e91f7b4155).
 - Battle/Shared Power: Let pooled weather speed abilities such as Swift Swim double active teammates' Speed in matching weather (commit ae90084f6b).
-- Docs/Gameplay: Note that pooled weather speed abilities double Speed under Shared Power (commit pending).
+- Docs/Gameplay: Note that pooled weather speed abilities double Speed under Shared Power (commit ae90084f6b).
 - Docs/Gameplay: Note that pooled No Guard bypasses accuracy checks under Shared Power (commit e61703255b).
 - Battle/Shared Power: Let pooled No Guard bypass accuracy and OHKO checks such as Horn Drill (commit 9df4bf2207).
 - Gameplay/Maps: Move the Pokemon League condition coach one tile left to avoid overlapping another sprite (commit 995b46d89b).
@@ -847,14 +957,14 @@
 - Battle/Items: Add a runtime flag that blocks combat aid items while preserving normal Poké Ball use (commit bfd98deed7).
 - Battle/Items: Add an ExecPlan for a no-combat-aid-items battle flag that preserves Poké Ball use (commit bfd98deed7).
 - Gameplay/NPCs: Add recurring Pokemon Center Condition Coaches with a custom sprite, tailored dialogue, and pre-status service tests (commit fc76374fd3).
-- Battle/Engineering: Harden Shared Power iterator state and memory cleanup diagnostics (commit pending).
-- Battle/UI: Fix Shared Power switch-in ability cleanup and Pokemon summary sprite manager lifetime hazards (commit pending).
+- Battle/Engineering: Harden Shared Power iterator state and memory cleanup diagnostics (commit 6484a94ba2).
+- Battle/UI: Fix Shared Power switch-in ability cleanup and Pokemon summary sprite manager lifetime hazards (commit 6484a94ba2).
 - Engineering: Add a post-fork Shared Power memory audit covering capture-adjacent corruption risks (commit 966f9ea86e).
 - Battle/Mechanics: Fix compact edge cases for Roost healing, Electrified status moves, Burn Up with Protean, and Belly Drum Contrary coverage (commit 0dad25eb8a).
 - Battle/Tests: Isolate Shared Power from vanilla battle tests, refresh Strength-aware AI fixtures, and make Ice Body block hail damage at full HP (commit d4aab4c8f4).
 - Shared Power/Tests: Add pooled Guts coverage for burn Attack handling (commit d4aab4c8f4).
 - Shared Power/Tests: Add pooled Quick Feet coverage for paralysis Speed handling (commit acd16d9896).
-- Gameplay/Trainers: Remove trainer Terastallization opt-ins and replace Ninjask opponent encounters with Beedrill (commit pending).
+- Gameplay/Trainers: Remove trainer Terastallization opt-ins and replace Ninjask opponent encounters with Beedrill (commit d1080423b5).
 - Tests/Docs: Add and execute an ExecPlan to isolate hard EXP cap test fallout from unrelated battle regressions (commit f2857a1bff).
 - Gameplay/Progression: Enable hard badge-based level caps and make Rare Candies respect the cap (commit b4fd3b9ab7).
 - Gameplay/Trainers: Retire Route 126 swimmer Barry and add berry-journey Barry docs, ids, sprites, and automation sprite proof (commit b4fd3b9ab7).
@@ -862,15 +972,15 @@
 - Gameplay/Items: Document held-item reward buckets, reserve strict competitive items for authored rewards, and add a first mid-tier held-item reward pass (commit b4fd3b9ab7).
 - Tests/Items: Ensure the wild-held-item broker excludes strict competitive items from its free shop (commit b4fd3b9ab7).
 - Gameplay/Items: Move formerly purchasable Slateport, Lilycove, and Mauville Game Corner TMs into exploration rewards for the first open-world reward pass (commit b4fd3b9ab7).
-- Gameplay/Trainers: Apply latest-available Smogon-inspired singles sets to non-boss trainers and document exact mob trainer spoilers separately (commit pending).
-- Gameplay/Trainers: Refresh Elite Four Pokemon with latest-available Smogon-inspired singles sets (commit pending).
-- Gameplay/Items: Add a Mauville broker who unlocks a free wild-held-item shop after seeing a Pokemon that can steal or swap held items (commit pending).
-- Gameplay/Pokemon: Manectric's hidden ability is now Plus instead of Minus (commit pending).
-- Gameplay/Trainers: Complete Brawly's Machop and Wattson's Electrike and Manectric sets with base-game slot levels (commit pending).
-- Gameplay/Trainers: Add held items to Wattson's Magneton, Flannery's Torkoal, and Tate & Liza's Braviary-Hisui (commit pending).
-- Dialogue: Update remaining gym guide NPCs with spoiler-light tactical hints for the revised gym leaders (commit pending).
-- Docs/Gameplay: Note that gym-leader hint NPC dialogue now matches the updated gym leaders (commit pending).
-- Tools/Skills: Clarify spoiler-free patch-note guidance for move changes, move access, trainer sets, and TM/HM changes (commit pending).
+- Gameplay/Trainers: Apply latest-available Smogon-inspired singles sets to non-boss trainers and document exact mob trainer spoilers separately (commit df255f2afd).
+- Gameplay/Trainers: Refresh Elite Four Pokemon with latest-available Smogon-inspired singles sets (commit 20e4610bb4).
+- Gameplay/Items: Add a Mauville broker who unlocks a free wild-held-item shop after seeing a Pokemon that can steal or swap held items (commit 4d355f95f8).
+- Gameplay/Pokemon: Manectric's hidden ability is now Plus instead of Minus (commit bbd203e682).
+- Gameplay/Trainers: Complete Brawly's Machop and Wattson's Electrike and Manectric sets with base-game slot levels (commit bbd203e682).
+- Gameplay/Trainers: Add held items to Wattson's Magneton, Flannery's Torkoal, and Tate & Liza's Braviary-Hisui (commit bbd203e682).
+- Dialogue: Update remaining gym guide NPCs with spoiler-light tactical hints for the revised gym leaders (commit b06909d3ae).
+- Docs/Gameplay: Note that gym-leader hint NPC dialogue now matches the updated gym leaders (commit cd199b12f2).
+- Tools/Skills: Clarify spoiler-free patch-note guidance for move changes, move access, trainer sets, and TM/HM changes (commit cd199b12f2).
 - Tests/Battle: Cover Shared Power Wonder Guard popup attribution after a stale Intimidate popup (commit 2c9461a711).
 - Battle: Attribute Shared Power ability-immunity popups to the blocking ability instead of stale switch-in abilities (commit 2c9461a711).
 - Docs/Automation: Replace timing-based Mudkip GUI evidence notes with beacon-driven WSLg mGBA validation (commit 80d961689c).
@@ -885,203 +995,203 @@
 - Tools/Automation: Add mGBA GUI evidence capture controls and retry battle-action cursor movement for live desktop screenshots (commit 80d961689c).
 - UI: Restore in-battle summary sprite loading through the battle-owned opponent slot while allowing normal portrait animation (commit 80d961689c).
 - Docs/Automation: Add ExecPlan for Mudkip initial-battle summary GUI evidence capture (commit 80d961689c).
-- UI: Remove non-impactful battle-summary troubleshooting changes around global Pokeball gfx loading and opener input clearing (commit pending).
+- UI: Remove non-impactful battle-summary troubleshooting changes around global Pokeball gfx loading and opener input clearing (commit 2c9553a128).
 - UI: Guard in-battle Pokemon summary sprite creation and remove the static summary sprite-buffer workaround (commit 80d961689c).
-- Dialogue: Update the Rustboro Gym guide's Roxanne advice to hint at her team's strengths without exact set spoilers (commit pending).
-- Tools/Skills: Clarify that Pokemon move-access changes require explicit structured public notes (commit pending).
-- Tools/Skills: Add repo-local instructions for handing pokeemerald automation ROMs to the Ouroboros Scala mGBA runner (commit pending).
-- Gameplay/Trainers: Update first-time gym leader teams for Shared Power and document exact spoiler-friendly Showdown sets (commit pending).
-- Gameplay/Docs: Make Strength Rock type and document PC item availability (commit pending).
-- Tools/Skills: Add a repo-local gameplay updater skill with spoiler-aware player note guidance (commit pending).
-- Tools/Automation: Seed Master Balls in the player PC and expose PC/bag Master Ball counts through probe v7 for deterministic Scala capture routing (commit pending).
-- Docs/Automation: Document the Python mGBA host as reference-only in the tool README and mark old Python route commands as superseded by Scala (commit pending).
-- Tools/Automation: Mark the Python mGBA host as reference-only so canonical route work moves to Scala (commit pending).
-- Docs/Automation: Update the Mightyena route ExecPlan to make Scala the implementation target and freeze Python route extension (commit pending).
-- Tools/Automation: Remove the unverified Python evolution mode so the spike remains reference-only while Scala owns new route work (commit pending).
-- Docs/Automation: Mark the real Poochyena capture milestone complete with Oldale Mart purchase evidence (commit pending).
-- Docs/Automation: Record the Oldale post-Mart egress waypoint finding in the Mightyena route ExecPlan (commit pending).
-- Tools/Automation: Route from Oldale Mart back to the central lane before entering Route 101 for capture (commit pending).
-- Docs/Automation: Record the Oldale Mart counter-collision finding in the Mightyena route ExecPlan (commit pending).
-- Tools/Automation: Approach the Oldale Mart clerk from the accessible counter-side tile during Poke Ball purchase routing (commit pending).
-- Docs/Automation: Record five-ball capture unreliability and the Oldale Mart purchase decision in the Mightyena route ExecPlan (commit pending).
-- Tools/Automation: Add probe-visible Oldale Mart shop state and canonical Poke Ball purchase routing before Route 101 capture (commit pending).
-- Tools/Automation: Unwind battle-bag selection as captured when a throw ends the battle and increases party count (commit pending).
-- Tools/Automation: Retry opening the battle Bag when a failed capture leaves the cursor on Bag with stale bag-menu context (commit pending).
-- Tools/Automation: Add a Route 101 Poochyena capture smoke mode that catches only wild ability-slot-0 Poochyena with real Poke Balls (commit pending).
-- Tools/Automation: Generalize bag item selection across item and Poké Ball pockets for capture routes (commit pending).
-- Docs/Automation: Record passing story-to-Poke-Balls evidence for the Mightyena route (commit pending).
-- Docs/Automation: Correct Littleroot lab-return evidence to stop before the lab warp tile (commit pending).
-- Tools/Automation: Stop Littleroot lab-return waypoints below the lab door and let the map-transition helper own the warp (commit pending).
-- Docs/Automation: Correct the Littleroot lab-return waypoint evidence after the mid-lane block (commit pending).
-- Tools/Automation: Route Littleroot lab return through the lower lab lane after observing the mid-lane west step is blocked (commit pending).
-- Docs/Automation: Record the Littleroot north-entrance waypoint finding in the Mightyena route ExecPlan (commit pending).
-- Tools/Automation: Add explicit Littleroot north-entrance waypoints to reach Birch's lab without greedy leftward movement (commit pending).
-- Tools/Automation: Let map-transition movement waits advance script-locked prompts before the target map is reached (commit pending).
-- Docs/Automation: Record bag-startup and post-rival script readiness findings in the Mightyena route ExecPlan (commit pending).
-- Tools/Automation: Let probe movement waits conservatively advance script-locked prompts on the target map even without field text readiness (commit pending).
-- Tools/Automation: Make Rare Candy bag selection retry when the item list is visible but the first A press is ignored during bag startup (commit pending).
-- Tools/Automation: Include bedroom PC withdrawal and starter Rare Candy evidence in story Poke Ball smoke results (commit pending).
-- Tools/Automation: Route the story Poke Ball checkpoint through PC Rare Candy withdrawal and starter overleveling before the rival fight (commit pending).
-- Tools/Automation: Add probe-gated Start Menu, Bag, Party, and Rare Candy item-use helpers for route checkpoints (commit pending).
-- Tools/Automation: Reuse the bedroom setup checkpoint and extract a quantity-aware PC Rare Candy withdrawal helper (commit pending).
-- Docs/Automation: Record that starter matchup is not a reliable Route 103 rival-battle invariant (commit pending).
-- Docs/Automation: Record the default Torchic rival-loss finding and explicit Mudkip route decision (commit pending).
-- Tools/Automation: Make the story route select Mudkip explicitly instead of inheriting the fragile default starter choice (commit pending).
-- Docs/Automation: Correct Route 103 approach evidence to start from the observed Oldale connection tile (commit pending).
-- Tools/Automation: Start Route 103 rival waypoints from the observed Oldale north-connection landing tile (commit pending).
-- Docs/Automation: Correct the Route 103 return finding after observing the rival exit script position (commit pending).
-- Tools/Automation: Let the Route 103 rival exit script deposit the player at the south connection instead of replaying return waypoints (commit pending).
-- Docs/Automation: Record collision-grid Route 103 waypoint evidence in the Mightyena route ExecPlan (commit pending).
-- Tools/Automation: Add collision-grid Route 103 waypoints for rival approach and return to Oldale (commit pending).
-- Docs/Automation: Record the battle menu heartbeat limitation for incidental run-away handling (commit pending).
-- Tools/Automation: Make incidental battle run-away own the battle text and action-menu loop without stale-frame rejection (commit pending).
-- Docs/Automation: Record incidental Route 101 battle handling in the Mightyena route ExecPlan (commit pending).
-- Tools/Automation: Advance incidental wild-battle text while waiting for probe-gated field movement to resume (commit pending).
-- Docs/Automation: Record the collision-grid Route 101 waypoint evidence in the Mightyena route ExecPlan (commit pending).
-- Tools/Automation: Add a reusable probe waypoint helper and collision-grid Route 101 waypoint lists (commit pending).
-- Docs/Automation: Document the Route 101 waypoint decision after greedy movement hit blocked terrain (commit pending).
-- Tools/Automation: Add explicit Route 101 waypoints around the post-rescue Zigzagoon instead of relying on greedy X-first pathing (commit pending).
-- Docs/Automation: Record Route 101 object-state and beacon text-readiness findings in the Mightyena route ExecPlan (commit pending).
-- Tools/Automation: Let beacon-gated movement clear script-step text prompts that are text-ready without the message-box flag (commit pending).
-- Tools/Automation: Route post-rescue Route 101 travel through Birch-cleared x=9 lane instead of the Zigzagoon-occupied tile (commit pending).
-- Tools/Automation: Require stable post-lab field readiness before treating starter lab dialogue as complete (commit pending).
-- Tools/Automation: Hold overworld movement inputs longer so probe-gated route steps do not collapse into facing-only taps (commit pending).
-- Tools/Automation: Use the post-rescue Route 101 central path after confirming blocker flags should be cleared (commit pending).
-- Tools/Automation: Use Route 101 column x=8 for the post-rescue Zigzagoon bypass (commit pending).
-- Tools/Automation: Split the Route 101 story waypoint before stepping around the Zigzagoon blocker (commit pending).
-- Tools/Automation: Add a post-lab dialogue settle pass before field movement resumes (commit pending).
-- Tools/Automation: Register a SIGUSR1 Python stack dump hook for route waiter diagnosis (commit pending).
-- Tools/Automation: Log pending script yes/no detection inside the story route loop (commit pending).
-- Tools/Automation: Simplify pending yes/no handling to act directly on probe-visible script menus (commit pending).
-- Tools/Automation: Drive story battle action and move menus directly from the outer probe loop (commit pending).
-- Tools/Automation: Drive story battles through the same probe-gated dialogue loop used for scripted prompts (commit pending).
-- Tools/Automation: Make battle menu waiters unwind when story scripts take over after battle (commit pending).
-- Tools/Automation: Hand story battles off to dialogue routing when post-battle script prompts appear (commit pending).
-- Tools/Automation: Add a governed fallback yes/no choice for resilient lab dialogue routing (commit pending).
-- Tools/Automation: Clear completed script-menu probe state and gate host choices on pending menu results (commit pending).
-- Tools/Automation: Route the story Poké Ball checkpoint around Route 101 blocker objects (commit pending).
+- Dialogue: Update the Rustboro Gym guide's Roxanne advice to hint at her team's strengths without exact set spoilers (commit 8997486c83).
+- Tools/Skills: Clarify that Pokemon move-access changes require explicit structured public notes (commit 8997486c83).
+- Tools/Skills: Add repo-local instructions for handing pokeemerald automation ROMs to the Ouroboros Scala mGBA runner (commit 1848d8f931).
+- Gameplay/Trainers: Update first-time gym leader teams for Shared Power and document exact spoiler-friendly Showdown sets (commit 4b148072cf).
+- Gameplay/Docs: Make Strength Rock type and document PC item availability (commit a4dd8f2ba2).
+- Tools/Skills: Add a repo-local gameplay updater skill with spoiler-aware player note guidance (commit a2dc9aa75d).
+- Tools/Automation: Seed Master Balls in the player PC and expose PC/bag Master Ball counts through probe v7 for deterministic Scala capture routing (commit 8877e0e78f).
+- Docs/Automation: Document the Python mGBA host as reference-only in the tool README and mark old Python route commands as superseded by Scala (commit 691fe55fed).
+- Tools/Automation: Mark the Python mGBA host as reference-only so canonical route work moves to Scala (commit 691fe55fed).
+- Docs/Automation: Update the Mightyena route ExecPlan to make Scala the implementation target and freeze Python route extension (commit 691fe55fed).
+- Tools/Automation: Remove the unverified Python evolution mode so the spike remains reference-only while Scala owns new route work (commit 691fe55fed).
+- Docs/Automation: Mark the real Poochyena capture milestone complete with Oldale Mart purchase evidence (commit 691fe55fed).
+- Docs/Automation: Record the Oldale post-Mart egress waypoint finding in the Mightyena route ExecPlan (commit 691fe55fed).
+- Tools/Automation: Route from Oldale Mart back to the central lane before entering Route 101 for capture (commit 691fe55fed).
+- Docs/Automation: Record the Oldale Mart counter-collision finding in the Mightyena route ExecPlan (commit 691fe55fed).
+- Tools/Automation: Approach the Oldale Mart clerk from the accessible counter-side tile during Poke Ball purchase routing (commit 691fe55fed).
+- Docs/Automation: Record five-ball capture unreliability and the Oldale Mart purchase decision in the Mightyena route ExecPlan (commit 691fe55fed).
+- Tools/Automation: Add probe-visible Oldale Mart shop state and canonical Poke Ball purchase routing before Route 101 capture (commit 691fe55fed).
+- Tools/Automation: Unwind battle-bag selection as captured when a throw ends the battle and increases party count (commit 691fe55fed).
+- Tools/Automation: Retry opening the battle Bag when a failed capture leaves the cursor on Bag with stale bag-menu context (commit 691fe55fed).
+- Tools/Automation: Add a Route 101 Poochyena capture smoke mode that catches only wild ability-slot-0 Poochyena with real Poke Balls (commit 691fe55fed).
+- Tools/Automation: Generalize bag item selection across item and Poké Ball pockets for capture routes (commit 691fe55fed).
+- Docs/Automation: Record passing story-to-Poke-Balls evidence for the Mightyena route (commit 691fe55fed).
+- Docs/Automation: Correct Littleroot lab-return evidence to stop before the lab warp tile (commit 691fe55fed).
+- Tools/Automation: Stop Littleroot lab-return waypoints below the lab door and let the map-transition helper own the warp (commit 691fe55fed).
+- Docs/Automation: Correct the Littleroot lab-return waypoint evidence after the mid-lane block (commit 691fe55fed).
+- Tools/Automation: Route Littleroot lab return through the lower lab lane after observing the mid-lane west step is blocked (commit 691fe55fed).
+- Docs/Automation: Record the Littleroot north-entrance waypoint finding in the Mightyena route ExecPlan (commit 691fe55fed).
+- Tools/Automation: Add explicit Littleroot north-entrance waypoints to reach Birch's lab without greedy leftward movement (commit 691fe55fed).
+- Tools/Automation: Let map-transition movement waits advance script-locked prompts before the target map is reached (commit 691fe55fed).
+- Docs/Automation: Record bag-startup and post-rival script readiness findings in the Mightyena route ExecPlan (commit 691fe55fed).
+- Tools/Automation: Let probe movement waits conservatively advance script-locked prompts on the target map even without field text readiness (commit 691fe55fed).
+- Tools/Automation: Make Rare Candy bag selection retry when the item list is visible but the first A press is ignored during bag startup (commit 691fe55fed).
+- Tools/Automation: Include bedroom PC withdrawal and starter Rare Candy evidence in story Poke Ball smoke results (commit 691fe55fed).
+- Tools/Automation: Route the story Poke Ball checkpoint through PC Rare Candy withdrawal and starter overleveling before the rival fight (commit 691fe55fed).
+- Tools/Automation: Add probe-gated Start Menu, Bag, Party, and Rare Candy item-use helpers for route checkpoints (commit 691fe55fed).
+- Tools/Automation: Reuse the bedroom setup checkpoint and extract a quantity-aware PC Rare Candy withdrawal helper (commit 691fe55fed).
+- Docs/Automation: Record that starter matchup is not a reliable Route 103 rival-battle invariant (commit 691fe55fed).
+- Docs/Automation: Record the default Torchic rival-loss finding and explicit Mudkip route decision (commit 691fe55fed).
+- Tools/Automation: Make the story route select Mudkip explicitly instead of inheriting the fragile default starter choice (commit 691fe55fed).
+- Docs/Automation: Correct Route 103 approach evidence to start from the observed Oldale connection tile (commit 691fe55fed).
+- Tools/Automation: Start Route 103 rival waypoints from the observed Oldale north-connection landing tile (commit 691fe55fed).
+- Docs/Automation: Correct the Route 103 return finding after observing the rival exit script position (commit 691fe55fed).
+- Tools/Automation: Let the Route 103 rival exit script deposit the player at the south connection instead of replaying return waypoints (commit 691fe55fed).
+- Docs/Automation: Record collision-grid Route 103 waypoint evidence in the Mightyena route ExecPlan (commit 691fe55fed).
+- Tools/Automation: Add collision-grid Route 103 waypoints for rival approach and return to Oldale (commit 691fe55fed).
+- Docs/Automation: Record the battle menu heartbeat limitation for incidental run-away handling (commit 691fe55fed).
+- Tools/Automation: Make incidental battle run-away own the battle text and action-menu loop without stale-frame rejection (commit 691fe55fed).
+- Docs/Automation: Record incidental Route 101 battle handling in the Mightyena route ExecPlan (commit 691fe55fed).
+- Tools/Automation: Advance incidental wild-battle text while waiting for probe-gated field movement to resume (commit 691fe55fed).
+- Docs/Automation: Record the collision-grid Route 101 waypoint evidence in the Mightyena route ExecPlan (commit 691fe55fed).
+- Tools/Automation: Add a reusable probe waypoint helper and collision-grid Route 101 waypoint lists (commit 691fe55fed).
+- Docs/Automation: Document the Route 101 waypoint decision after greedy movement hit blocked terrain (commit 691fe55fed).
+- Tools/Automation: Add explicit Route 101 waypoints around the post-rescue Zigzagoon instead of relying on greedy X-first pathing (commit 691fe55fed).
+- Docs/Automation: Record Route 101 object-state and beacon text-readiness findings in the Mightyena route ExecPlan (commit 691fe55fed).
+- Tools/Automation: Let beacon-gated movement clear script-step text prompts that are text-ready without the message-box flag (commit 691fe55fed).
+- Tools/Automation: Route post-rescue Route 101 travel through Birch-cleared x=9 lane instead of the Zigzagoon-occupied tile (commit 691fe55fed).
+- Tools/Automation: Require stable post-lab field readiness before treating starter lab dialogue as complete (commit 691fe55fed).
+- Tools/Automation: Hold overworld movement inputs longer so probe-gated route steps do not collapse into facing-only taps (commit 691fe55fed).
+- Tools/Automation: Use the post-rescue Route 101 central path after confirming blocker flags should be cleared (commit 691fe55fed).
+- Tools/Automation: Use Route 101 column x=8 for the post-rescue Zigzagoon bypass (commit 691fe55fed).
+- Tools/Automation: Split the Route 101 story waypoint before stepping around the Zigzagoon blocker (commit 691fe55fed).
+- Tools/Automation: Add a post-lab dialogue settle pass before field movement resumes (commit 691fe55fed).
+- Tools/Automation: Register a SIGUSR1 Python stack dump hook for route waiter diagnosis (commit 691fe55fed).
+- Tools/Automation: Log pending script yes/no detection inside the story route loop (commit 691fe55fed).
+- Tools/Automation: Simplify pending yes/no handling to act directly on probe-visible script menus (commit 691fe55fed).
+- Tools/Automation: Drive story battle action and move menus directly from the outer probe loop (commit 691fe55fed).
+- Tools/Automation: Drive story battles through the same probe-gated dialogue loop used for scripted prompts (commit 691fe55fed).
+- Tools/Automation: Make battle menu waiters unwind when story scripts take over after battle (commit 691fe55fed).
+- Tools/Automation: Hand story battles off to dialogue routing when post-battle script prompts appear (commit 691fe55fed).
+- Tools/Automation: Add a governed fallback yes/no choice for resilient lab dialogue routing (commit 691fe55fed).
+- Tools/Automation: Clear completed script-menu probe state and gate host choices on pending menu results (commit 691fe55fed).
+- Tools/Automation: Route the story Poké Ball checkpoint around Route 101 blocker objects (commit 691fe55fed).
 # Patch Notes
 
-- Tools/Automation: Add probe-gated story and battle helpers for the starter-to-lab route checkpoint (commit pending).
-- Tools/Automation: Expose script yes/no and multichoice menu state for story-route decisions (commit pending).
-- Tools/Automation: Add generic field/menu probe states for route checkpoints beyond the early beacon maps (commit pending).
-- Docs/Automation: Record successful Milestone 3 PC Rare Candy withdrawal evidence for the Mightyena switch route (commit pending).
-- Tools/Automation: Clear stale overworld script-step readiness when no script or field message is active (commit pending).
-- Tools/Automation: Avoid treating stale script-step text readiness as an actionable PC-exit message (commit pending).
-- Tools/Automation: Require semantic field movement readiness after exiting the PC Rare Candy route (commit pending).
-- Tools/Automation: Add a PC Rare Candy smoke route that withdraws through the real bedroom PC flow (commit pending).
-- Tools/Automation: Add Lua-readable PC item-storage menu state for deterministic Rare Candy withdrawal (commit pending).
-- Docs/Automation: Record successful Milestone 2 probe-observability evidence for the Mightyena switch route (commit pending).
-- Tools/Automation: Expose PC Rare Candy counts, battle control facts, and ability-popup events through the automation probe (commit pending).
-- Docs/Automation: Record successful Milestone 1 baseline evidence for the Mightyena switch route (commit pending).
+- Tools/Automation: Add probe-gated story and battle helpers for the starter-to-lab route checkpoint (commit 691fe55fed).
+- Tools/Automation: Expose script yes/no and multichoice menu state for story-route decisions (commit 691fe55fed).
+- Tools/Automation: Add generic field/menu probe states for route checkpoints beyond the early beacon maps (commit 691fe55fed).
+- Docs/Automation: Record successful Milestone 3 PC Rare Candy withdrawal evidence for the Mightyena switch route (commit 691fe55fed).
+- Tools/Automation: Clear stale overworld script-step readiness when no script or field message is active (commit 691fe55fed).
+- Tools/Automation: Avoid treating stale script-step text readiness as an actionable PC-exit message (commit 691fe55fed).
+- Tools/Automation: Require semantic field movement readiness after exiting the PC Rare Candy route (commit 691fe55fed).
+- Tools/Automation: Add a PC Rare Candy smoke route that withdraws through the real bedroom PC flow (commit 691fe55fed).
+- Tools/Automation: Add Lua-readable PC item-storage menu state for deterministic Rare Candy withdrawal (commit 691fe55fed).
+- Docs/Automation: Record successful Milestone 2 probe-observability evidence for the Mightyena switch route (commit 691fe55fed).
+- Tools/Automation: Expose PC Rare Candy counts, battle control facts, and ability-popup events through the automation probe (commit 691fe55fed).
+- Docs/Automation: Record successful Milestone 1 baseline evidence for the Mightyena switch route (commit 691fe55fed).
 - Docs/Automation: Add ExecPlan for the canonical Mightyena Intimidate switch route (commit 69a24a2a35).
-- Tools/Automation: Route mGBA Lua memory reads and writes through explicit memory domains for IWRAM/EWRAM probe access (commit pending).
-- Docs/Automation: Record validation evidence and deferred canonical catch/evolution work in the Lua probe route-tree ExecPlan (commit pending).
-- Tools/Automation: Let route movement waits acknowledge text-ready prompts before retrying movement (commit pending).
-- Docs/Automation: Record the guarded scenario bridge and implementation progress in the Lua automation probe route-tree ExecPlan (commit pending).
-- Tools/Automation: Extend the mGBA Lua/Python spike with generic probe memory IO and a Mightyena Intimidate savestate proof mode (commit pending).
-- Tools/Automation: Add a guarded Lua-readable automation probe ABI for route facts and objective commands (commit pending).
-- Docs/Automation: Add ExecPlan for replacing visual beacon growth with a Lua-readable automation probe and route tree (commit pending).
-- Docs/Automation: Mark completed ExecPlans with explicit status lines (commit pending).
-- Docs/Automation: Record final battle-summary validation evidence and test-suite status (commit pending).
-- Docs/Automation: Record passing Hypothesis A and promoted in-battle summary sprite-manager fix (commit pending).
-- Gameplay: Avoid creating or preferring a summary-owned Pokemon sprite manager for in-battle summary screens (commit pending).
-- Docs/Automation: Record base-source comparison showing origin/master reaches the summary screen (commit pending).
-- Docs/Automation: Record Milestone 2 summary-init state-6 stall evidence (commit pending).
-- Tools/Automation: Add a lightweight debug-state beacon path for summary initialization probes (commit pending).
-- Tools/Automation: Let the battle-summary runner accept later summary-init beacons when the request beacon advances too quickly (commit pending).
-- Tools/Automation: Add summary-initialization beacons and recent beacon history for the battle-summary repro (commit pending).
-- Docs/Automation: Record Milestone 1 battle-summary repro evidence and builder-image correction (commit pending).
-- Tools/Automation: Distinguish route, artifact, and summary-screen success in the battle-summary repro result (commit pending).
-- Docs/Automation: Add an ExecPlan for fixing the initial-battle summary-screen glitch (commit pending).
-- Tools/Automation: Add a headless battle-summary repro mode with summary-attempt beacons and savestate-backed screenshot capture (commit pending).
-- Tools/Automation: Add starter-confirm mode with semantic menuReady acceptance (commit pending).
-- Docs/Automation: Record completed v2 semantic beacon proofs and Scala timeout blocker (commit pending).
-- Tools/Automation: Add backward-compatible v2 semantic beacon rows and use movementReady in the headless route (commit pending).
-- Docs/Automation: Add incremental beacon v2 ExecPlan and Scala/devkit validation milestones (commit pending).
-- Docs/Automation: Record default-build validation and final automation ROM rebuild evidence (commit pending).
-- Docs/Automation: Record the completed headless starter-selection proof and migration recommendation (commit pending).
-- Tools/Automation: Treat Route 101 script waits as beacon input-ready and clear keys after route entry (commit pending).
-- Tools/Automation: Exit the player house by pressing down from the door warp tile instead of stepping laterally across it (commit pending).
-- Tools/Automation: Let Route 101 entry acknowledge the Littleroot trigger dialogue while continuing toward the target stage (commit pending).
-- Tools/Automation: Replace fixed rival-house counts with map-slot and coordinate-gated headless route waypoints (commit pending).
-- Tools/Automation: Encode high coordinate nibbles in the beacon map row so Route 101 positions remain distinguishable (commit pending).
-- Tools/Automation: Add a beacon map-slot row so the headless route can distinguish early interiors from town and Route 101 (commit pending).
-- Tools/Automation: Count only actual movement keypresses while waiting through TV-report stair transitions (commit pending).
-- Tools/Automation: Stop passive waiting after entering the TV report script so the route can acknowledge it (commit pending).
-- Tools/Automation: Press into the bedroom stair warp before advancing TV report dialogue (commit pending).
-- Tools/Automation: Navigate from the post-clock bedroom position into the stair warp using beacon coordinates (commit pending).
-- Tools/Automation: Correct nav-based clock coordinates and direction constants for the headless route (commit pending).
-- Tools/Automation: Add beacon navigation proof fields and use them to face the bedroom clock deterministically (commit pending).
-- Tools/Automation: Keep the player facing May's bedroom clock before interacting in the headless starter route (commit pending).
-- Tools/Automation: Hold emulator movement taps long enough for headless overworld tile transitions (commit pending).
-- Tools/Automation: Add a headless Python starter-selection route mode with beacon-gated movement helpers (commit pending).
-- Docs/Automation: Document the script-derived truck-to-starter route and defer new beacon fields for the first headless attempt (commit pending).
-- Docs/Automation: Record fresh headless truck baseline evidence for the starter-selection plan (commit pending).
-- Docs/Automation: Add a headless starter-selection ExecPlan with explicit Python continuation and migration gates (commit pending).
-- Docs/Automation: Record the passing repeated headless Python/Lua female `A` truck checkpoint proof (commit pending).
-- Tools/Automation: Avoid pressing through Birch's boy/girl transition so the route cannot auto-select male (commit pending).
-- Tools/Automation: Wait for naming input to become ready after auto-lowercase before confirming the route OK button (commit pending).
-- Tools/Automation: Retry input-ready Python route confirmations until the expected beacon transition appears (commit pending).
-- Tools/Automation: Extend the Python Lua-spike runner with a host-owned female `A` truck route FSM (commit pending).
-- Tools/Automation: Add a pinned mGBA headless build helper and record the passing no-focus Lua bridge smoke test (commit pending).
-- Tools/Automation: Make the Lua bridge wait for frames asynchronously and write the beacon fallback with valid OBJ VRAM halfword stores (commit pending).
-- Tools/Automation: Add Python and Lua mGBA automation spike with explicit capability reporting (commit pending).
-- Docs/Automation: Add retrospective on beacon automation learnings and next architecture ideas (commit pending).
-- Tools/Automation: Treat wait-button prompts as input-ready during the truck-exit Littleroot intro as well (commit pending).
-- Tools/Automation: Add wait-button script-step proof and readiness for message prompts that require a fresh A press (commit pending).
-- Tools/Automation: Press through the bedroom clock intro message before waiting for the wall-clock UI beacon (commit pending).
-- Tools/Automation: Approach May's bedroom clock with two Right presses and an Up-facing turn before interacting (commit pending).
-- Tools/Automation: Gate the upstairs transition on Littleroot substage 5 instead of a fixed Up count (commit pending).
-- Tools/Automation: Use four gated Up presses for the female house stairs before waiting for bedroom setup (commit pending).
-- Tools/Automation: Reject non-v1 beacon-shaped false positives in the PowerShell reader (commit pending).
-- Tools/Automation: Broaden Littleroot script-step proof and wait-message readiness to in-house setup scripts (commit pending).
-- Tools/Automation: Keep Littleroot intro input-ready while the script is waiting for message acknowledgment (commit pending).
-- Tools/Automation: Carry the last script command class in Littleroot beacon proof for cutscene wait diagnostics (commit pending).
-- Tools/Automation: Add Littleroot Mom object diagnostics to the beacon error field for truck-exit script stalls (commit pending).
-- Tools/Automation: Use a bounded beacon-gated Right loop for truck exit and log diagnostic flags/error codes (commit pending).
-- Tools/Automation: Treat held player movement as diagnostic-only after truck idle proved it can remain set while ready (commit pending).
-- Tools/Automation: Require a settled player object before overworld movement-ready beacon states (commit pending).
-- Tools/Automation: Gate Littleroot truck-exit intro input on visible field messages only to avoid premature A presses (commit pending).
-- Tools/Automation: Add overworld beacon diagnostics for script, lock, message, fade, and player movement blockers (commit pending).
-- Docs/Automation: Record speed-mode starter attempt and current Littleroot moving-in blocker tuple (commit pending).
-- Tools/Automation: Exit the truck with exactly two gated Right presses instead of an unbounded move loop (commit pending).
-- Tools/Automation: Treat visible field message boxes as overworld input-ready even while scripts own the context (commit pending).
-- Docs/Automation: Record live normal-speed truck proof, AHK v2 decision, local ROM staging, and remaining starter/speed acceptance (commit pending).
-- Tools/Automation: Tighten live beacon scan bounds around the fixed 2x beacon position to reduce route runtime (commit pending).
-- Tools/Automation: Remove the temporary backdrop diagnostic after live beacon rendering was verified (commit pending).
-- Tools/Automation: Gate female confirmation on durable `gender=2` proof instead of a transient stage id (commit pending).
-- Tools/Automation: Raise the boot beacon read budget to allow the live PowerShell sampler to finish decoding (commit pending).
-- Tools/Automation: Force a small 2x mGBA window size instead of preserving a restored oversized window (commit pending).
-- Tools/Automation: Prefer fast integer-scale beacon scans and pass a bounded scan window from the mGBA runner (commit pending).
-- Tools/Automation: Launch mGBA at 2x scale so beacon pixels can be sampled as integer-scaled cells (commit pending).
-- Tools/Automation: Decode non-integer scaled mGBA beacons with a run-length sampler and bounded top-left scan region (commit pending).
-- Tools/Automation: Pin the beacon sprite to OBJ palette slot 15 so renderer palette refreshes match the created sprite (commit pending).
-- Tools/Automation: Keep beacon sprite tracking zero-initialized so automation builds do not emit discarded `.data` (commit pending).
-- Tools/Automation: Create and update the debug beacon through the standard sprite pipeline so live screens load its OAM and tile data (commit pending).
-- Tools/Automation: Force OBJ display directly while rendering the automation beacon so queued DISPCNT writes cannot hide it (commit pending).
-- Tools/Automation: Stage the rebuilt ROM to local Windows temp before launching mGBA to avoid UNC ROM fallback behavior (commit pending).
-- Tools/Automation: Add a late VBlank beacon refresh after sprite/DMA processing to survive screen callback tile overwrites (commit pending).
-- Tools/Automation: Render the debug beacon through OAM and palette buffers before screen VBlank callbacks for live visibility (commit pending).
-- Tools/Automation: Keep the AutoHotkey v2 mGBA window small, topmost, and active before beacon captures and key sends (commit pending).
-- Tools/Automation: Ignore raced WScript termination errors during bounded no-beacon boot scans (commit pending).
-- Tools/Automation: Bound no-beacon boot scans so the AHK v2 runner can keep pressing through title screens (commit pending).
-- Tools/Automation: Port beacon-gated mGBA repro runner to AutoHotkey v2 and add validate mode (commit pending).
-- Tools/Automation: Inline disabled beacon no-ops so default builds avoid hot-path empty calls (commit pending).
-- Tools/Automation: Short-circuit beacon scans on anchor pixels before decoding full proof rows (commit pending).
-- Tools/Automation: Keep beacon rendering from forcing OBJ 1D mapping while preserving debug overlay output (commit pending).
-- Docs/Automation: Record beacon implementation evidence, sampler validation, and remaining live mGBA acceptance work (commit pending).
-- Tools/Automation: Add debug automation beacon, beacon sampler, and state-gated mGBA runner for female `A` truck/starter repros (commit pending).
-- Docs/Automation: Add ExecPlan for beacon-gated mGBA reproduction from clean boot through female `A` truck proof and first Pokemon selection (commit pending).
-- Docs/Automation: Add design doc for deterministic mGBA reproduction pipeline and beacon-gated stage automation strategy; add docs summary link (commit pending).
-- Docs/Process: Add repository-adapted `.agent/PLANS.md` with milestone-continuity policy (exec plans continue until success or escalation) (commit pending).
-- Tools/AHK: Tune intro flow near gender/name by lowering pre-gender advance, switching gender nudge to `Right`, trimming pre-name presses, and extending post-name truck advance window (commit pending).
-- Tools/AHK: Increase bounded dialogue-advance limits to carry the deterministic flow past Birch scenes into gender/name/truck phases without reverting to endless key spam (commit pending).
-- Tools/AHK: Revert mGBA key dispatch to foreground `Send` under full-run input block after `ControlSend` failed to advance title/menu state (commit pending).
-- Tools/AHK: Retune intro step timings and key cadence to avoid premature title input and reduce over-advance spam during gender/name/truck progression (commit pending).
-- Tools/AHK: Capture mGBA client area via `GetClientRect` + `CopyFromScreen` to remove noisy title-bar/frame pixels from checkpoint matching (commit pending).
-- Tools/AHK: Make checkpoint compare fail-closed by requiring parsed numeric diff scores and rejecting missing/unparsable references (commit pending).
-- Tools/AHK: Harden mGBA intro input isolation with full-run `BlockInput` and PID-targeted `ControlSend` fallback delivery (commit pending).
+- Tools/Automation: Route mGBA Lua memory reads and writes through explicit memory domains for IWRAM/EWRAM probe access (commit 8920e2d374).
+- Docs/Automation: Record validation evidence and deferred canonical catch/evolution work in the Lua probe route-tree ExecPlan (commit 8920e2d374).
+- Tools/Automation: Let route movement waits acknowledge text-ready prompts before retrying movement (commit 8920e2d374).
+- Docs/Automation: Record the guarded scenario bridge and implementation progress in the Lua automation probe route-tree ExecPlan (commit 8920e2d374).
+- Tools/Automation: Extend the mGBA Lua/Python spike with generic probe memory IO and a Mightyena Intimidate savestate proof mode (commit 8920e2d374).
+- Tools/Automation: Add a guarded Lua-readable automation probe ABI for route facts and objective commands (commit 8920e2d374).
+- Docs/Automation: Add ExecPlan for replacing visual beacon growth with a Lua-readable automation probe and route tree (commit 7d682bedfa).
+- Docs/Automation: Mark completed ExecPlans with explicit status lines (commit c977e8cd32).
+- Docs/Automation: Record final battle-summary validation evidence and test-suite status (commit caee916773).
+- Docs/Automation: Record passing Hypothesis A and promoted in-battle summary sprite-manager fix (commit caee916773).
+- Gameplay: Avoid creating or preferring a summary-owned Pokemon sprite manager for in-battle summary screens (commit caee916773).
+- Docs/Automation: Record base-source comparison showing origin/master reaches the summary screen (commit caee916773).
+- Docs/Automation: Record Milestone 2 summary-init state-6 stall evidence (commit caee916773).
+- Tools/Automation: Add a lightweight debug-state beacon path for summary initialization probes (commit caee916773).
+- Tools/Automation: Let the battle-summary runner accept later summary-init beacons when the request beacon advances too quickly (commit caee916773).
+- Tools/Automation: Add summary-initialization beacons and recent beacon history for the battle-summary repro (commit caee916773).
+- Docs/Automation: Record Milestone 1 battle-summary repro evidence and builder-image correction (commit caee916773).
+- Tools/Automation: Distinguish route, artifact, and summary-screen success in the battle-summary repro result (commit caee916773).
+- Docs/Automation: Add an ExecPlan for fixing the initial-battle summary-screen glitch (commit 935c67ee3d).
+- Tools/Automation: Add a headless battle-summary repro mode with summary-attempt beacons and savestate-backed screenshot capture (commit 2091e87632).
+- Tools/Automation: Add starter-confirm mode with semantic menuReady acceptance (commit 5ad583570b).
+- Docs/Automation: Record completed v2 semantic beacon proofs and Scala timeout blocker (commit 5ad583570b).
+- Tools/Automation: Add backward-compatible v2 semantic beacon rows and use movementReady in the headless route (commit 5ad583570b).
+- Docs/Automation: Add incremental beacon v2 ExecPlan and Scala/devkit validation milestones (commit aad6f7fb01).
+- Docs/Automation: Record default-build validation and final automation ROM rebuild evidence (commit aad6f7fb01).
+- Docs/Automation: Record the completed headless starter-selection proof and migration recommendation (commit aad6f7fb01).
+- Tools/Automation: Treat Route 101 script waits as beacon input-ready and clear keys after route entry (commit aad6f7fb01).
+- Tools/Automation: Exit the player house by pressing down from the door warp tile instead of stepping laterally across it (commit aad6f7fb01).
+- Tools/Automation: Let Route 101 entry acknowledge the Littleroot trigger dialogue while continuing toward the target stage (commit aad6f7fb01).
+- Tools/Automation: Replace fixed rival-house counts with map-slot and coordinate-gated headless route waypoints (commit aad6f7fb01).
+- Tools/Automation: Encode high coordinate nibbles in the beacon map row so Route 101 positions remain distinguishable (commit aad6f7fb01).
+- Tools/Automation: Add a beacon map-slot row so the headless route can distinguish early interiors from town and Route 101 (commit aad6f7fb01).
+- Tools/Automation: Count only actual movement keypresses while waiting through TV-report stair transitions (commit aad6f7fb01).
+- Tools/Automation: Stop passive waiting after entering the TV report script so the route can acknowledge it (commit aad6f7fb01).
+- Tools/Automation: Press into the bedroom stair warp before advancing TV report dialogue (commit aad6f7fb01).
+- Tools/Automation: Navigate from the post-clock bedroom position into the stair warp using beacon coordinates (commit aad6f7fb01).
+- Tools/Automation: Correct nav-based clock coordinates and direction constants for the headless route (commit aad6f7fb01).
+- Tools/Automation: Add beacon navigation proof fields and use them to face the bedroom clock deterministically (commit aad6f7fb01).
+- Tools/Automation: Keep the player facing May's bedroom clock before interacting in the headless starter route (commit aad6f7fb01).
+- Tools/Automation: Hold emulator movement taps long enough for headless overworld tile transitions (commit aad6f7fb01).
+- Tools/Automation: Add a headless Python starter-selection route mode with beacon-gated movement helpers (commit aad6f7fb01).
+- Docs/Automation: Document the script-derived truck-to-starter route and defer new beacon fields for the first headless attempt (commit aad6f7fb01).
+- Docs/Automation: Record fresh headless truck baseline evidence for the starter-selection plan (commit aad6f7fb01).
+- Docs/Automation: Add a headless starter-selection ExecPlan with explicit Python continuation and migration gates (commit aad6f7fb01).
+- Docs/Automation: Record the passing repeated headless Python/Lua female `A` truck checkpoint proof (commit aad6f7fb01).
+- Tools/Automation: Avoid pressing through Birch's boy/girl transition so the route cannot auto-select male (commit aad6f7fb01).
+- Tools/Automation: Wait for naming input to become ready after auto-lowercase before confirming the route OK button (commit aad6f7fb01).
+- Tools/Automation: Retry input-ready Python route confirmations until the expected beacon transition appears (commit aad6f7fb01).
+- Tools/Automation: Extend the Python Lua-spike runner with a host-owned female `A` truck route FSM (commit aad6f7fb01).
+- Tools/Automation: Add a pinned mGBA headless build helper and record the passing no-focus Lua bridge smoke test (commit aad6f7fb01).
+- Tools/Automation: Make the Lua bridge wait for frames asynchronously and write the beacon fallback with valid OBJ VRAM halfword stores (commit aad6f7fb01).
+- Tools/Automation: Add Python and Lua mGBA automation spike with explicit capability reporting (commit aad6f7fb01).
+- Docs/Automation: Add retrospective on beacon automation learnings and next architecture ideas (commit 510ad958f3).
+- Tools/Automation: Treat wait-button prompts as input-ready during the truck-exit Littleroot intro as well (commit aad6f7fb01).
+- Tools/Automation: Add wait-button script-step proof and readiness for message prompts that require a fresh A press (commit aad6f7fb01).
+- Tools/Automation: Press through the bedroom clock intro message before waiting for the wall-clock UI beacon (commit aad6f7fb01).
+- Tools/Automation: Approach May's bedroom clock with two Right presses and an Up-facing turn before interacting (commit aad6f7fb01).
+- Tools/Automation: Gate the upstairs transition on Littleroot substage 5 instead of a fixed Up count (commit aad6f7fb01).
+- Tools/Automation: Use four gated Up presses for the female house stairs before waiting for bedroom setup (commit aad6f7fb01).
+- Tools/Automation: Reject non-v1 beacon-shaped false positives in the PowerShell reader (commit aad6f7fb01).
+- Tools/Automation: Broaden Littleroot script-step proof and wait-message readiness to in-house setup scripts (commit aad6f7fb01).
+- Tools/Automation: Keep Littleroot intro input-ready while the script is waiting for message acknowledgment (commit aad6f7fb01).
+- Tools/Automation: Carry the last script command class in Littleroot beacon proof for cutscene wait diagnostics (commit aad6f7fb01).
+- Tools/Automation: Add Littleroot Mom object diagnostics to the beacon error field for truck-exit script stalls (commit aad6f7fb01).
+- Tools/Automation: Use a bounded beacon-gated Right loop for truck exit and log diagnostic flags/error codes (commit aad6f7fb01).
+- Tools/Automation: Treat held player movement as diagnostic-only after truck idle proved it can remain set while ready (commit aad6f7fb01).
+- Tools/Automation: Require a settled player object before overworld movement-ready beacon states (commit aad6f7fb01).
+- Tools/Automation: Gate Littleroot truck-exit intro input on visible field messages only to avoid premature A presses (commit aad6f7fb01).
+- Tools/Automation: Add overworld beacon diagnostics for script, lock, message, fade, and player movement blockers (commit aad6f7fb01).
+- Docs/Automation: Record speed-mode starter attempt and current Littleroot moving-in blocker tuple (commit aad6f7fb01).
+- Tools/Automation: Exit the truck with exactly two gated Right presses instead of an unbounded move loop (commit aad6f7fb01).
+- Tools/Automation: Treat visible field message boxes as overworld input-ready even while scripts own the context (commit aad6f7fb01).
+- Docs/Automation: Record live normal-speed truck proof, AHK v2 decision, local ROM staging, and remaining starter/speed acceptance (commit aad6f7fb01).
+- Tools/Automation: Tighten live beacon scan bounds around the fixed 2x beacon position to reduce route runtime (commit aad6f7fb01).
+- Tools/Automation: Remove the temporary backdrop diagnostic after live beacon rendering was verified (commit aad6f7fb01).
+- Tools/Automation: Gate female confirmation on durable `gender=2` proof instead of a transient stage id (commit aad6f7fb01).
+- Tools/Automation: Raise the boot beacon read budget to allow the live PowerShell sampler to finish decoding (commit aad6f7fb01).
+- Tools/Automation: Force a small 2x mGBA window size instead of preserving a restored oversized window (commit aad6f7fb01).
+- Tools/Automation: Prefer fast integer-scale beacon scans and pass a bounded scan window from the mGBA runner (commit aad6f7fb01).
+- Tools/Automation: Launch mGBA at 2x scale so beacon pixels can be sampled as integer-scaled cells (commit aad6f7fb01).
+- Tools/Automation: Decode non-integer scaled mGBA beacons with a run-length sampler and bounded top-left scan region (commit aad6f7fb01).
+- Tools/Automation: Pin the beacon sprite to OBJ palette slot 15 so renderer palette refreshes match the created sprite (commit aad6f7fb01).
+- Tools/Automation: Keep beacon sprite tracking zero-initialized so automation builds do not emit discarded `.data` (commit aad6f7fb01).
+- Tools/Automation: Create and update the debug beacon through the standard sprite pipeline so live screens load its OAM and tile data (commit aad6f7fb01).
+- Tools/Automation: Force OBJ display directly while rendering the automation beacon so queued DISPCNT writes cannot hide it (commit aad6f7fb01).
+- Tools/Automation: Stage the rebuilt ROM to local Windows temp before launching mGBA to avoid UNC ROM fallback behavior (commit aad6f7fb01).
+- Tools/Automation: Add a late VBlank beacon refresh after sprite/DMA processing to survive screen callback tile overwrites (commit aad6f7fb01).
+- Tools/Automation: Render the debug beacon through OAM and palette buffers before screen VBlank callbacks for live visibility (commit aad6f7fb01).
+- Tools/Automation: Keep the AutoHotkey v2 mGBA window small, topmost, and active before beacon captures and key sends (commit aad6f7fb01).
+- Tools/Automation: Ignore raced WScript termination errors during bounded no-beacon boot scans (commit aad6f7fb01).
+- Tools/Automation: Bound no-beacon boot scans so the AHK v2 runner can keep pressing through title screens (commit aad6f7fb01).
+- Tools/Automation: Port beacon-gated mGBA repro runner to AutoHotkey v2 and add validate mode (commit aad6f7fb01).
+- Tools/Automation: Inline disabled beacon no-ops so default builds avoid hot-path empty calls (commit aad6f7fb01).
+- Tools/Automation: Short-circuit beacon scans on anchor pixels before decoding full proof rows (commit aad6f7fb01).
+- Tools/Automation: Keep beacon rendering from forcing OBJ 1D mapping while preserving debug overlay output (commit aad6f7fb01).
+- Docs/Automation: Record beacon implementation evidence, sampler validation, and remaining live mGBA acceptance work (commit aad6f7fb01).
+- Tools/Automation: Add debug automation beacon, beacon sampler, and state-gated mGBA runner for female `A` truck/starter repros (commit aad6f7fb01).
+- Docs/Automation: Add ExecPlan for beacon-gated mGBA reproduction from clean boot through female `A` truck proof and first Pokemon selection (commit cf39654724).
+- Docs/Automation: Add design doc for deterministic mGBA reproduction pipeline and beacon-gated stage automation strategy; add docs summary link (commit fcf74b9c45).
+- Docs/Process: Add repository-adapted `.agent/PLANS.md` with milestone-continuity policy (exec plans continue until success or escalation) (commit 7371596cfe).
+- Tools/AHK: Tune intro flow near gender/name by lowering pre-gender advance, switching gender nudge to `Right`, trimming pre-name presses, and extending post-name truck advance window (commit 7371596cfe).
+- Tools/AHK: Increase bounded dialogue-advance limits to carry the deterministic flow past Birch scenes into gender/name/truck phases without reverting to endless key spam (commit 7371596cfe).
+- Tools/AHK: Revert mGBA key dispatch to foreground `Send` under full-run input block after `ControlSend` failed to advance title/menu state (commit 7371596cfe).
+- Tools/AHK: Retune intro step timings and key cadence to avoid premature title input and reduce over-advance spam during gender/name/truck progression (commit 7371596cfe).
+- Tools/AHK: Capture mGBA client area via `GetClientRect` + `CopyFromScreen` to remove noisy title-bar/frame pixels from checkpoint matching (commit 7371596cfe).
+- Tools/AHK: Make checkpoint compare fail-closed by requiring parsed numeric diff scores and rejecting missing/unparsable references (commit 7371596cfe).
+- Tools/AHK: Harden mGBA intro input isolation with full-run `BlockInput` and PID-targeted `ControlSend` fallback delivery (commit 7371596cfe).
 - Tools/AHK: Switch intro automation to `SendMode Event` and disable per-key input blocking to improve mGBA key consumption reliability (commit 5c8400f03d).
 - Tools/AHK: Fix PowerShell capture helper PID argument collision (`$PID`) by renaming to `-TargetPid` and updating caller (commit 5c8400f03d).
 - Tools/AHK: Fix checkpoint capture on UNC workspaces by staging captures/comparisons through local temp files before copying into repo paths (commit 5c8400f03d).

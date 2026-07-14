@@ -68,32 +68,32 @@ SINGLE_BATTLE_TEST("Micle Berry raises the holder's accuracy by 1.2")
 SINGLE_BATTLE_TEST("Micle Berry increases the accuracy of the next used move across turns")
 {
     GIVEN {
-        ASSUME(GetMoveAccuracy(MOVE_ROCK_SLIDE) == 90);
+        ASSUME(GetMoveAccuracy(MOVE_AQUA_TAIL) == 90);
         PASSES_RANDOMLY(100, 100, RNG_ACCURACY);
         PLAYER(SPECIES_WOBBUFFET) { MaxHP(100); HP(26); Item(ITEM_MICLE_BERRY); }
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
         TURN { MOVE(opponent, MOVE_SCRATCH); }
-        TURN { MOVE(player, MOVE_ROCK_SLIDE); }
+        TURN { MOVE(player, MOVE_AQUA_TAIL); }
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
-        ANIMATION(ANIM_TYPE_MOVE, MOVE_ROCK_SLIDE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_TAIL, player);
     }
 }
 
 SINGLE_BATTLE_TEST("Micle Berry increases the accuracy of the next used move the same turn the berry was triggered")
 {
     GIVEN {
-        ASSUME(GetMoveAccuracy(MOVE_ROCK_SLIDE) == 90);
+        ASSUME(GetMoveAccuracy(MOVE_AQUA_TAIL) == 90);
         PASSES_RANDOMLY(100, 100, RNG_ACCURACY);
         PLAYER(SPECIES_WOBBUFFET) { MaxHP(100); HP(26); Item(ITEM_MICLE_BERRY); }
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
-        TURN { MOVE(opponent, MOVE_SCRATCH); MOVE(player, MOVE_ROCK_SLIDE); }
+        TURN { MOVE(opponent, MOVE_SCRATCH); MOVE(player, MOVE_AQUA_TAIL); }
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
-        ANIMATION(ANIM_TYPE_MOVE, MOVE_ROCK_SLIDE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_TAIL, player);
     }
 }

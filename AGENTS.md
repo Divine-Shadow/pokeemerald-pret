@@ -2,7 +2,8 @@
 
 ## Mandatory: Update `PATCH_NOTES.md`
 - After every change you make (code, data, or docs), add a concise entry to `PATCH_NOTES.md` at the top of the file.
-- Use the format: `- Area: short description (commit <short-hash>)`.
+- Use the format: `- Area: short description (commit <short-hash>)` when a stable commit hash is already known.
+- For local work that has not been committed yet, use `(commit pending)`. Do not leave verified work uncommitted just to wait for a perfect rebased hash.
 - Example: `- Gameplay: Strength is now a Rock-type move (commit c78da96b3a).`
 - Keeping this file current is required for smooth reviews and release notes.
 
@@ -46,6 +47,7 @@ The Dockerfile provides a reproducible toolchain. Using the bind-mount approach 
 
 ## Commit & Pull Request Guidelines
 - Commits: concise, imperative mood; reference PR/issue when relevant (e.g., `Fix Wonder Room interaction (#7626)`).
+- Once your scoped work is implemented and verified, prefer committing it so the tree is clean for the next agent or reviewer. A clean tree with `commit pending` notes is better than an uncommitted verified change waiting for an exact final hash.
 - Branches: target `master` for hotfixes; `upcoming` for features/regular work.
 - PRs: clear description, rationale, reproducible steps, linked issues, and screenshots/logs when UI/visuals apply. Keep diffs focused.
 
