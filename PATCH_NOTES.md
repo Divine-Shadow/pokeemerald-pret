@@ -1,5 +1,5 @@
-- Tests: Cover Training Kit milestone selection, Rare Candy fuel use, reusability, and starting Key Item availability (commit pending).
-- Gameplay/Items: Replace consumable Training Candy with a reusable Training Kit that previews its target and Rare Candy cost, then stays on party selection after use or cancellation (commit pending).
+- Tests: Cover Training Kit milestone selection, Rare Candy fuel use, reusability, and starting Key Item availability (commit f80a8a0948).
+- Gameplay/Items: Replace consumable Training Candy with a reusable Training Kit that previews its target and Rare Candy cost, then stays on party selection after use or cancellation (commit f80a8a0948).
 - Repo/Git: Reconcile accumulated work onto canonical main and remove stale branch divergence (commit fe8b1b4908).
 - Gameplay/Items: Add Training Candy as a PC-stocked QoL candy that spends Rare Candies to stop at the next move, evolution, or level cap (commit dfe6df93de).
 - Gameplay/Items: Fix bag item removal across split stacks so only the requested quantity is removed and slots compact correctly (commit dfe6df93de).
