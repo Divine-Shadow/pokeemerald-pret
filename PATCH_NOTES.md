@@ -1,4 +1,4 @@
-- Repo/Git: Reconcile accumulated work onto canonical main and remove stale branch divergence (commit pending).
+- Repo/Git: Reconcile accumulated work onto canonical main and remove stale branch divergence (commit fe8b1b4908).
 - Gameplay/Items: Add Training Candy as a PC-stocked QoL candy that spends Rare Candies to stop at the next move, evolution, or level cap (commit dfe6df93de).
 - Gameplay/Items: Fix bag item removal across split stacks so only the requested quantity is removed and slots compact correctly (commit dfe6df93de).
 - Docs/Planning: Record final PKCalc move metadata migration proof evidence (commit dfe6df93de).
