@@ -1,3 +1,5 @@
+- Tests: Cover dialogue pane completion, fast-forward pacing, boundary handling, callback replacement, and malformed-printer safety (commit pending).
+- Field/Dialogue: Let A complete the current field-dialogue pane and held R fast-forward safely through consecutive messages (commit pending).
 - Tests: Cover Training Kit milestone selection, Rare Candy fuel use, reusability, and starting Key Item availability (commit f80a8a0948).
 - Gameplay/Items: Replace consumable Training Candy with a reusable Training Kit that previews its target and Rare Candy cost, then stays on party selection after use or cancellation (commit f80a8a0948).
 - Repo/Git: Reconcile accumulated work onto canonical main and remove stale branch divergence (commit fe8b1b4908).

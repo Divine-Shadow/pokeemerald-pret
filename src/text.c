@@ -15,6 +15,11 @@
 
 static u16 RenderText(struct TextPrinter *);
 static u32 RenderFont(struct TextPrinter *);
+static u32 RenderFontWithLimit(struct TextPrinter *, u16 *);
+static void RunTextPrinterNormal(struct TextPrinter *);
+static void RunTextPrinterBurst(struct TextPrinter *);
+static bool32 IsTextPrinterInputWaitState(u8);
+static bool32 TextPrinterWaitFastForward(struct TextPrinter *);
 static u16 FontFunc_Small(struct TextPrinter *);
 static u16 FontFunc_Normal(struct TextPrinter *);
 static u16 FontFunc_Short(struct TextPrinter *);
@@ -59,6 +64,13 @@ COMMON_DATA const struct FontInfo *gFonts = NULL;
 COMMON_DATA bool8 gDisableTextPrinters = 0;
 COMMON_DATA struct TextGlyph gCurGlyph = {0};
 COMMON_DATA TextFlags gTextFlags = {0};
+
+#define TEXT_FAST_FORWARD_GLYPHS_PER_FRAME 4
+#define TEXT_FAST_FORWARD_WAIT_FRAMES 6
+#define TEXT_PRINTER_BURST_RENDER_LIMIT 0x400
+#define TEXT_PRINTER_GENERATION_FIELD 6
+
+STATIC_ASSERT(sizeof(struct TextPrinterSubStruct) <= TEXT_PRINTER_GENERATION_FIELD, TextPrinterSubStructOverlapsGeneration)
 
 static const u8 sFontHalfRowOffsets[] =
 {
@@ -331,11 +343,14 @@ u16 AddTextPrinterParameterized(u8 windowId, u8 fontId, const u8 *str, u8 x, u8 
 bool32 AddTextPrinter(struct TextPrinterTemplate *printerTemplate, u8 speed, void (*callback)(struct TextPrinterTemplate *, u16))
 {
     int i;
-    u16 j;
+    u16 renderSteps;
+    u32 renderCmd;
+    u8 generation;
 
     if (!gFonts)
         return FALSE;
 
+    generation = sTextPrinters[printerTemplate->windowId].subStructFields[TEXT_PRINTER_GENERATION_FIELD] + 1;
     sTempTextPrinter.active = TRUE;
     sTempTextPrinter.state = RENDER_STATE_HANDLE_CHAR;
     sTempTextPrinter.textSpeed = speed;
@@ -344,6 +359,7 @@ bool32 AddTextPrinter(struct TextPrinterTemplate *printerTemplate, u8 speed, voi
 
     for (i = 0; i < (int)ARRAY_COUNT(sTempTextPrinter.subStructFields); i++)
         sTempTextPrinter.subStructFields[i] = 0;
+    sTempTextPrinter.subStructFields[TEXT_PRINTER_GENERATION_FIELD] = generation;
 
     sTempTextPrinter.printerTemplate = *printerTemplate;
     sTempTextPrinter.callback = callback;
@@ -360,10 +376,12 @@ bool32 AddTextPrinter(struct TextPrinterTemplate *printerTemplate, u8 speed, voi
     {
         sTempTextPrinter.textSpeed = 0;
 
-        // Render all text (up to limit) at once
-        for (j = 0; j < 0x400; ++j)
+        // Render all text (up to limit) at once.
+        renderSteps = 0;
+        while (renderSteps < TEXT_PRINTER_BURST_RENDER_LIMIT)
         {
-            if (RenderFont(&sTempTextPrinter) == RENDER_FINISH)
+            renderCmd = RenderFontWithLimit(&sTempTextPrinter, &renderSteps);
+            if (renderCmd == RENDER_FINISH || renderCmd == RENDER_REPEAT)
                 break;
         }
 
@@ -386,22 +404,166 @@ void RunTextPrinters(void)
         {
             if (sTextPrinters[i].active)
             {
-                u16 renderCmd = RenderFont(&sTextPrinters[i]);
-                switch (renderCmd)
-                {
-                case RENDER_PRINT:
-                    CopyWindowToVram(sTextPrinters[i].printerTemplate.windowId, COPYWIN_GFX);
-                case RENDER_UPDATE:
-                    if (sTextPrinters[i].callback != NULL)
-                        sTextPrinters[i].callback(&sTextPrinters[i].printerTemplate, renderCmd);
-                    break;
-                case RENDER_FINISH:
-                    sTextPrinters[i].active = FALSE;
-                    break;
-                }
+                struct TextPrinterSubStruct *subStruct = (struct TextPrinterSubStruct *)(&sTextPrinters[i].subStructFields);
+
+                if (subStruct->completePagePending || subStruct->fastForwardActive)
+                    RunTextPrinterBurst(&sTextPrinters[i]);
+                else
+                    RunTextPrinterNormal(&sTextPrinters[i]);
             }
         }
     }
+}
+
+static bool32 IsTextPrinterInputWaitState(u8 state)
+{
+    switch (state)
+    {
+    case RENDER_STATE_WAIT:
+    case RENDER_STATE_CLEAR:
+    case RENDER_STATE_SCROLL_START:
+        return TRUE;
+    default:
+        return FALSE;
+    }
+}
+
+static void RunTextPrinterNormal(struct TextPrinter *textPrinter)
+{
+    u16 renderCmd = RenderFont(textPrinter);
+
+    switch (renderCmd)
+    {
+    case RENDER_PRINT:
+        CopyWindowToVram(textPrinter->printerTemplate.windowId, COPYWIN_GFX);
+    case RENDER_UPDATE:
+        if (textPrinter->callback != NULL)
+            textPrinter->callback(&textPrinter->printerTemplate, renderCmd);
+        break;
+    case RENDER_FINISH:
+        textPrinter->active = FALSE;
+        break;
+    }
+}
+
+static void RunTextPrinterBurst(struct TextPrinter *textPrinter)
+{
+    struct TextPrinterSubStruct *subStruct = (struct TextPrinterSubStruct *)(&textPrinter->subStructFields);
+    u16 renderCmd;
+    u16 renderSteps = 0;
+    u8 printedGlyphs = 0;
+    u8 dirtyWindowId = textPrinter->printerTemplate.windowId;
+    u8 *dirtyTileData = gWindows[dirtyWindowId].tileData;
+    u8 printerGeneration = textPrinter->subStructFields[TEXT_PRINTER_GENERATION_FIELD];
+    bool32 copyToVram = FALSE;
+    bool32 callbackInvalidatedPrinter = FALSE;
+
+    while (textPrinter->active && renderSteps < TEXT_PRINTER_BURST_RENDER_LIMIT)
+    {
+        const u8 *previousChar = textPrinter->printerTemplate.currentChar;
+        u8 previousState = textPrinter->state;
+        bool32 wasInputWait = IsTextPrinterInputWaitState(previousState);
+        bool32 completingPage = subStruct->completePagePending;
+
+        subStruct->renderedGlyph = FALSE;
+        renderCmd = RenderFontWithLimit(textPrinter, &renderSteps);
+        if (renderCmd == RENDER_REPEAT)
+        {
+            if (textPrinter->printerTemplate.currentChar == previousChar
+             && textPrinter->state == previousState)
+            {
+                subStruct->completePagePending = FALSE;
+                subStruct->fastForwardActive = FALSE;
+                subStruct->fastForwardWaitFrames = 0;
+            }
+            else if (previousState == RENDER_STATE_HANDLE_CHAR)
+            {
+                copyToVram = TRUE;
+            }
+            break;
+        }
+
+        if (previousState == RENDER_STATE_HANDLE_CHAR
+         && textPrinter->printerTemplate.currentChar != previousChar)
+            copyToVram = TRUE;
+        else if (previousState == RENDER_STATE_CLEAR
+              && textPrinter->state == RENDER_STATE_HANDLE_CHAR)
+            copyToVram = TRUE;
+
+        switch (renderCmd)
+        {
+        case RENDER_PRINT:
+            copyToVram = TRUE;
+            if (subStruct->renderedGlyph)
+                printedGlyphs++;
+        case RENDER_UPDATE:
+            if (textPrinter->callback != NULL)
+            {
+                textPrinter->callback(&textPrinter->printerTemplate, renderCmd);
+                if (textPrinter->subStructFields[TEXT_PRINTER_GENERATION_FIELD] != printerGeneration
+                 || textPrinter->printerTemplate.windowId != dirtyWindowId
+                 || gWindows[dirtyWindowId].tileData != dirtyTileData)
+                {
+                    subStruct->completePagePending = FALSE;
+                    subStruct->fastForwardActive = FALSE;
+                    subStruct->fastForwardWaitFrames = 0;
+                    copyToVram = FALSE;
+                    callbackInvalidatedPrinter = TRUE;
+                    break;
+                }
+            }
+            break;
+        case RENDER_FINISH:
+            textPrinter->active = FALSE;
+            subStruct->completePagePending = FALSE;
+            subStruct->fastForwardActive = FALSE;
+            subStruct->fastForwardWaitFrames = 0;
+            break;
+        }
+
+        if (callbackInvalidatedPrinter)
+            break;
+
+        if (!textPrinter->active || gDisableTextPrinters)
+            break;
+
+        if (IsTextPrinterInputWaitState(textPrinter->state))
+        {
+            if (!wasInputWait)
+                subStruct->completePagePending = FALSE;
+            break;
+        }
+
+        if (wasInputWait)
+        {
+            subStruct->fastForwardWaitFrames = 0;
+            break;
+        }
+
+        if (textPrinter->state == RENDER_STATE_WAIT_SE)
+            break;
+
+        if (previousState == RENDER_STATE_SCROLL || textPrinter->state == RENDER_STATE_SCROLL)
+            break;
+
+        if (textPrinter->printerTemplate.currentChar == previousChar
+         && textPrinter->state == previousState)
+        {
+            subStruct->completePagePending = FALSE;
+            subStruct->fastForwardActive = FALSE;
+            subStruct->fastForwardWaitFrames = 0;
+            break;
+        }
+
+        if (completingPage)
+            continue;
+
+        if (printedGlyphs >= TEXT_FAST_FORWARD_GLYPHS_PER_FRAME)
+            break;
+    }
+
+    if (copyToVram)
+        CopyWindowToVram(dirtyWindowId, COPYWIN_GFX);
 }
 
 bool32 IsTextPrinterActive(u8 id)
@@ -409,15 +571,72 @@ bool32 IsTextPrinterActive(u8 id)
     return sTextPrinters[id].active;
 }
 
+bool32 TryCompleteTextPrinterPage(u8 id)
+{
+    struct TextPrinterSubStruct *subStruct;
+
+    if (id >= WINDOWS_MAX || !sTextPrinters[id].active)
+        return FALSE;
+
+    switch (sTextPrinters[id].state)
+    {
+    case RENDER_STATE_HANDLE_CHAR:
+    case RENDER_STATE_WAIT_SE:
+    case RENDER_STATE_PAUSE:
+        subStruct = (struct TextPrinterSubStruct *)(&sTextPrinters[id].subStructFields);
+        subStruct->completePagePending = TRUE;
+        return TRUE;
+    default:
+        return FALSE;
+    }
+}
+
+void SetTextPrinterFastForward(u8 id, bool8 enabled)
+{
+    struct TextPrinterSubStruct *subStruct;
+
+    if (id >= WINDOWS_MAX)
+        return;
+
+    subStruct = (struct TextPrinterSubStruct *)(&sTextPrinters[id].subStructFields);
+    subStruct->fastForwardActive = enabled;
+    if (!enabled)
+        subStruct->fastForwardWaitFrames = 0;
+}
+
+void ResetTextPrinterBurstState(u8 id)
+{
+    struct TextPrinterSubStruct *subStruct;
+
+    if (id >= WINDOWS_MAX)
+        return;
+
+    subStruct = (struct TextPrinterSubStruct *)(&sTextPrinters[id].subStructFields);
+    subStruct->completePagePending = FALSE;
+    subStruct->fastForwardActive = FALSE;
+    subStruct->fastForwardWaitFrames = 0;
+}
+
 static u32 RenderFont(struct TextPrinter *textPrinter)
 {
+    u16 renderSteps = 0;
+
+    return RenderFontWithLimit(textPrinter, &renderSteps);
+}
+
+static u32 RenderFontWithLimit(struct TextPrinter *textPrinter, u16 *renderSteps)
+{
     u32 ret;
-    while (TRUE)
+
+    while (*renderSteps < TEXT_PRINTER_BURST_RENDER_LIMIT)
     {
+        (*renderSteps)++;
         ret = gFonts[textPrinter->printerTemplate.fontId].fontFunction(textPrinter);
         if (ret != RENDER_REPEAT)
             return ret;
     }
+
+    return RENDER_REPEAT;
 }
 
 void GenerateFontHalfRowLookupTable(u8 fgColor, u8 bgColor, u8 shadowColor)
@@ -655,6 +874,7 @@ inline static void GLYPH_COPY(u8 *windowTiles, u32 widthOffset, u32 j, u32 i, u3
 
 void CopyGlyphToWindow(struct TextPrinter *textPrinter)
 {
+    struct TextPrinterSubStruct *subStruct = (struct TextPrinterSubStruct *)(&textPrinter->subStructFields);
     struct Window *window;
     struct WindowTemplate *template;
     u32 *glyphPixels;
@@ -662,6 +882,7 @@ void CopyGlyphToWindow(struct TextPrinter *textPrinter)
     s32 glyphWidth, glyphHeight;
     u8 *windowTiles;
 
+    subStruct->renderedGlyph = TRUE;
     window = &gWindows[textPrinter->printerTemplate.windowId];
     template = &window->window;
 
@@ -881,6 +1102,8 @@ void TextPrinterInitDownArrowCounters(struct TextPrinter *textPrinter)
 {
     struct TextPrinterSubStruct *subStruct = (struct TextPrinterSubStruct *)(&textPrinter->subStructFields);
 
+    subStruct->fastForwardWaitFrames = 0;
+
     if (gTextFlags.autoScroll == 1)
     {
         subStruct->autoScrollDelay = 0;
@@ -971,6 +1194,26 @@ bool32 TextPrinterWaitAutoMode(struct TextPrinter *textPrinter)
     }
 }
 
+static bool32 TextPrinterWaitFastForward(struct TextPrinter *textPrinter)
+{
+    struct TextPrinterSubStruct *subStruct = (struct TextPrinterSubStruct *)(&textPrinter->subStructFields);
+
+    if (!subStruct->fastForwardActive)
+    {
+        subStruct->fastForwardWaitFrames = 0;
+        return FALSE;
+    }
+
+    subStruct->fastForwardWaitFrames++;
+    if (subStruct->fastForwardWaitFrames >= TEXT_FAST_FORWARD_WAIT_FRAMES)
+    {
+        subStruct->fastForwardWaitFrames = 0;
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
 void SetResultWithButtonPress(bool32 *result)
 {
     if (JOY_NEW(A_BUTTON | B_BUTTON))
@@ -982,6 +1225,7 @@ void SetResultWithButtonPress(bool32 *result)
 
 bool32 TextPrinterWaitWithDownArrow(struct TextPrinter *textPrinter)
 {
+    struct TextPrinterSubStruct *subStruct = (struct TextPrinterSubStruct *)(&textPrinter->subStructFields);
     bool32 result = FALSE;
     if (gTextFlags.autoScroll != 0 || AUTO_SCROLL_TEXT)
     {
@@ -989,17 +1233,25 @@ bool32 TextPrinterWaitWithDownArrow(struct TextPrinter *textPrinter)
 
         if (AUTO_SCROLL_TEXT)
             SetResultWithButtonPress(&result);
+
+        if (result)
+            subStruct->fastForwardWaitFrames = 0;
     }
     else
     {
         TextPrinterDrawDownArrow(textPrinter);
         SetResultWithButtonPress(&result);
+        if (result)
+            subStruct->fastForwardWaitFrames = 0;
+        else if (TextPrinterWaitFastForward(textPrinter))
+            result = TRUE;
     }
     return result;
 }
 
 bool32 TextPrinterWait(struct TextPrinter *textPrinter)
 {
+    struct TextPrinterSubStruct *subStruct = (struct TextPrinterSubStruct *)(&textPrinter->subStructFields);
     bool32 result = FALSE;
     if (gTextFlags.autoScroll != 0 || AUTO_SCROLL_TEXT)
     {
@@ -1007,10 +1259,17 @@ bool32 TextPrinterWait(struct TextPrinter *textPrinter)
 
         if (AUTO_SCROLL_TEXT)
             SetResultWithButtonPress(&result);
+
+        if (result)
+            subStruct->fastForwardWaitFrames = 0;
     }
     else
     {
         SetResultWithButtonPress(&result);
+        if (result)
+            subStruct->fastForwardWaitFrames = 0;
+        else if (TextPrinterWaitFastForward(textPrinter))
+            result = TRUE;
     }
     return result;
 }
@@ -1057,7 +1316,9 @@ static u16 RenderText(struct TextPrinter *textPrinter)
     switch (textPrinter->state)
     {
     case RENDER_STATE_HANDLE_CHAR:
-        if (JOY_HELD(A_BUTTON | B_BUTTON) && subStruct->hasPrintBeenSpedUp)
+        if (subStruct->completePagePending || subStruct->fastForwardActive)
+            textPrinter->delayCounter = 0;
+        else if (JOY_HELD(A_BUTTON | B_BUTTON) && subStruct->hasPrintBeenSpedUp)
             textPrinter->delayCounter = 0;
 
         if (textPrinter->delayCounter && textPrinter->textSpeed)
@@ -1133,6 +1394,7 @@ static u16 RenderText(struct TextPrinter *textPrinter)
                 return RENDER_REPEAT;
             case EXT_CTRL_CODE_PAUSE_UNTIL_PRESS:
                 textPrinter->state = RENDER_STATE_WAIT;
+                subStruct->fastForwardWaitFrames = 0;
                 if (gTextFlags.autoScroll)
                     subStruct->autoScrollDelay = 0;
                 return RENDER_UPDATE;
@@ -1231,6 +1493,7 @@ static u16 RenderText(struct TextPrinter *textPrinter)
             currChar = *textPrinter->printerTemplate.currentChar++;
             gCurGlyph.width = DrawKeypadIcon(textPrinter->printerTemplate.windowId, currChar, textPrinter->printerTemplate.currentX, textPrinter->printerTemplate.currentY);
             textPrinter->printerTemplate.currentX += gCurGlyph.width + textPrinter->printerTemplate.letterSpacing;
+            subStruct->renderedGlyph = TRUE;
             return RENDER_PRINT;
         case EOS:
             return RENDER_FINISH;
@@ -1317,8 +1580,14 @@ static u16 RenderText(struct TextPrinter *textPrinter)
     case RENDER_STATE_SCROLL:
         if (textPrinter->scrollDistance)
         {
-            int scrollSpeed = GetPlayerTextSpeed();
-            int speed = sWindowVerticalScrollSpeeds[scrollSpeed];
+            int scrollSpeed;
+            int speed;
+
+            if (subStruct->fastForwardActive)
+                scrollSpeed = OPTIONS_TEXT_SPEED_FAST;
+            else
+                scrollSpeed = GetPlayerTextSpeed();
+            speed = sWindowVerticalScrollSpeeds[scrollSpeed];
             if (textPrinter->scrollDistance < speed)
             {
                 ScrollWindow(textPrinter->printerTemplate.windowId, 0, textPrinter->scrollDistance, PIXEL_FILL(textPrinter->printerTemplate.bgColor));
@@ -1341,7 +1610,12 @@ static u16 RenderText(struct TextPrinter *textPrinter)
             textPrinter->state = RENDER_STATE_HANDLE_CHAR;
         return RENDER_UPDATE;
     case RENDER_STATE_PAUSE:
-        if (textPrinter->delayCounter != 0)
+        if (subStruct->completePagePending || subStruct->fastForwardActive)
+        {
+            textPrinter->delayCounter = 0;
+            textPrinter->state = RENDER_STATE_HANDLE_CHAR;
+        }
+        else if (textPrinter->delayCounter != 0)
             textPrinter->delayCounter--;
         else
             textPrinter->state = RENDER_STATE_HANDLE_CHAR;

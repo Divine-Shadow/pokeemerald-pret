@@ -10,6 +10,7 @@ enum
 };
 
 bool8 ShowFieldMessage(const u8 *str);
+bool8 ShowFieldMessageNoFastForward(const u8 *str);
 bool8 ShowPokenavFieldMessage(const u8 *str);
 bool8 ShowFieldMessageFromBuffer(void);
 bool8 ShowFieldAutoScrollMessage(const u8 *str);
@@ -18,6 +19,8 @@ bool8 IsFieldMessageBoxHidden(void);
 u8 GetFieldMessageBoxMode(void);
 void StopFieldMessage(void);
 void InitFieldMessageBox(void);
+bool8 TryFastForwardFieldMessageFinalWait(void);
+void CancelFieldMessageFastForward(void);
 
 extern u8 gWalkAwayFromSignpostTimer;
 

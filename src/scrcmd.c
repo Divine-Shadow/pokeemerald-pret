@@ -123,6 +123,8 @@ bool8 ScrCmd_end(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1);
 
+    if (!Script_IsAnalyzingEffects())
+        CancelFieldMessageFastForward();
     FlagClear(FLAG_SAFE_FOLLOWER_MOVEMENT);
     StopScript(ctx);
     return FALSE;
@@ -135,6 +137,8 @@ bool8 ScrCmd_gotonative(struct ScriptContext *ctx)
     Script_RequestEffects(SCREFF_V1);
     Script_CheckEffectInstrumentedGotoNative(addr);
 
+    if (!Script_IsAnalyzingEffects())
+        CancelFieldMessageFastForward();
     SetupNativeScript(ctx, addr);
     return TRUE;
 }
@@ -146,6 +150,8 @@ bool8 ScrCmd_special(struct ScriptContext *ctx)
     Script_RequestEffects(SCREFF_V1);
     Script_CheckEffectInstrumentedSpecial(index);
 
+    if (!Script_IsAnalyzingEffects())
+        CancelFieldMessageFastForward();
     gSpecials[index]();
     return FALSE;
 }
@@ -160,6 +166,8 @@ bool8 ScrCmd_specialvar(struct ScriptContext *ctx)
     Script_RequestWriteVar(varId);
     Script_CheckEffectInstrumentedSpecial(index);
 
+    if (!Script_IsAnalyzingEffects())
+        CancelFieldMessageFastForward();
     *ptr = gSpecials[index]();
     return FALSE;
 }
@@ -171,6 +179,8 @@ bool8 ScrCmd_callnative(struct ScriptContext *ctx)
     Script_RequestEffects(SCREFF_V1);
     Script_CheckEffectInstrumentedCallNative(func);
 
+    if (!Script_IsAnalyzingEffects())
+        CancelFieldMessageFastForward();
     func(ctx);
     return FALSE;
 }
@@ -179,6 +189,7 @@ bool8 ScrCmd_waitstate(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     ScriptContext_Stop();
     return TRUE;
 }
@@ -358,6 +369,7 @@ bool8 ScrCmd_endram(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
 
+    CancelFieldMessageFastForward();
     FlagClear(FLAG_SAFE_FOLLOWER_MOVEMENT);
     ClearRamScript();
     StopScript(ctx);
@@ -778,6 +790,7 @@ bool8 ScrCmd_animateflash(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     AnimateFlash(level);
     ScriptContext_Stop();
     return TRUE;
@@ -814,6 +827,7 @@ bool8 ScrCmd_fadescreen(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     FadeScreen(mode, 0);
     SetupNativeScript(ctx, IsPaletteNotActive);
     return TRUE;
@@ -826,6 +840,7 @@ bool8 ScrCmd_fadescreenspeed(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     FadeScreen(mode, speed);
     SetupNativeScript(ctx, IsPaletteNotActive);
     return TRUE;
@@ -838,6 +853,7 @@ bool8 ScrCmd_fadescreenswapbuffers(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     switch (mode)
     {
     case FADE_FROM_BLACK:
@@ -873,6 +889,7 @@ bool8 ScrCmd_delay(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     sPauseCounter = frames;
     SetupNativeScript(ctx, RunPauseTimer);
     return TRUE;
@@ -972,6 +989,7 @@ bool8 ScrCmd_warp(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     SetWarpDestination(mapGroup, mapNum, warpId, x, y);
     DoWarp();
     ResetInitialPlayerAvatarState();
@@ -988,6 +1006,7 @@ bool8 ScrCmd_warpsilent(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     SetWarpDestination(mapGroup, mapNum, warpId, x, y);
     DoDiveWarp();
     ResetInitialPlayerAvatarState();
@@ -1004,6 +1023,7 @@ bool8 ScrCmd_warpdoor(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     SetWarpDestination(mapGroup, mapNum, warpId, x, y);
     DoDoorWarp();
     ResetInitialPlayerAvatarState();
@@ -1019,6 +1039,7 @@ bool8 ScrCmd_warphole(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     PlayerGetDestCoords(&x, &y);
     if (mapGroup == MAP_GROUP(MAP_UNDEFINED) && mapNum == MAP_NUM(MAP_UNDEFINED))
         SetWarpDestinationToFixedHoleWarp(x - MAP_OFFSET, y - MAP_OFFSET);
@@ -1040,6 +1061,7 @@ bool8 ScrCmd_warpteleport(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     SetWarpDestination(mapGroup, mapNum, warpId, x, y);
     DoTeleportTileWarp();
     ResetInitialPlayerAvatarState();
@@ -1056,6 +1078,7 @@ bool8 ScrCmd_warpmossdeepgym(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     SetWarpDestination(mapGroup, mapNum, warpId, x, y);
     DoMossdeepGymWarp();
     ResetInitialPlayerAvatarState();
@@ -1178,6 +1201,7 @@ bool8 ScrCmd_waitse(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     SetupNativeScript(ctx, WaitForSoundEffectFinish);
     return TRUE;
 }
@@ -1201,6 +1225,7 @@ bool8 ScrCmd_waitfanfare(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     SetupNativeScript(ctx, WaitForFanfareFinish);
     return TRUE;
 }
@@ -1248,6 +1273,7 @@ bool8 ScrCmd_fadeoutbgm(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     if (speed != 0)
         FadeOutBGMTemporarily(4 * speed);
     else
@@ -1292,6 +1318,7 @@ bool8 ScrCmd_applymovement(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     // When applying script movements to follower, it may have frozen animation that must be cleared
     if ((localId == OBJ_EVENT_ID_FOLLOWER && (objEvent = GetFollowerObject()) && objEvent->frozen) 
             || ((objEvent = &gObjectEvents[GetObjectEventIdByLocalId(localId)]) && IS_OW_MON_OBJ(objEvent)))
@@ -1322,6 +1349,7 @@ bool8 ScrCmd_applymovementat(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     gObjectEvents[GetObjectEventIdByLocalId(localId)].directionOverwrite = DIR_NONE;
     AutomationBeacon_SetScriptStep(localId == LOCALID_PLAYER ? AUTOMATION_BEACON_SCRIPT_STEP_APPLY_PLAYER : AUTOMATION_BEACON_SCRIPT_STEP_APPLY_OBJECT);
     ScriptMovement_StartObjectMovementScript(localId, mapNum, mapGroup, movementScript);
@@ -1349,6 +1377,7 @@ bool8 ScrCmd_waitmovement(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     if (localId != LOCALID_NONE)
         sMovingNpcId = localId;
     sMovingNpcMapGroup = gSaveBlock1Ptr->location.mapGroup;
@@ -1366,6 +1395,7 @@ bool8 ScrCmd_waitmovementat(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     if (localId != LOCALID_NONE)
         sMovingNpcId = localId;
     mapGroup = ScriptReadByte(ctx);
@@ -1510,6 +1540,8 @@ bool8 ScrCmd_resetobjectsubpriority(struct ScriptContext *ctx)
 bool8 ScrCmd_faceplayer(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
+
+    CancelFieldMessageFastForward();
     if (PlayerHasFollowerNPC() 
      && gObjectEvents[GetFollowerNPCObjectId()].invisible == FALSE 
      && gSelectedObjectEvent == GetFollowerNPCObjectId())
@@ -1545,6 +1577,7 @@ bool8 ScrCmd_turnobject(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     ObjectEventTurnByLocalIdAndMap(localId, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, direction);
     return FALSE;
 }
@@ -1582,6 +1615,7 @@ bool8 ScrCmd_turnvobject(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     TurnVirtualObject(virtualObjId, direction);
     return FALSE;
 }
@@ -1592,6 +1626,7 @@ bool8 ScrCmd_lockall(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     if (IsOverworldLinkActive())
     {
         return FALSE;
@@ -1613,6 +1648,7 @@ bool8 ScrCmd_lock(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     if (IsOverworldLinkActive())
     {
         return FALSE;
@@ -1727,6 +1763,9 @@ bool8 ScrCmd_messageinstant(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
+    ResetTextPrinterBurstState(0);
+
     if (msg == NULL)
         msg = (const u8 *)ctx->data[0];
     LoadMessageBoxAndBorderGfx();
@@ -1756,10 +1795,16 @@ bool8 ScrCmd_closemessage(struct ScriptContext *ctx)
 static bool8 WaitForAorBPress(void)
 {
     if (JOY_NEW(A_BUTTON))
+    {
+        CancelFieldMessageFastForward();
         return TRUE;
+    }
     if (JOY_NEW(B_BUTTON))
+    {
+        CancelFieldMessageFastForward();
         return TRUE;
-    return FALSE;
+    }
+    return TryFastForwardFieldMessageFinalWait();
 }
 
 bool8 ScrCmd_waitbuttonpress(struct ScriptContext *ctx)
@@ -1777,6 +1822,9 @@ bool8 ScrCmd_yesnobox(struct ScriptContext *ctx)
     u8 top = ScriptReadByte(ctx);
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
+
+    CancelFieldMessageFastForward();
+    ResetTextPrinterBurstState(0);
 
     if (ScriptMenu_YesNo(left, top) == TRUE)
     {
@@ -1825,6 +1873,9 @@ bool8 ScrCmd_dynmultichoice(struct ScriptContext *ctx)
     struct ListMenuItem *items;
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
+
+    CancelFieldMessageFastForward();
+    ResetTextPrinterBurstState(0);
 
     if (argc == 0)
         return FALSE;
@@ -1898,6 +1949,9 @@ bool8 ScrCmd_multichoice(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
+    ResetTextPrinterBurstState(0);
+
     if (ScriptMenu_Multichoice(left, top, multichoiceId, ignoreBPress) == TRUE)
     {
         ScriptContext_Stop();
@@ -1918,6 +1972,9 @@ bool8 ScrCmd_multichoicedefault(struct ScriptContext *ctx)
     bool8 ignoreBPress = ScriptReadByte(ctx);
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
+
+    CancelFieldMessageFastForward();
+    ResetTextPrinterBurstState(0);
 
     if (ScriptMenu_MultichoiceWithDefault(left, top, multichoiceId, ignoreBPress, defaultChoice) == TRUE)
     {
@@ -1950,6 +2007,9 @@ bool8 ScrCmd_multichoicegrid(struct ScriptContext *ctx)
     bool8 ignoreBPress = ScriptReadByte(ctx);
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
+
+    CancelFieldMessageFastForward();
+    ResetTextPrinterBurstState(0);
 
     if (ScriptMenu_MultichoiceGrid(left, top, multichoiceId, ignoreBPress, numColumns) == TRUE)
     {
@@ -1996,6 +2056,9 @@ bool8 ScrCmd_showmonpic(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
+    ResetTextPrinterBurstState(0);
+
     ScriptMenu_ShowPokemonPic(species, x, y);
     return FALSE;
 }
@@ -2004,6 +2067,7 @@ bool8 ScrCmd_hidemonpic(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     // The hide function returns a pointer to a function
     // that returns true once the pic is hidden
     bool8 (*func)(void) = ScriptMenu_HidePokemonPic();
@@ -2020,6 +2084,7 @@ bool8 ScrCmd_showcontestpainting(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     // Artist's painting is temporary and already has its data loaded
     if (contestWinnerId != CONTEST_WINNER_ARTIST)
         SetContestWinnerForPainting(contestWinnerId);
@@ -2034,6 +2099,9 @@ bool8 ScrCmd_braillemessage(struct ScriptContext *ctx)
     u8 *ptr = (u8 *)ScriptReadWord(ctx);
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
+
+    CancelFieldMessageFastForward();
+    ResetTextPrinterBurstState(0);
 
     struct WindowTemplate winTemplate;
     s32 i;
@@ -2454,6 +2522,7 @@ bool8 ScrCmd_dotrainerbattle(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     BattleSetup_StartTrainerBattle();
     return TRUE;
 }
@@ -2533,6 +2602,7 @@ bool8 ScrCmd_dowildbattle(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     if (sIsScriptedWildDouble == FALSE)
         BattleSetup_StartScriptedWildBattle();
     else
@@ -2549,6 +2619,7 @@ bool8 ScrCmd_pokemart(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     CreatePokemartMenu(ptr);
     ScriptContext_Stop();
     return TRUE;
@@ -2560,6 +2631,7 @@ bool8 ScrCmd_pokemartdecoration(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     CreateDecorationShop1Menu(ptr);
     ScriptContext_Stop();
     return TRUE;
@@ -2572,6 +2644,7 @@ bool8 ScrCmd_pokemartdecoration2(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     CreateDecorationShop2Menu(ptr);
     ScriptContext_Stop();
     return TRUE;
@@ -2583,6 +2656,7 @@ bool8 ScrCmd_playslotmachine(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     PlaySlotMachine(machineId, CB2_ReturnToFieldContinueScriptPlayMapMusic);
     ScriptContext_Stop();
     return TRUE;
@@ -2614,6 +2688,7 @@ bool8 ScrCmd_choosecontestmon(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     ChooseContestMon();
     ScriptContext_Stop();
     return TRUE;
@@ -2624,6 +2699,7 @@ bool8 ScrCmd_startcontest(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     StartContest();
     ScriptContext_Stop();
     return TRUE;
@@ -2633,6 +2709,7 @@ bool8 ScrCmd_showcontestresults(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     ShowContestResults();
     ScriptContext_Stop();
     return TRUE;
@@ -2642,6 +2719,7 @@ bool8 ScrCmd_contestlinktransfer(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     ContestLinkTransfer(gSpecialVar_ContestCategory);
     ScriptContext_Stop();
     return TRUE;
@@ -2653,6 +2731,7 @@ bool8 ScrCmd_dofieldeffect(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     sFieldEffectScriptId = effectId;
     FieldEffectStart(sFieldEffectScriptId);
     return FALSE;
@@ -2682,6 +2761,7 @@ bool8 ScrCmd_waitfieldeffect(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     sFieldEffectScriptId = scriptId;
     SetupNativeScript(ctx, WaitForFieldEffectFinish);
     return TRUE;
@@ -2727,6 +2807,7 @@ bool8 ScrCmd_waitmoncry(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     SetupNativeScript(ctx, IsCryFinished);
     return TRUE;
 }
@@ -2756,6 +2837,7 @@ bool8 ScrCmd_opendoor(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     AutomationBeacon_SetScriptStep(AUTOMATION_BEACON_SCRIPT_STEP_OPEN_DOOR);
     x += MAP_OFFSET;
     y += MAP_OFFSET;
@@ -2771,6 +2853,7 @@ bool8 ScrCmd_closedoor(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     AutomationBeacon_SetScriptStep(AUTOMATION_BEACON_SCRIPT_STEP_CLOSE_DOOR);
     x += MAP_OFFSET;
     y += MAP_OFFSET;
@@ -2790,6 +2873,7 @@ bool8 ScrCmd_waitdooranim(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     AutomationBeacon_SetScriptStep(AUTOMATION_BEACON_SCRIPT_STEP_WAIT_DOOR);
     SetupNativeScript(ctx, IsDoorAnimationStopped);
     return TRUE;
@@ -2885,6 +2969,8 @@ bool8 ScrCmd_moverotatingtileobjects(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
 
+    if (!Script_IsAnalyzingEffects())
+        CancelFieldMessageFastForward();
     sMovingNpcId = MoveRotatingTileObjects(puzzleNumber);
     return FALSE;
 }
@@ -2893,6 +2979,8 @@ bool8 ScrCmd_turnrotatingtileobjects(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
 
+    if (!Script_IsAnalyzingEffects())
+        CancelFieldMessageFastForward();
     TurnRotatingTileObjects();
     return FALSE;
 }
@@ -2927,6 +3015,7 @@ bool8 ScrCmd_lockfortrainer(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     if (IsOverworldLinkActive())
     {
         return FALSE;
@@ -2990,6 +3079,7 @@ bool8 ScrCmd_warpspinenter(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     SetWarpDestination(mapGroup, mapNum, warpId, x, y);
     SetSpinStartFacingDir(GetPlayerFacingDirection());
     DoSpinEnterWarp();
@@ -3052,6 +3142,7 @@ bool8 ScrCmd_warpwhitefade(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE | SCREFF_HARDWARE);
 
+    CancelFieldMessageFastForward();
     SetWarpDestination(mapGroup, mapNum, warpId, x, y);
     DoWhiteFadeWarp();
     ResetInitialPlayerAvatarState();
@@ -3172,6 +3263,8 @@ bool8 ScrFunc_hidefollower(struct ScriptContext *ctx)
     bool16 wait = VarGet(ScriptReadHalfword(ctx));
     struct ObjectEvent *obj;
 
+    if (!Script_IsAnalyzingEffects())
+        CancelFieldMessageFastForward();
     if ((obj = ScriptHideFollower()) != NULL && wait)
     {
         sMovingNpcId = obj->localId;

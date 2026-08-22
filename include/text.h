@@ -58,11 +58,14 @@ struct TextPrinterSubStruct
 {
     u8 fontId:4;  // 0x14
     bool8 hasPrintBeenSpedUp:1;
-    u8 unk:3;
+    bool8 completePagePending:1;
+    bool8 fastForwardActive:1;
+    bool8 renderedGlyph:1;
     u8 downArrowDelay:5;
     u8 downArrowYPosIdx:2;
     bool8 hasFontIdBeenSet:1;
     u8 autoScrollDelay;
+    u8 fastForwardWaitFrames;
 };
 
 struct TextPrinterTemplate
@@ -97,6 +100,8 @@ struct TextPrinter
     u8 minLetterSpacing;  // 0x20
     u8 japanese;
 };
+
+STATIC_ASSERT(sizeof(struct TextPrinterSubStruct) <= sizeof(((struct TextPrinter *)0)->subStructFields), TextPrinterSubStructTooLarge)
 
 struct FontInfo
 {
@@ -144,6 +149,9 @@ u16 AddTextPrinterParameterized(u8 windowId, u8 fontId, const u8 *str, u8 x, u8 
 bool32 AddTextPrinter(struct TextPrinterTemplate *printerTemplate, u8 speed, void (*callback)(struct TextPrinterTemplate *, u16));
 void RunTextPrinters(void);
 bool32 IsTextPrinterActive(u8 id);
+bool32 TryCompleteTextPrinterPage(u8 id);
+void SetTextPrinterFastForward(u8 id, bool8 enabled);
+void ResetTextPrinterBurstState(u8 id);
 void GenerateFontHalfRowLookupTable(u8 fgColor, u8 bgColor, u8 shadowColor);
 void SaveTextColors(u8 *fgColor, u8 *bgColor, u8 *shadowColor);
 void RestoreTextColors(u8 *fgColor, u8 *bgColor, u8 *shadowColor);

@@ -2,6 +2,11 @@
 
 These notes cover gameplay rules and move access that are safe to know before starting a run.
 
+## Dialogue Controls
+
+- Press A while ordinary field dialogue is appearing to reveal the rest of the current text pane. Press A again to advance it.
+- Hold R during ordinary field dialogue to fast-forward through text panes and directly consecutive messages. Fast-forwarding stops when R is released and before choices or menus.
+
 ## Progression Rules
 
 - Hard level caps are enabled and advance by badge progression. Rare Candies and Exp. Candies cannot raise Pokemon past the current cap.
