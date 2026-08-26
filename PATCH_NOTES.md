@@ -1,3 +1,4 @@
+- Battle/Presentation: Preserve Intimidate's original automatic timeout while A remains gated behind completed sound and presentation (commit pending).
 - Tests: Cover post-presentation battle wait input, timing, sound, and multiplayer exclusions (commit pending).
 - Battle/Presentation: Let a fresh A press dismiss Intimidate's remaining wait after its sound, animation, and text complete (commit pending).
 - Tests: Cover dialogue pane completion, fast-forward pacing, boundary handling, callback replacement, and malformed-printer safety (commit pending).

@@ -2858,11 +2858,9 @@ void BS_WaitMessageOrButton(void)
     bool32 controllerBusy = (gBattleControllerExecFlags != 0);
     bool32 textPrinterActive = IsTextPrinterActive(B_WIN_MSG);
     bool32 soundActive = IsSEPlaying();
-    bool32 usesOriginalTiming = (gTestRunnerHeadless || (gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED)));
     bool32 timeoutReached;
 
-    if (!controllerBusy && !textPrinterActive && gBattleCommunication[MSG_DISPLAY]
-     && (usesOriginalTiming || !soundActive))
+    if (!controllerBusy && !textPrinterActive && gBattleCommunication[MSG_DISPLAY])
     {
         if (gPauseCounterBattle < cmd->time)
             gPauseCounterBattle++;

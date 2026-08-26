@@ -40,7 +40,7 @@ TEST("Battle presentation wait/Held or unrelated buttons do not advance")
     EXPECT(!ShouldAdvance(0, R_BUTTON, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE));
 }
 
-TEST("Battle presentation wait/Timeout advances after sound completes")
+TEST("Battle presentation wait/Expired timeout advances only after sound completes")
 {
     EXPECT(!ShouldAdvance(0, 0, FALSE, FALSE, TRUE, TRUE, TRUE, FALSE));
     EXPECT(ShouldAdvance(0, 0, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE));
