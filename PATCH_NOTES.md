@@ -1,3 +1,5 @@
+- Tests: Cover post-presentation battle wait input, timing, sound, and multiplayer exclusions (commit pending).
+- Battle/Presentation: Let a fresh A press dismiss Intimidate's remaining wait after its sound, animation, and text complete (commit pending).
 - Tests: Cover dialogue pane completion, fast-forward pacing, boundary handling, callback replacement, and malformed-printer safety (commit pending).
 - Field/Dialogue: Let A complete the current field-dialogue pane and held R fast-forward safely through consecutive messages (commit pending).
 - Tests: Cover Training Kit milestone selection, Rare Candy fuel use, reusability, and starting Key Item availability (commit f80a8a0948).

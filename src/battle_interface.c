@@ -2622,7 +2622,7 @@ static void PrintAbilityOnAbilityPopUp(u32 ability, u8 spriteId1, u8 spriteId2)
                         FALSE, gSprites[spriteId1].sBattlerId);
 }
 
-static inline bool32 IsAnyAbilityPopUpActive(void)
+bool32 AreAbilityPopUpsActive(void)
 {
     u32 activeAbilityPopUps = 0;
     for (u32 battler = 0; battler < gBattlersCount; battler++)
@@ -2656,7 +2656,7 @@ void CreateAbilityPopUp(u8 battler, u32 ability, bool32 isDoubleBattle)
             return;
     }
 
-    if (!IsAnyAbilityPopUpActive())
+    if (!AreAbilityPopUpsActive())
         LoadSpritePalette(&sSpritePalette_AbilityPopUp);
 
     tileTag = (TAG_ABILITY_POP_UP_PLAYER1 + battler);
@@ -2688,7 +2688,7 @@ void CreateAbilityPopUp(u8 battler, u32 ability, bool32 isDoubleBattle)
 
     // Create only one instance, as it's only used for
     // tracking the SpriteSheet(s) and SpritePalette.
-    if (!IsAnyAbilityPopUpActive())
+    if (!AreAbilityPopUpsActive())
         CreateTask(Task_FreeAbilityPopUpGfx, 5);
 
     gBattleStruct->battlerState[battler].activeAbilityPopUps = TRUE;
@@ -2806,7 +2806,7 @@ void DestroyAbilityPopUp(u8 battler)
 
 static void Task_FreeAbilityPopUpGfx(u8 taskId)
 {
-    if (!IsAnyAbilityPopUpActive())
+    if (!AreAbilityPopUpsActive())
     {
         for (u32 battler = 0; battler < gBattlersCount; battler++)
         {

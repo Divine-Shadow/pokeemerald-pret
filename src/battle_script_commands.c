@@ -14,6 +14,7 @@
 #include "random.h"
 #include "battle_controllers.h"
 #include "battle_interface.h"
+#include "battle_presentation.h"
 #include "text.h"
 #include "sound.h"
 #include "pokedex.h"
@@ -2834,6 +2835,55 @@ static void Cmd_waitmessage(void)
                 gBattleCommunication[MSG_DISPLAY] = 0;
             }
         }
+    }
+}
+
+bool32 ShouldAdvanceBattlePresentationWait(u32 battleTypeFlags, u16 newKeys, bool32 controllerBusy, bool32 textPrinterActive, bool32 soundActive, bool32 messageActive, bool32 timeoutReached, bool32 headless)
+{
+    if (controllerBusy || textPrinterActive)
+        return FALSE;
+
+    if (headless || (battleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED)))
+        return !messageActive || timeoutReached;
+
+    if (soundActive)
+        return FALSE;
+
+    return !messageActive || timeoutReached || (newKeys & A_BUTTON);
+}
+
+void BS_WaitMessageOrButton(void)
+{
+    NATIVE_ARGS(u16 time);
+    bool32 controllerBusy = (gBattleControllerExecFlags != 0);
+    bool32 textPrinterActive = IsTextPrinterActive(B_WIN_MSG);
+    bool32 soundActive = IsSEPlaying();
+    bool32 usesOriginalTiming = (gTestRunnerHeadless || (gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED)));
+    bool32 timeoutReached;
+
+    if (!controllerBusy && !textPrinterActive && gBattleCommunication[MSG_DISPLAY]
+     && (usesOriginalTiming || !soundActive))
+    {
+        if (gPauseCounterBattle < cmd->time)
+            gPauseCounterBattle++;
+        if (gTestRunnerHeadless)
+            gPauseCounterBattle = cmd->time;
+    }
+    timeoutReached = (gPauseCounterBattle >= cmd->time);
+
+    if (ShouldAdvanceBattlePresentationWait(
+            gBattleTypeFlags,
+            gMain.newKeys,
+            controllerBusy,
+            textPrinterActive,
+            soundActive,
+            gBattleCommunication[MSG_DISPLAY],
+            timeoutReached,
+            gTestRunnerHeadless))
+    {
+        gPauseCounterBattle = 0;
+        gBattleCommunication[MSG_DISPLAY] = 0;
+        gBattlescriptCurrInstr = cmd->nextInstr;
     }
 }
 
@@ -18082,6 +18132,14 @@ void BS_DestroyAbilityPopup(void)
         }
     }
     gBattlescriptCurrInstr = cmd->nextInstr;
+}
+
+void BS_WaitAbilityPopup(void)
+{
+    NATIVE_ARGS();
+
+    if (!AreAbilityPopUpsActive())
+        gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
 void BS_GetTotemBoost(void)

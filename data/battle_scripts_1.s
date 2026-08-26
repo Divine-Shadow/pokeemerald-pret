@@ -7347,7 +7347,7 @@ BattleScript_TryIntimidateHoldEffects:
 	copybyte sBATTLER, gBattlerTarget
 	setlastuseditem BS_TARGET
 	printstring STRINGID_USINGITEMSTATOFPKMNROSE
-	waitmessage B_WAIT_TIME_LONG
+	waitmessageorbutton B_WAIT_TIME_LONG
 	removeitem BS_TARGET
 BattleScript_TryIntimidateHoldEffectsRet:
 	return
@@ -7369,7 +7369,7 @@ BattleScript_IntimidateEffect:
 	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, B_MSG_STAT_WONT_DECREASE, BattleScript_IntimidateWontDecrease
 	printstring STRINGID_PKMNCUTSATTACKWITH
 BattleScript_IntimidateEffect_WaitString:
-	waitmessage B_WAIT_TIME_LONG
+	waitmessageorbutton B_WAIT_TIME_LONG
 	saveattacker
 	savetarget
 	copybyte sBATTLER, gBattlerTarget
@@ -7383,7 +7383,7 @@ BattleScript_IntimidateLoopIncrement:
 	destroyabilitypopup
 	restoretarget
 	restoreattacker
-	pause B_WAIT_TIME_MED
+	waitabilitypopup
 	end3
 
 BattleScript_IntimidatePrevented::

@@ -86,6 +86,11 @@
 	.2byte \time
 	.endm
 
+	.macro waitmessageorbutton time:req
+	callnative BS_WaitMessageOrButton
+	.2byte \time
+	.endm
+
 	.macro printfromtable ptr:req
 	.byte 0x13
 	.4byte \ptr
@@ -2308,6 +2313,10 @@
 
 	.macro destroyabilitypopup
 	callnative BS_DestroyAbilityPopup
+	.endm
+
+	.macro waitabilitypopup
+	callnative BS_WaitAbilityPopup
 	.endm
 
 	.macro gettotemboost jumpInstr:req
