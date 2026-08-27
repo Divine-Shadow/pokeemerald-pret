@@ -16,7 +16,7 @@ This file contains gameplay changes that may affect routing or discoveries. Read
 - Lavaridge Gym and Rusturf Tunnel no longer apply permanent Misty Terrain to battles.
 - The Route 111 Winstrate family reward is now Eviolite and Life Orb.
 - Winstrate Vito now waits near Victory Road's Pokemon League-side exit.
-- The Mauville City Mart now has a broker who unlocks a free shop of wild-held-item drops after seeing a Pokemon with item-stealing or item-swapping capability.
+- The Mauville City Mart now has a broker who unlocks a free shop of wild-held-item drops after seeing a Pokemon with item-stealing or item-swapping capability. For beta convenience, all currently available free stock can be browsed through alphabetical held gear, one-use hold, type boost, evolution/form, medicine, resource, or all-stock views.
 - Former Slateport, Lilycove Department Store, and Mauville Game Corner TMs now appear as exploration rewards instead of purchases or coin prizes.
 - The Flying Gem has moved to a later Route 115 pickup.
 - Map pickup EV boosters have been replaced because EVs are disabled. Exact replacements are documented in [low_tier_field_rewards.md](low_tier_field_rewards.md).

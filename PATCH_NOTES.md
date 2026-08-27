@@ -1,3 +1,5 @@
+- Gameplay/NPCs: Organize all currently broker-available free beta stock into alphabetical held gear, one-use hold, type boost, evolution/form, medicine, resource, and all-stock views (commit pending).
+- Tests: Cover broker category masks, hybrid listings, availability filtering, alphabetical order, completeness, and Heart Scale prioritization (commit pending).
 - Gameplay/NPCs: Let Condition Coaches prepare one selected Pokemon with A or the whole eligible party with START, with confirmation and compact ability-aware feedback (commit pending).
 - Tests: Cover whole-party Condition Coach eligibility, atomic status application, clearing, and combined ability/item signals (commit pending).
 - Battle/Presentation: Preserve Intimidate's original automatic timeout while A remains gated behind completed sound and presentation (commit pending).

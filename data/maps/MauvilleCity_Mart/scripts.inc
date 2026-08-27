@@ -14,7 +14,8 @@ MauvilleCity_Mart_EventScript_Clerk::
 MauvilleCity_Mart_EventScript_WildHeldItemBroker::
 	lock
 	faceplayer
-	goto_if_set FLAG_WILD_HELD_ITEM_BROKER_UNLOCKED, MauvilleCity_Mart_EventScript_WildHeldItemBrokerUnlocked
+	setvar VAR_TEMP_0, WILD_HELD_ITEM_BROKER_CATEGORY_HELD_GEAR
+	goto_if_set FLAG_WILD_HELD_ITEM_BROKER_UNLOCKED, MauvilleCity_Mart_EventScript_WildHeldItemBrokerCategoryMenu
 	msgbox MauvilleCity_Mart_Text_BrokerIntro, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, MauvilleCity_Mart_EventScript_WildHeldItemBrokerDecline
 	msgbox MauvilleCity_Mart_Text_BrokerChooseMon, MSGBOX_DEFAULT
@@ -30,18 +31,28 @@ MauvilleCity_Mart_EventScript_WildHeldItemBroker::
 MauvilleCity_Mart_EventScript_WildHeldItemBrokerUnlock::
 	setflag FLAG_WILD_HELD_ITEM_BROKER_UNLOCKED
 	msgbox MauvilleCity_Mart_Text_BrokerUnlock, MSGBOX_DEFAULT
-	goto MauvilleCity_Mart_EventScript_WildHeldItemBrokerOpenShop
+	goto MauvilleCity_Mart_EventScript_WildHeldItemBrokerCategoryMenu
 
-MauvilleCity_Mart_EventScript_WildHeldItemBrokerUnlocked::
-	msgbox MauvilleCity_Mart_Text_BrokerWelcomeBack, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, MauvilleCity_Mart_EventScript_WildHeldItemBrokerDecline
-	goto MauvilleCity_Mart_EventScript_WildHeldItemBrokerOpenShop
-
-MauvilleCity_Mart_EventScript_WildHeldItemBrokerOpenShop::
-	message MauvilleCity_Mart_Text_BrokerOpenShop
-	waitmessage
+MauvilleCity_Mart_EventScript_WildHeldItemBrokerCategoryMenu::
+	closemessage
+	dynmultipush MauvilleCity_Mart_Text_BrokerMenuHeldGear, WILD_HELD_ITEM_BROKER_CATEGORY_HELD_GEAR
+	dynmultipush MauvilleCity_Mart_Text_BrokerMenuOneUseHolds, WILD_HELD_ITEM_BROKER_CATEGORY_ONE_USE_HOLDS
+	dynmultipush MauvilleCity_Mart_Text_BrokerMenuTypeBoosts, WILD_HELD_ITEM_BROKER_CATEGORY_TYPE_BOOSTS
+	dynmultipush MauvilleCity_Mart_Text_BrokerMenuEvolutionForm, WILD_HELD_ITEM_BROKER_CATEGORY_EVOLUTION_FORM
+	dynmultipush MauvilleCity_Mart_Text_BrokerMenuMedicine, WILD_HELD_ITEM_BROKER_CATEGORY_MEDICINE
+	dynmultipush MauvilleCity_Mart_Text_BrokerMenuResources, WILD_HELD_ITEM_BROKER_CATEGORY_RESOURCES
+	dynmultipush MauvilleCity_Mart_Text_BrokerMenuAllStock, WILD_HELD_ITEM_BROKER_CATEGORY_ALL
+	dynmultipush MauvilleCity_Mart_Text_BrokerMenuLeave, WILD_HELD_ITEM_BROKER_CATEGORY_EXIT
+	dynmultistack 0, 0, FALSE, 8, FALSE, VAR_TEMP_0, DYN_MULTICHOICE_CB_NONE
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, MauvilleCity_Mart_EventScript_WildHeldItemBrokerExit
+	goto_if_ge VAR_RESULT, WILD_HELD_ITEM_BROKER_CATEGORY_EXIT, MauvilleCity_Mart_EventScript_WildHeldItemBrokerExit
+	copyvar VAR_TEMP_0, VAR_RESULT
+	copyvar VAR_0x8004, VAR_RESULT
 	special OpenWildHeldItemBrokerShop
-	msgbox MauvilleCity_Mart_Text_BrokerComeAgain, MSGBOX_DEFAULT
+	goto MauvilleCity_Mart_EventScript_WildHeldItemBrokerCategoryMenu
+
+MauvilleCity_Mart_EventScript_WildHeldItemBrokerExit::
+	closemessage
 	release
 	end
 
@@ -113,19 +124,29 @@ MauvilleCity_Mart_Text_BrokerUnlock:
 	.string "day when we both know how it ends.\p"
 	.string "My stock is yours. No charge.$"
 
-MauvilleCity_Mart_Text_BrokerWelcomeBack:
-	.string "Back for held-item stock?\p"
-	.string "It all fell off wild POKéMON,\n"
-	.string "naturally.\p"
-	.string "Want to browse?$"
+MauvilleCity_Mart_Text_BrokerMenuHeldGear:
+	.string "HELD GEAR$"
 
-MauvilleCity_Mart_Text_BrokerOpenShop:
-	.string "Take what you need.\n"
-	.string "I already made my profit.$"
+MauvilleCity_Mart_Text_BrokerMenuOneUseHolds:
+	.string "ONE-USE HOLDS$"
 
-MauvilleCity_Mart_Text_BrokerComeAgain:
-	.string "Keep your hands clever and your\n"
-	.string "pockets tidy.$"
+MauvilleCity_Mart_Text_BrokerMenuTypeBoosts:
+	.string "TYPE BOOSTS$"
+
+MauvilleCity_Mart_Text_BrokerMenuEvolutionForm:
+	.string "EVOLUTION/FORM$"
+
+MauvilleCity_Mart_Text_BrokerMenuMedicine:
+	.string "MEDICINE$"
+
+MauvilleCity_Mart_Text_BrokerMenuResources:
+	.string "RESOURCES$"
+
+MauvilleCity_Mart_Text_BrokerMenuAllStock:
+	.string "ALL STOCK$"
+
+MauvilleCity_Mart_Text_BrokerMenuLeave:
+	.string "LEAVE$"
 
 MauvilleCity_Mart_Text_BrokerDecline:
 	.string "No rush.\p"

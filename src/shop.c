@@ -114,6 +114,7 @@ static EWRAM_DATA struct ListMenuItem *sListMenuItems = NULL;
 static EWRAM_DATA u8 (*sItemNames)[ITEM_NAME_LENGTH + 2] = {0};
 static EWRAM_DATA u8 sPurchaseHistoryId = 0;
 static EWRAM_DATA bool8 sNormalMartItemsAreFree = FALSE;
+static EWRAM_DATA bool8 sDirectFreePokemart = FALSE;
 EWRAM_DATA struct ItemSlot gMartPurchaseHistory[SMARTSHOPPER_NUM_ITEMS] = {0};
 
 static void Task_ShopMenu(u8 taskId);
@@ -122,6 +123,7 @@ static void CB2_InitBuyMenu(void);
 static void Task_GoToBuyOrSellMenu(u8 taskId);
 static void MapPostLoadHook_ReturnToShopMenu(void);
 static void Task_ReturnToShopMenu(u8 taskId);
+static void FieldCB_ReturnFromDirectFreePokemart(void);
 static void ShowShopMenuAfterExitingBuyOrSellMenu(u8 taskId);
 static void BuyMenuDrawGraphics(void);
 static void BuyMenuAddScrollIndicatorArrows(void);
@@ -348,6 +350,7 @@ static u8 CreateShopMenu(u8 martType)
     int numMenuItems;
 
     LockPlayerFieldControls();
+    sDirectFreePokemart = FALSE;
     sMartInfo.martType = martType;
 
     if (martType == MART_TYPE_NORMAL)
@@ -546,6 +549,12 @@ static void Task_ReturnToShopMenu(u8 taskId)
         else
             DisplayItemMessageOnField(taskId, gText_AnythingElseICanHelp, ShowShopMenuAfterExitingBuyOrSellMenu);
     }
+}
+
+static void FieldCB_ReturnFromDirectFreePokemart(void)
+{
+    sDirectFreePokemart = FALSE;
+    FieldCB_ContinueScript();
 }
 
 static void ShowShopMenuAfterExitingBuyOrSellMenu(u8 taskId)
@@ -1345,7 +1354,10 @@ static void BuyMenuPrintItemQuantityAndPrice(u8 taskId)
 
 static void ExitBuyMenu(u8 taskId)
 {
-    gFieldCallback = MapPostLoadHook_ReturnToShopMenu;
+    if (sDirectFreePokemart)
+        gFieldCallback = FieldCB_ReturnFromDirectFreePokemart;
+    else
+        gFieldCallback = MapPostLoadHook_ReturnToShopMenu;
     BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
     gTasks[taskId].func = Task_ExitBuyMenu;
 }
@@ -1415,6 +1427,18 @@ void CreateFreePokemartMenu(const u16 *itemsForSale)
     SetShopItemsForSale(itemsForSale);
     ClearItemPurchases();
     SetShopMenuCallback(ScriptContext_Enable);
+}
+
+void CreateDirectFreePokemartMenu(const u16 *itemsForSale)
+{
+    sNormalMartItemsAreFree = TRUE;
+    sDirectFreePokemart = TRUE;
+    LockPlayerFieldControls();
+    sMartInfo.martType = MART_TYPE_NORMAL;
+    sMartInfo.callback = NULL;
+    SetShopItemsForSale(itemsForSale);
+    ClearItemPurchases();
+    CreateTask(Task_HandleShopMenuBuy, 8);
 }
 
 void CreateDecorationShop1Menu(const u16 *itemsForSale)

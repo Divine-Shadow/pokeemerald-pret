@@ -65,6 +65,7 @@
 #include "constants/vars.h"
 #include "constants/weather.h"
 #include "constants/wild_encounter.h"
+#include "constants/wild_held_item_broker.h"
 	.include "asm/macros.inc"
 	.include "asm/macros/event.inc"
 	.include "constants/constants.inc"
