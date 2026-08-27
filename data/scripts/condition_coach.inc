@@ -56,8 +56,9 @@ ConditionCoach_EventScript_SelectClear:
 	goto ConditionCoach_EventScript_SelectMon
 
 ConditionCoach_EventScript_SelectMon:
-	special ChoosePartyMon
+	special ChooseConditionCoachPartyMon
 	waitstate
+	goto_if_eq VAR_0x8004, CONDITION_COACH_PARTY_ALL, ConditionCoach_EventScript_PreviewParty
 	goto_if_ge VAR_0x8004, PARTY_SIZE, ConditionCoach_EventScript_Cancelled
 	bufferpartymonnick STR_VAR_1, VAR_0x8004
 	specialvar VAR_RESULT, ConditionCoach_TryApplyStatus
@@ -71,6 +72,40 @@ ConditionCoach_EventScript_SelectMon:
 	case CONDITION_COACH_RESULT_INVALID_CHOICE, ConditionCoach_EventScript_Goodbye
 	case CONDITION_COACH_RESULT_LOCKED, ConditionCoach_EventScript_Locked
 	goto ConditionCoach_EventScript_Goodbye
+
+ConditionCoach_EventScript_PreviewParty:
+	specialvar VAR_RESULT, ConditionCoach_TryPreviewParty
+	switch VAR_RESULT
+	case CONDITION_COACH_RESULT_PARTY_READY, ConditionCoach_EventScript_ConfirmParty
+	case CONDITION_COACH_RESULT_ALREADY_CLEAR, ConditionCoach_EventScript_PartyAlreadyClear
+	case CONDITION_COACH_RESULT_NO_ELIGIBLE, ConditionCoach_EventScript_NoEligibleParty
+	case CONDITION_COACH_RESULT_INVALID_CHOICE, ConditionCoach_EventScript_Goodbye
+	case CONDITION_COACH_RESULT_LOCKED, ConditionCoach_EventScript_Locked
+	goto ConditionCoach_EventScript_Goodbye
+
+ConditionCoach_EventScript_ConfirmParty:
+	msgbox gStringVar4, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, ConditionCoach_EventScript_Menu
+	specialvar VAR_RESULT, ConditionCoach_TryApplyStatusToParty
+	switch VAR_RESULT
+	case CONDITION_COACH_RESULT_APPLIED, ConditionCoach_EventScript_PartyApplied
+	case CONDITION_COACH_RESULT_ALREADY_CLEAR, ConditionCoach_EventScript_PartyAlreadyClear
+	case CONDITION_COACH_RESULT_NO_ELIGIBLE, ConditionCoach_EventScript_NoEligibleParty
+	case CONDITION_COACH_RESULT_INVALID_CHOICE, ConditionCoach_EventScript_Goodbye
+	case CONDITION_COACH_RESULT_LOCKED, ConditionCoach_EventScript_Locked
+	goto ConditionCoach_EventScript_Goodbye
+
+ConditionCoach_EventScript_PartyApplied:
+	msgbox gStringVar4, MSGBOX_DEFAULT
+	goto ConditionCoach_EventScript_Menu
+
+ConditionCoach_EventScript_PartyAlreadyClear:
+	msgbox ConditionCoach_Text_PartyAlreadyClear, MSGBOX_DEFAULT
+	goto ConditionCoach_EventScript_Menu
+
+ConditionCoach_EventScript_NoEligibleParty:
+	msgbox ConditionCoach_Text_NoEligibleParty, MSGBOX_DEFAULT
+	goto ConditionCoach_EventScript_Menu
 
 ConditionCoach_EventScript_Locked:
 	buffernumberstring STR_VAR_1, VAR_0x8006
@@ -204,6 +239,14 @@ ConditionCoach_Text_RestWakeExplain:
 ConditionCoach_Text_Applied:
 	.string "Done. {STR_VAR_1}'s condition\n"
 	.string "is set.$"
+
+ConditionCoach_Text_PartyAlreadyClear:
+	.string "Every eligible POKéMON is\n"
+	.string "already clear.$"
+
+ConditionCoach_Text_NoEligibleParty:
+	.string "I couldn't find a conscious,\n"
+	.string "non-Egg teammate to prepare.$"
 
 ConditionCoach_Text_HintCuringItem:
 	.string "One caution: that held berry\n"

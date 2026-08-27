@@ -106,6 +106,7 @@ void ChooseMonForDaycare(void);
 bool8 CB2_FadeFromPartyMenu(void);
 void ChooseContestMon(void);
 void ChoosePartyMon(void);
+void ChooseConditionCoachPartyMon(void);
 void ChooseMonForMoveRelearner(void);
 void BattlePyramidChooseMonHeldItems(void);
 void DoBattlePyramidMonsHaveHeldItem(void);

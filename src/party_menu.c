@@ -71,6 +71,7 @@
 #include "window.h"
 #include "constants/battle.h"
 #include "constants/battle_frontier.h"
+#include "constants/condition_coach.h"
 #include "constants/field_effects.h"
 #include "constants/field_move.h"
 #include "constants/form_change_types.h"
@@ -458,6 +459,9 @@ static void Task_PartyMenuWaitForFade(u8 taskId);
 static void Task_ChooseContestMon(u8 taskId);
 static void CB2_ChooseContestMon(void);
 static void Task_ChoosePartyMon(u8 taskId);
+static void Task_ChooseConditionCoachPartyMon(u8 taskId);
+static void Task_HandleConditionCoachInput(u8 taskId);
+static void BufferConditionCoachSelection(void);
 static void Task_ChooseMonForMoveRelearner(u8);
 static void CB2_ChooseMonForMoveRelearner(void);
 static void Task_BattlePyramidChooseMonHeldItems(u8);
@@ -8045,6 +8049,50 @@ void ChoosePartyMon(void)
     LockPlayerFieldControls();
     FadeScreen(FADE_TO_BLACK, 0);
     CreateTask(Task_ChoosePartyMon, 10);
+}
+
+void ChooseConditionCoachPartyMon(void)
+{
+    gSpecialVar_0x8004 = PARTY_NOTHING_CHOSEN;
+    LockPlayerFieldControls();
+    FadeScreen(FADE_TO_BLACK, 0);
+    CreateTask(Task_ChooseConditionCoachPartyMon, 10);
+}
+
+static void Task_ChooseConditionCoachPartyMon(u8 taskId)
+{
+    if (!gPaletteFade.active)
+    {
+        CleanupOverworldWindowsAndTilemaps();
+        InitPartyMenu(PARTY_MENU_TYPE_CHOOSE_MON, PARTY_LAYOUT_SINGLE, PARTY_ACTION_CHOOSE_AND_CLOSE, FALSE, PARTY_MSG_CONDITION_COACH, Task_HandleConditionCoachInput, BufferConditionCoachSelection);
+        DestroyTask(taskId);
+    }
+}
+
+static void Task_HandleConditionCoachInput(u8 taskId)
+{
+    if (!gPaletteFade.active
+     && MenuHelpers_ShouldWaitForLinkRecv() != TRUE
+     && gPlayerPartyCount != 0
+     && JOY_NEW(START_BUTTON))
+    {
+        PlaySE(SE_SELECT);
+        gPartyMenu.slotId = CONDITION_COACH_PARTY_ALL;
+        Task_ClosePartyMenu(taskId);
+    }
+    else
+    {
+        Task_HandleChooseMonInput(taskId);
+    }
+}
+
+static void BufferConditionCoachSelection(void)
+{
+    gSpecialVar_0x8004 = GetCursorSelectionMonId();
+    if (gSpecialVar_0x8004 > CONDITION_COACH_PARTY_ALL)
+        gSpecialVar_0x8004 = PARTY_NOTHING_CHOSEN;
+    gFieldCallback2 = CB2_FadeFromPartyMenu;
+    SetMainCallback2(CB2_ReturnToField);
 }
 
 static void Task_ChoosePartyMon(u8 taskId)

@@ -15,14 +15,16 @@ The service is also a teaching surface. Early players can learn that status is n
 - Burn, regular poison, paralysis, Rest-wake sleep, and clear status are available from the first MVP pass.
 - Rest-wake sleep uses a one-turn sleep counter, matching the end of a Rest cycle where the Pokemon should wake as soon as it tries to act.
 - The coach does not status Eggs or fainted Pokemon.
-- The coach does not overwrite an existing major status. Players can clear status first, then apply a different condition.
+- Applying a condition replaces an existing major status.
+- On the party screen, A prepares the highlighted Pokemon, START offers to prepare every eligible party member after confirmation, and B returns without applying anything.
+- Whole-party preparation skips Eggs and fainted Pokemon, reports how many party members were prepared, and condenses distinct ability synergies and cautions into one optional feedback pane.
 - The coach warns when a held curing berry would immediately undo the selected condition.
 
 ## Journey Beats
 
 - Early beat: the coach explains that Pokemon Centers heal conditions while the coach teaches safe preparation.
 - Middle beat: the coach recognizes that some teams convert status into speed, bulk, damage, or recovery.
-- Late beat: the coach can become a more technical battle-prep NPC with team-wide presets, bad poison, or more precise Rest/Chesto timing if those become desirable.
+- Late beat: the coach supports whole-party preparation and can become still more technical with bad poison or more precise Rest/Chesto timing if those become desirable.
 - Postgame beat: the coach can support competitive-condition presets and deeper advice for status-triggered items or abilities.
 
 ## Tailored Text Categories

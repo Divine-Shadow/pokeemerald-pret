@@ -89,7 +89,7 @@ These notes cover gameplay rules and move access that are safe to know before st
 
 ## Pokemon Center Services
 
-- Pokemon Centers and the Pokemon League lobby now have Condition Coaches who can intentionally prepare regular poison, burn, paralysis, a one-turn Rest-style wakeup sleep, or clear status from a conscious non-Egg party Pokemon. Applying a condition replaces the Pokemon's current status. Poison and clear status are available immediately; burn requires 2 badges, paralysis requires 4 badges, and Rest-wake requires 6 badges.
+- Pokemon Centers and the Pokemon League lobby now have Condition Coaches who can intentionally prepare regular poison, burn, paralysis, a one-turn Rest-style wakeup sleep, or clear status from conscious non-Egg party Pokemon. On the Coach's party screen, A prepares the highlighted Pokemon and START offers to prepare every eligible party member at once; whole-party preparation asks for confirmation, skips Eggs and fainted Pokemon, and summarizes relevant status abilities and cautions. Applying a condition replaces the Pokemon's current status. Poison and clear status are available immediately; burn requires 2 badges, paralysis requires 4 badges, and Rest-wake requires 6 badges.
 
 ## Pokemon Changes
 

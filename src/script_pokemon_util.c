@@ -763,56 +763,112 @@ static u32 ConditionCoach_GetStatusForChoice(u16 choice)
     return STATUS1_NONE;
 }
 
-static u16 ConditionCoach_GetHint(struct Pokemon *mon, u16 choice)
+static u16 ConditionCoach_GetSignals(struct Pokemon *mon, u16 choice)
 {
     u16 item = GetMonData(mon, MON_DATA_HELD_ITEM);
     u16 ability = GetMonAbility(mon);
+    u16 signals = CONDITION_COACH_SIGNAL_NONE;
 
     if (choice == CONDITION_COACH_CHOICE_CLEAR)
-        return CONDITION_COACH_HINT_CLEAR;
+        return CONDITION_COACH_SIGNAL_CLEAR;
     if (ConditionCoach_ItemCuresChoice(item, choice))
-        return CONDITION_COACH_HINT_CURING_ITEM;
+        signals |= CONDITION_COACH_SIGNAL_CURING_ITEM;
     if (ability == ABILITY_NATURAL_CURE || ability == ABILITY_SHED_SKIN || ability == ABILITY_HYDRATION)
-        return CONDITION_COACH_HINT_STATUS_MAY_SLIP;
+        signals |= CONDITION_COACH_SIGNAL_STATUS_MAY_SLIP;
 
     switch (choice)
     {
     case CONDITION_COACH_CHOICE_BURN:
         if (ability == ABILITY_FLARE_BOOST)
-            return CONDITION_COACH_HINT_FLARE_BOOST;
+            signals |= CONDITION_COACH_SIGNAL_FLARE_BOOST;
         if (ability == ABILITY_GUTS)
-            return CONDITION_COACH_HINT_GUTS;
+            signals |= CONDITION_COACH_SIGNAL_GUTS;
         if (ability == ABILITY_QUICK_FEET)
-            return CONDITION_COACH_HINT_QUICK_FEET;
+            signals |= CONDITION_COACH_SIGNAL_QUICK_FEET;
         break;
     case CONDITION_COACH_CHOICE_POISON:
         if (ability == ABILITY_POISON_HEAL)
-            return CONDITION_COACH_HINT_POISON_HEAL;
+            signals |= CONDITION_COACH_SIGNAL_POISON_HEAL;
         if (ability == ABILITY_TOXIC_BOOST)
-            return CONDITION_COACH_HINT_TOXIC_BOOST;
+            signals |= CONDITION_COACH_SIGNAL_TOXIC_BOOST;
         if (ability == ABILITY_GUTS)
-            return CONDITION_COACH_HINT_GUTS;
+            signals |= CONDITION_COACH_SIGNAL_GUTS;
         if (ability == ABILITY_QUICK_FEET)
-            return CONDITION_COACH_HINT_QUICK_FEET;
+            signals |= CONDITION_COACH_SIGNAL_QUICK_FEET;
         break;
     case CONDITION_COACH_CHOICE_PARALYSIS:
         if (ability == ABILITY_QUICK_FEET)
-            return CONDITION_COACH_HINT_QUICK_FEET;
+            signals |= CONDITION_COACH_SIGNAL_QUICK_FEET;
         if (ability == ABILITY_GUTS)
-            return CONDITION_COACH_HINT_GUTS;
+            signals |= CONDITION_COACH_SIGNAL_GUTS;
         break;
     case CONDITION_COACH_CHOICE_REST_WAKE:
         if (ability == ABILITY_QUICK_FEET)
+            signals |= CONDITION_COACH_SIGNAL_QUICK_FEET;
+        signals |= CONDITION_COACH_SIGNAL_REST_WAKE;
+        return signals;
+    }
+
+    if (ability == ABILITY_MARVEL_SCALE)
+        signals |= CONDITION_COACH_SIGNAL_MARVEL_SCALE;
+    if (ability == ABILITY_MAGIC_GUARD)
+        signals |= CONDITION_COACH_SIGNAL_MAGIC_GUARD;
+
+    return signals;
+}
+
+static u16 ConditionCoach_GetHintFromSignals(u16 signals, u16 choice)
+{
+    if (signals & CONDITION_COACH_SIGNAL_CLEAR)
+        return CONDITION_COACH_HINT_CLEAR;
+    if (signals & CONDITION_COACH_SIGNAL_CURING_ITEM)
+        return CONDITION_COACH_HINT_CURING_ITEM;
+    if (signals & CONDITION_COACH_SIGNAL_STATUS_MAY_SLIP)
+        return CONDITION_COACH_HINT_STATUS_MAY_SLIP;
+
+    switch (choice)
+    {
+    case CONDITION_COACH_CHOICE_BURN:
+        if (signals & CONDITION_COACH_SIGNAL_FLARE_BOOST)
+            return CONDITION_COACH_HINT_FLARE_BOOST;
+        if (signals & CONDITION_COACH_SIGNAL_GUTS)
+            return CONDITION_COACH_HINT_GUTS;
+        if (signals & CONDITION_COACH_SIGNAL_QUICK_FEET)
+            return CONDITION_COACH_HINT_QUICK_FEET;
+        break;
+    case CONDITION_COACH_CHOICE_POISON:
+        if (signals & CONDITION_COACH_SIGNAL_POISON_HEAL)
+            return CONDITION_COACH_HINT_POISON_HEAL;
+        if (signals & CONDITION_COACH_SIGNAL_TOXIC_BOOST)
+            return CONDITION_COACH_HINT_TOXIC_BOOST;
+        if (signals & CONDITION_COACH_SIGNAL_GUTS)
+            return CONDITION_COACH_HINT_GUTS;
+        if (signals & CONDITION_COACH_SIGNAL_QUICK_FEET)
+            return CONDITION_COACH_HINT_QUICK_FEET;
+        break;
+    case CONDITION_COACH_CHOICE_PARALYSIS:
+        if (signals & CONDITION_COACH_SIGNAL_QUICK_FEET)
+            return CONDITION_COACH_HINT_QUICK_FEET;
+        if (signals & CONDITION_COACH_SIGNAL_GUTS)
+            return CONDITION_COACH_HINT_GUTS;
+        break;
+    case CONDITION_COACH_CHOICE_REST_WAKE:
+        if (signals & CONDITION_COACH_SIGNAL_QUICK_FEET)
             return CONDITION_COACH_HINT_QUICK_FEET;
         return CONDITION_COACH_HINT_REST_WAKE;
     }
 
-    if (ability == ABILITY_MARVEL_SCALE)
+    if (signals & CONDITION_COACH_SIGNAL_MARVEL_SCALE)
         return CONDITION_COACH_HINT_MARVEL_SCALE;
-    if (ability == ABILITY_MAGIC_GUARD)
+    if (signals & CONDITION_COACH_SIGNAL_MAGIC_GUARD)
         return CONDITION_COACH_HINT_MAGIC_GUARD;
 
     return CONDITION_COACH_HINT_NONE;
+}
+
+static u16 ConditionCoach_GetHint(struct Pokemon *mon, u16 choice)
+{
+    return ConditionCoach_GetHintFromSignals(ConditionCoach_GetSignals(mon, choice), choice);
 }
 
 u16 ConditionCoach_TryApplyStatus(void)
@@ -852,6 +908,390 @@ u16 ConditionCoach_TryApplyStatus(void)
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
     SetMonData(mon, MON_DATA_STATUS, &status);
     gSpecialVar_0x8006 = ConditionCoach_GetHint(mon, choice);
+    return CONDITION_COACH_RESULT_APPLIED;
+}
+
+enum ConditionCoachEligibility
+{
+    CONDITION_COACH_ELIGIBILITY_EMPTY,
+    CONDITION_COACH_ELIGIBILITY_EGG,
+    CONDITION_COACH_ELIGIBILITY_FAINTED,
+    CONDITION_COACH_ELIGIBILITY_ELIGIBLE,
+};
+
+static u8 ConditionCoach_GetEligibility(struct Pokemon *mon)
+{
+    u16 species = GetMonData(mon, MON_DATA_SPECIES);
+
+    if (species == SPECIES_NONE)
+        return CONDITION_COACH_ELIGIBILITY_EMPTY;
+    if (species == SPECIES_EGG || GetMonData(mon, MON_DATA_IS_EGG))
+        return CONDITION_COACH_ELIGIBILITY_EGG;
+    if (GetMonData(mon, MON_DATA_HP) == 0)
+        return CONDITION_COACH_ELIGIBILITY_FAINTED;
+    return CONDITION_COACH_ELIGIBILITY_ELIGIBLE;
+}
+
+static void ConditionCoach_ResetPartyOutputs(void)
+{
+    gSpecialVar_0x8007 = 0; // Applied or previewed target count
+    gSpecialVar_0x8008 = 0; // Skipped Egg count
+    gSpecialVar_0x8009 = 0; // Skipped fainted count
+    gSpecialVar_0x800A = 0; // Already-clear count
+    gSpecialVar_0x800B = CONDITION_COACH_SIGNAL_NONE;
+    gStringVar4[0] = EOS;
+}
+
+static void ConditionCoach_AppendNumber(u8 *dest, u8 number)
+{
+    u8 buffer[4];
+
+    ConvertIntToDecimalStringN(buffer, number, STR_CONV_MODE_LEFT_ALIGN, 1);
+    StringAppend(dest, buffer);
+}
+
+static void ConditionCoach_BufferPartyConfirmation(u16 choice, u8 targetCount)
+{
+    switch (choice)
+    {
+    case CONDITION_COACH_CHOICE_BURN:
+        StringCopy(gStringVar4, COMPOUND_STRING("Burn all "));
+        break;
+    case CONDITION_COACH_CHOICE_POISON:
+        StringCopy(gStringVar4, COMPOUND_STRING("Poison all "));
+        break;
+    case CONDITION_COACH_CHOICE_PARALYSIS:
+        StringCopy(gStringVar4, COMPOUND_STRING("Paralyze all "));
+        break;
+    case CONDITION_COACH_CHOICE_REST_WAKE:
+        StringCopy(gStringVar4, COMPOUND_STRING("Set Rest-wake for all "));
+        break;
+    case CONDITION_COACH_CHOICE_CLEAR:
+        StringCopy(gStringVar4, COMPOUND_STRING("Clear status from "));
+        break;
+    }
+
+    ConditionCoach_AppendNumber(gStringVar4, targetCount);
+    if (choice == CONDITION_COACH_CHOICE_CLEAR)
+    {
+        StringAppend(gStringVar4, COMPOUND_STRING("\nPOKéMON?"));
+    }
+    else
+    {
+        StringAppend(gStringVar4, COMPOUND_STRING("\neligible POKéMON?"));
+        StringAppend(gStringVar4, COMPOUND_STRING("\pCurrent conditions will be\nreplaced."));
+    }
+}
+
+u16 ConditionCoach_TryPreviewParty(void)
+{
+    u16 choice = gSpecialVar_0x8005;
+    u8 slot;
+    u8 eligibleCount = 0;
+    u8 targetCount = 0;
+
+    if (choice > CONDITION_COACH_CHOICE_CLEAR)
+        return CONDITION_COACH_RESULT_INVALID_CHOICE;
+    if (!ConditionCoach_IsChoiceUnlocked())
+        return CONDITION_COACH_RESULT_LOCKED;
+
+    ConditionCoach_ResetPartyOutputs();
+    for (slot = 0; slot < PARTY_SIZE; slot++)
+    {
+        if (ConditionCoach_GetEligibility(&gPlayerParty[slot]) != CONDITION_COACH_ELIGIBILITY_ELIGIBLE)
+            continue;
+
+        eligibleCount++;
+        if (choice != CONDITION_COACH_CHOICE_CLEAR
+         || (GetMonData(&gPlayerParty[slot], MON_DATA_STATUS) & STATUS1_ANY) != STATUS1_NONE)
+            targetCount++;
+    }
+
+    if (eligibleCount == 0)
+        return CONDITION_COACH_RESULT_NO_ELIGIBLE;
+    if (targetCount == 0)
+        return CONDITION_COACH_RESULT_ALREADY_CLEAR;
+
+    gSpecialVar_0x8007 = targetCount;
+    ConditionCoach_BufferPartyConfirmation(choice, targetCount);
+    return CONDITION_COACH_RESULT_PARTY_READY;
+}
+
+static u16 ConditionCoach_GetFirstPositiveSignal(u16 signals, u16 choice, u16 excludedSignals)
+{
+    signals &= ~excludedSignals;
+
+    switch (choice)
+    {
+    case CONDITION_COACH_CHOICE_BURN:
+        if (signals & CONDITION_COACH_SIGNAL_FLARE_BOOST)
+            return CONDITION_COACH_SIGNAL_FLARE_BOOST;
+        if (signals & CONDITION_COACH_SIGNAL_GUTS)
+            return CONDITION_COACH_SIGNAL_GUTS;
+        if (signals & CONDITION_COACH_SIGNAL_QUICK_FEET)
+            return CONDITION_COACH_SIGNAL_QUICK_FEET;
+        break;
+    case CONDITION_COACH_CHOICE_POISON:
+        if (signals & CONDITION_COACH_SIGNAL_POISON_HEAL)
+            return CONDITION_COACH_SIGNAL_POISON_HEAL;
+        if (signals & CONDITION_COACH_SIGNAL_TOXIC_BOOST)
+            return CONDITION_COACH_SIGNAL_TOXIC_BOOST;
+        if (signals & CONDITION_COACH_SIGNAL_GUTS)
+            return CONDITION_COACH_SIGNAL_GUTS;
+        if (signals & CONDITION_COACH_SIGNAL_QUICK_FEET)
+            return CONDITION_COACH_SIGNAL_QUICK_FEET;
+        break;
+    case CONDITION_COACH_CHOICE_PARALYSIS:
+        if (signals & CONDITION_COACH_SIGNAL_QUICK_FEET)
+            return CONDITION_COACH_SIGNAL_QUICK_FEET;
+        if (signals & CONDITION_COACH_SIGNAL_GUTS)
+            return CONDITION_COACH_SIGNAL_GUTS;
+        break;
+    case CONDITION_COACH_CHOICE_REST_WAKE:
+        if (signals & CONDITION_COACH_SIGNAL_QUICK_FEET)
+            return CONDITION_COACH_SIGNAL_QUICK_FEET;
+        return CONDITION_COACH_SIGNAL_NONE;
+    }
+
+    if (signals & CONDITION_COACH_SIGNAL_MARVEL_SCALE)
+        return CONDITION_COACH_SIGNAL_MARVEL_SCALE;
+    if (signals & CONDITION_COACH_SIGNAL_MAGIC_GUARD)
+        return CONDITION_COACH_SIGNAL_MAGIC_GUARD;
+    return CONDITION_COACH_SIGNAL_NONE;
+}
+
+static u16 ConditionCoach_GetAbilityForSignal(u16 signal)
+{
+    switch (signal)
+    {
+    case CONDITION_COACH_SIGNAL_GUTS:
+        return ABILITY_GUTS;
+    case CONDITION_COACH_SIGNAL_MARVEL_SCALE:
+        return ABILITY_MARVEL_SCALE;
+    case CONDITION_COACH_SIGNAL_QUICK_FEET:
+        return ABILITY_QUICK_FEET;
+    case CONDITION_COACH_SIGNAL_POISON_HEAL:
+        return ABILITY_POISON_HEAL;
+    case CONDITION_COACH_SIGNAL_TOXIC_BOOST:
+        return ABILITY_TOXIC_BOOST;
+    case CONDITION_COACH_SIGNAL_FLARE_BOOST:
+        return ABILITY_FLARE_BOOST;
+    case CONDITION_COACH_SIGNAL_MAGIC_GUARD:
+        return ABILITY_MAGIC_GUARD;
+    default:
+        return ABILITY_NONE;
+    }
+}
+
+static u8 ConditionCoach_FindSlotWithSignal(const u16 *signalsBySlot, u16 signal)
+{
+    u8 slot;
+
+    for (slot = 0; slot < PARTY_SIZE; slot++)
+    {
+        if (signalsBySlot[slot] & signal)
+            return slot;
+    }
+    return PARTY_SIZE;
+}
+
+static void ConditionCoach_AppendPartyReceipt(u16 choice, u8 appliedCount, u8 eggCount, u8 faintedCount, u8 alreadyClearCount)
+{
+    StringCopy(gStringVar4, COMPOUND_STRING("Done. "));
+    switch (choice)
+    {
+    case CONDITION_COACH_CHOICE_CLEAR:
+        StringAppend(gStringVar4, COMPOUND_STRING("Cleared "));
+        ConditionCoach_AppendNumber(gStringVar4, appliedCount);
+        StringAppend(gStringVar4, COMPOUND_STRING(" POKéMON."));
+        break;
+    case CONDITION_COACH_CHOICE_REST_WAKE:
+        StringAppend(gStringVar4, COMPOUND_STRING("Rest-wake set for "));
+        ConditionCoach_AppendNumber(gStringVar4, appliedCount);
+        StringAppend(gStringVar4, COMPOUND_STRING(" POKéMON."));
+        break;
+    default:
+        ConditionCoach_AppendNumber(gStringVar4, appliedCount);
+        StringAppend(gStringVar4, appliedCount == 1 ? COMPOUND_STRING(" POKéMON was ") : COMPOUND_STRING(" POKéMON were "));
+        switch (choice)
+        {
+        case CONDITION_COACH_CHOICE_BURN:
+            StringAppend(gStringVar4, COMPOUND_STRING("burned."));
+            break;
+        case CONDITION_COACH_CHOICE_POISON:
+            StringAppend(gStringVar4, COMPOUND_STRING("poisoned."));
+            break;
+        case CONDITION_COACH_CHOICE_PARALYSIS:
+            StringAppend(gStringVar4, COMPOUND_STRING("paralyzed."));
+            break;
+        }
+        break;
+    }
+
+    if (eggCount != 0 || faintedCount != 0)
+    {
+        StringAppend(gStringVar4, COMPOUND_STRING("\nSkipped "));
+        if (eggCount != 0)
+        {
+            ConditionCoach_AppendNumber(gStringVar4, eggCount);
+            StringAppend(gStringVar4, eggCount == 1 ? COMPOUND_STRING(" Egg") : COMPOUND_STRING(" Eggs"));
+            if (faintedCount != 0)
+                StringAppend(gStringVar4, COMPOUND_STRING("; "));
+        }
+        if (faintedCount != 0)
+        {
+            ConditionCoach_AppendNumber(gStringVar4, faintedCount);
+            if (eggCount == 0)
+                StringAppend(gStringVar4, COMPOUND_STRING(" fainted POKéMON"));
+            else
+                StringAppend(gStringVar4, faintedCount == 1 ? COMPOUND_STRING(" was fainted") : COMPOUND_STRING(" were fainted"));
+        }
+        StringAppend(gStringVar4, COMPOUND_STRING("."));
+    }
+
+    if (alreadyClearCount != 0)
+    {
+        StringAppend(gStringVar4, eggCount != 0 || faintedCount != 0 ? COMPOUND_STRING("\l") : COMPOUND_STRING("\n"));
+        ConditionCoach_AppendNumber(gStringVar4, alreadyClearCount);
+        StringAppend(gStringVar4, alreadyClearCount == 1 ? COMPOUND_STRING(" was already clear.") : COMPOUND_STRING(" were already clear."));
+    }
+}
+
+static void ConditionCoach_AppendNicknameAndAbility(u8 slot, u16 signal)
+{
+    u8 nickname[POKEMON_NAME_LENGTH + 1];
+    u16 ability = ConditionCoach_GetAbilityForSignal(signal);
+
+    GetMonNickname(&gPlayerParty[slot], nickname);
+    StringAppend(gStringVar4, nickname);
+    StringAppend(gStringVar4, COMPOUND_STRING(" brings "));
+    StringAppend(gStringVar4, gAbilitiesInfo[ability].name);
+    StringAppend(gStringVar4, COMPOUND_STRING("."));
+}
+
+static void ConditionCoach_AppendPartyFeedback(u16 choice, const u16 *signalsBySlot, u16 allSignals)
+{
+    u16 firstSignal = ConditionCoach_GetFirstPositiveSignal(allSignals, choice, CONDITION_COACH_SIGNAL_NONE);
+    u16 secondSignal = ConditionCoach_GetFirstPositiveSignal(allSignals, choice, firstSignal);
+    u16 thirdSignal = ConditionCoach_GetFirstPositiveSignal(allSignals, choice, firstSignal | secondSignal);
+    u16 warningSignals = allSignals & (CONDITION_COACH_SIGNAL_CURING_ITEM | CONDITION_COACH_SIGNAL_STATUS_MAY_SLIP);
+    u8 slot;
+
+    if (firstSignal == CONDITION_COACH_SIGNAL_NONE && warningSignals == CONDITION_COACH_SIGNAL_NONE)
+        return;
+
+    StringAppend(gStringVar4, COMPOUND_STRING("\p"));
+    if (firstSignal != CONDITION_COACH_SIGNAL_NONE)
+    {
+        slot = ConditionCoach_FindSlotWithSignal(signalsBySlot, firstSignal);
+        ConditionCoach_AppendNicknameAndAbility(slot, firstSignal);
+        if (secondSignal != CONDITION_COACH_SIGNAL_NONE)
+        {
+            StringAppend(gStringVar4, COMPOUND_STRING("\n"));
+            StringAppend(gStringVar4, gAbilitiesInfo[ConditionCoach_GetAbilityForSignal(secondSignal)].name);
+            StringAppend(gStringVar4, COMPOUND_STRING(" is ready too."));
+        }
+        if (thirdSignal != CONDITION_COACH_SIGNAL_NONE)
+            StringAppend(gStringVar4, COMPOUND_STRING("\lOther status plans are ready too."));
+    }
+
+    if (warningSignals != CONDITION_COACH_SIGNAL_NONE)
+    {
+        if (firstSignal != CONDITION_COACH_SIGNAL_NONE)
+            StringAppend(gStringVar4, COMPOUND_STRING("\l"));
+
+        if (warningSignals == (CONDITION_COACH_SIGNAL_CURING_ITEM | CONDITION_COACH_SIGNAL_STATUS_MAY_SLIP))
+        {
+            StringAppend(gStringVar4, COMPOUND_STRING("Curing items and cleanup\nabilities may undo the setup."));
+        }
+        else if (warningSignals & CONDITION_COACH_SIGNAL_CURING_ITEM)
+        {
+            slot = ConditionCoach_FindSlotWithSignal(signalsBySlot, CONDITION_COACH_SIGNAL_CURING_ITEM);
+            GetMonNickname(&gPlayerParty[slot], gStringVar1);
+            StringAppend(gStringVar4, gStringVar1);
+            StringAppend(gStringVar4, COMPOUND_STRING("'s held Berry may\nundo the setup."));
+        }
+        else
+        {
+            slot = ConditionCoach_FindSlotWithSignal(signalsBySlot, CONDITION_COACH_SIGNAL_STATUS_MAY_SLIP);
+            GetMonNickname(&gPlayerParty[slot], gStringVar1);
+            StringAppend(gStringVar4, gStringVar1);
+            StringAppend(gStringVar4, COMPOUND_STRING("'s ability may clear\nthe setup later."));
+        }
+    }
+}
+
+u16 ConditionCoach_TryApplyStatusToParty(void)
+{
+    u16 choice = gSpecialVar_0x8005;
+    bool8 shouldApply[PARTY_SIZE] = {FALSE};
+    u16 signalsBySlot[PARTY_SIZE] = {CONDITION_COACH_SIGNAL_NONE};
+    u16 allSignals = CONDITION_COACH_SIGNAL_NONE;
+    u32 targetStatus;
+    u8 slot;
+    u8 eligibleCount = 0;
+    u8 appliedCount = 0;
+    u8 eggCount = 0;
+    u8 faintedCount = 0;
+    u8 alreadyClearCount = 0;
+
+    if (choice > CONDITION_COACH_CHOICE_CLEAR)
+        return CONDITION_COACH_RESULT_INVALID_CHOICE;
+    if (!ConditionCoach_IsChoiceUnlocked())
+        return CONDITION_COACH_RESULT_LOCKED;
+
+    ConditionCoach_ResetPartyOutputs();
+    for (slot = 0; slot < PARTY_SIZE; slot++)
+    {
+        switch (ConditionCoach_GetEligibility(&gPlayerParty[slot]))
+        {
+        case CONDITION_COACH_ELIGIBILITY_EMPTY:
+            continue;
+        case CONDITION_COACH_ELIGIBILITY_EGG:
+            eggCount++;
+            continue;
+        case CONDITION_COACH_ELIGIBILITY_FAINTED:
+            faintedCount++;
+            continue;
+        case CONDITION_COACH_ELIGIBILITY_ELIGIBLE:
+            eligibleCount++;
+            break;
+        }
+
+        if (choice == CONDITION_COACH_CHOICE_CLEAR
+         && (GetMonData(&gPlayerParty[slot], MON_DATA_STATUS) & STATUS1_ANY) == STATUS1_NONE)
+        {
+            alreadyClearCount++;
+            continue;
+        }
+
+        shouldApply[slot] = TRUE;
+        appliedCount++;
+        signalsBySlot[slot] = ConditionCoach_GetSignals(&gPlayerParty[slot], choice);
+        allSignals |= signalsBySlot[slot];
+    }
+
+    gSpecialVar_0x8007 = appliedCount;
+    gSpecialVar_0x8008 = eggCount;
+    gSpecialVar_0x8009 = faintedCount;
+    gSpecialVar_0x800A = alreadyClearCount;
+    gSpecialVar_0x800B = allSignals;
+
+    if (eligibleCount == 0)
+        return CONDITION_COACH_RESULT_NO_ELIGIBLE;
+    if (appliedCount == 0)
+        return CONDITION_COACH_RESULT_ALREADY_CLEAR;
+
+    targetStatus = ConditionCoach_GetStatusForChoice(choice);
+    Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
+    for (slot = 0; slot < PARTY_SIZE; slot++)
+    {
+        if (shouldApply[slot])
+            SetMonData(&gPlayerParty[slot], MON_DATA_STATUS, &targetStatus);
+    }
+
+    ConditionCoach_AppendPartyReceipt(choice, appliedCount, eggCount, faintedCount, alreadyClearCount);
+    ConditionCoach_AppendPartyFeedback(choice, signalsBySlot, allSignals);
     return CONDITION_COACH_RESULT_APPLIED;
 }
 

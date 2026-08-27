@@ -570,3 +570,6 @@ gSpecials::
 	def_special SetHiddenNature
 	def_special Script_IsWildHeldItemBrokerEligiblePartyMon
 	def_special OpenWildHeldItemBrokerShop
+	def_special ChooseConditionCoachPartyMon
+	def_special ConditionCoach_TryPreviewParty, 1
+	def_special ConditionCoach_TryApplyStatusToParty, 1

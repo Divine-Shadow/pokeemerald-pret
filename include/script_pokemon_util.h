@@ -17,5 +17,7 @@ u16 AbilitySwapper_TryPreview(void);
 u16 AbilitySwapper_TrySwap(void);
 u16 ConditionCoach_TryApplyStatus(void);
 u16 ConditionCoach_IsChoiceUnlocked(void);
+u16 ConditionCoach_TryPreviewParty(void);
+u16 ConditionCoach_TryApplyStatusToParty(void);
 
 #endif // GUARD_SCRIPT_POKEMON_UTIL_H
