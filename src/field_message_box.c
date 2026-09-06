@@ -32,6 +32,7 @@ struct FieldMessageFastForward
 {
     u8 state;
     u8 holdFrames;
+    bool8 presentationWaitActive;
     u32 deadline;
     u32 finalWaitReadyAt;
 };
@@ -44,6 +45,7 @@ static void StartDrawFieldMessage(void);
 static void ResetFieldMessageAcceleration(void);
 static void PrepareFastForwardForFieldMessage(bool8);
 static bool8 UpdateFieldMessageFastForward(void);
+static void SetFastForwardFinalWait(void);
 static void BeginFastForwardFinalWait(u8);
 static void Task_WatchFieldMessageFastForward(u8);
 
@@ -65,9 +67,38 @@ void CancelFieldMessageFastForward(void)
         DestroyTask(taskId);
     sFieldMessageFastForward.state = FIELD_MESSAGE_FAST_FORWARD_INACTIVE;
     sFieldMessageFastForward.holdFrames = 0;
+    sFieldMessageFastForward.presentationWaitActive = FALSE;
     sFieldMessageFastForward.deadline = 0;
     sFieldMessageFastForward.finalWaitReadyAt = 0;
     SetTextPrinterFastForward(0, FALSE);
+}
+
+void BeginFieldMessageFastForwardPresentationWait(void)
+{
+    if (!sFieldMessageAccelerationEligible
+     || sFieldMessageFastForward.state == FIELD_MESSAGE_FAST_FORWARD_CONTINUATION)
+    {
+        CancelFieldMessageFastForward();
+        return;
+    }
+
+    sFieldMessageFastForward.presentationWaitActive = TRUE;
+}
+
+void EndFieldMessageFastForwardPresentationWait(void)
+{
+    if (!sFieldMessageFastForward.presentationWaitActive)
+        return;
+
+    sFieldMessageFastForward.presentationWaitActive = FALSE;
+    if (!JOY_HELD(R_BUTTON))
+    {
+        CancelFieldMessageFastForward();
+        return;
+    }
+
+    if (sFieldMessageFastForward.state == FIELD_MESSAGE_FAST_FORWARD_PENDING_FINAL_WAIT)
+        sFieldMessageFastForward.deadline = gMain.vblankCounter1 + FIELD_MESSAGE_FAST_FORWARD_FINAL_WAIT_WINDOW;
 }
 
 static void ResetFieldMessageAcceleration(void)
@@ -103,7 +134,7 @@ static bool8 UpdateFieldMessageFastForward(void)
     switch (sFieldMessageFastForward.state)
     {
     case FIELD_MESSAGE_FAST_FORWARD_INACTIVE:
-        if (JOY_NEW(R_BUTTON))
+        if (JOY_HELD(R_BUTTON))
         {
             sFieldMessageFastForward.state = FIELD_MESSAGE_FAST_FORWARD_ARMING;
             sFieldMessageFastForward.holdFrames = 1;
@@ -134,27 +165,68 @@ static bool8 UpdateFieldMessageFastForward(void)
     return sFieldMessageFastForward.state == FIELD_MESSAGE_FAST_FORWARD_ACTIVE;
 }
 
-static void BeginFastForwardFinalWait(u8 taskId)
+#if TESTING
+void PrepareFieldMessageFastForwardForTesting(void)
+{
+    ResetFieldMessageAcceleration();
+    sFieldMessageAccelerationEligible = TRUE;
+}
+
+bool8 UpdateFieldMessageFastForwardForTesting(void)
+{
+    return UpdateFieldMessageFastForward();
+}
+#endif
+
+static void SetFastForwardFinalWait(void)
 {
     sFieldMessageFastForward.state = FIELD_MESSAGE_FAST_FORWARD_PENDING_FINAL_WAIT;
     sFieldMessageFastForward.deadline = gMain.vblankCounter1 + FIELD_MESSAGE_FAST_FORWARD_FINAL_WAIT_WINDOW;
     sFieldMessageFastForward.finalWaitReadyAt = gMain.vblankCounter1 + FIELD_MESSAGE_FAST_FORWARD_FINAL_WAIT_FRAMES;
+}
+
+static void BeginFastForwardFinalWait(u8 taskId)
+{
+    SetFastForwardFinalWait();
     gTasks[taskId].func = Task_WatchFieldMessageFastForward;
 }
+
+#if TESTING
+void BeginFieldMessageFastForwardFinalWaitForTesting(void)
+{
+    SetFastForwardFinalWait();
+}
+#endif
 
 static void Task_WatchFieldMessageFastForward(u8 UNUSED taskId)
 {
     if (!JOY_HELD(R_BUTTON)
      || ((sFieldMessageFastForward.state == FIELD_MESSAGE_FAST_FORWARD_PENDING_FINAL_WAIT
-       || sFieldMessageFastForward.state == FIELD_MESSAGE_FAST_FORWARD_CONTINUATION)
-      && !IsFastForwardDeadlineActive()))
+       && !sFieldMessageFastForward.presentationWaitActive
+       && !IsFastForwardDeadlineActive())
+      || (sFieldMessageFastForward.state == FIELD_MESSAGE_FAST_FORWARD_CONTINUATION
+       && !IsFastForwardDeadlineActive())))
     {
         CancelFieldMessageFastForward();
     }
 }
 
+#if TESTING
+void TickFieldMessageFastForwardWatcherForTesting(void)
+{
+    Task_WatchFieldMessageFastForward(0);
+}
+#endif
+
 bool8 TryFastForwardFieldMessageFinalWait(void)
 {
+    if (sFieldMessageFastForward.presentationWaitActive)
+    {
+        if (!JOY_HELD(R_BUTTON))
+            CancelFieldMessageFastForward();
+        return FALSE;
+    }
+
     if (sFieldMessageFastForward.state == FIELD_MESSAGE_FAST_FORWARD_CONTINUATION)
     {
         if (!IsFastForwardDeadlineActive() || !JOY_HELD(R_BUTTON))

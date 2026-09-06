@@ -1,3 +1,5 @@
+- Field/Dialogue: Let pre-held R reacquire ordinary dialogue fast-forward after intervening sounds and brief presentation waits (commit pending).
+- Tests: Cover pre-held R acquisition, post-presentation reacquisition, and release cancellation (commit pending).
 - Gameplay/NPCs: Organize all currently broker-available free beta stock into alphabetical held gear, one-use hold, type boost, evolution/form, medicine, resource, and all-stock views (commit pending).
 - Tests: Cover broker category masks, hybrid listings, availability filtering, alphabetical order, completeness, and Heart Scale prioritization (commit pending).
 - Gameplay/NPCs: Let Condition Coaches prepare one selected Pokemon with A or the whole eligible party with START, with confirmation and compact ability-aware feedback (commit pending).

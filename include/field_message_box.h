@@ -21,6 +21,15 @@ void StopFieldMessage(void);
 void InitFieldMessageBox(void);
 bool8 TryFastForwardFieldMessageFinalWait(void);
 void CancelFieldMessageFastForward(void);
+void BeginFieldMessageFastForwardPresentationWait(void);
+void EndFieldMessageFastForwardPresentationWait(void);
+
+#if TESTING
+void PrepareFieldMessageFastForwardForTesting(void);
+bool8 UpdateFieldMessageFastForwardForTesting(void);
+void BeginFieldMessageFastForwardFinalWaitForTesting(void);
+void TickFieldMessageFastForwardWatcherForTesting(void);
+#endif
 
 extern u8 gWalkAwayFromSignpostTimer;
 

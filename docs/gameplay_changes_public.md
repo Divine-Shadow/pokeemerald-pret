@@ -5,7 +5,7 @@ These notes cover gameplay rules and move access that are safe to know before st
 ## Dialogue Controls
 
 - Press A while ordinary field dialogue is appearing to reveal the rest of the current text pane. Press A again to advance it.
-- Hold R during ordinary field dialogue to fast-forward through text panes and directly consecutive messages. Fast-forwarding stops when R is released and before choices or menus.
+- Hold R before or during ordinary field dialogue to fast-forward through text panes and directly consecutive messages. Sounds and brief presentation animations still play in full; eligible dialogue resumes fast-forwarding afterward while R remains held. Fast-forwarding stops when R is released and before choices or menus.
 
 ## Progression Rules
 

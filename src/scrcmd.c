@@ -878,7 +878,10 @@ bool8 ScrCmd_fadescreenswapbuffers(struct ScriptContext *ctx)
 static bool8 RunPauseTimer(void)
 {
     if (--sPauseCounter == 0)
+    {
+        EndFieldMessageFastForwardPresentationWait();
         return TRUE;
+    }
     else
         return FALSE;
 }
@@ -889,7 +892,7 @@ bool8 ScrCmd_delay(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
-    CancelFieldMessageFastForward();
+    BeginFieldMessageFastForwardPresentationWait();
     sPauseCounter = frames;
     SetupNativeScript(ctx, RunPauseTimer);
     return TRUE;
@@ -1192,7 +1195,10 @@ bool8 ScrCmd_playse(struct ScriptContext *ctx)
 static bool8 WaitForSoundEffectFinish(void)
 {
     if (!IsSEPlaying())
+    {
+        EndFieldMessageFastForwardPresentationWait();
         return TRUE;
+    }
     else
         return FALSE;
 }
@@ -1201,7 +1207,7 @@ bool8 ScrCmd_waitse(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
-    CancelFieldMessageFastForward();
+    BeginFieldMessageFastForwardPresentationWait();
     SetupNativeScript(ctx, WaitForSoundEffectFinish);
     return TRUE;
 }
@@ -1218,14 +1224,19 @@ bool8 ScrCmd_playfanfare(struct ScriptContext *ctx)
 
 static bool8 WaitForFanfareFinish(void)
 {
-    return IsFanfareTaskInactive();
+    if (IsFanfareTaskInactive())
+    {
+        EndFieldMessageFastForwardPresentationWait();
+        return TRUE;
+    }
+    return FALSE;
 }
 
 bool8 ScrCmd_waitfanfare(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
-    CancelFieldMessageFastForward();
+    BeginFieldMessageFastForwardPresentationWait();
     SetupNativeScript(ctx, WaitForFanfareFinish);
     return TRUE;
 }
@@ -2796,6 +2807,16 @@ bool8 ScrCmd_playmoncry(struct ScriptContext *ctx)
     return FALSE;
 }
 
+static bool8 WaitForMonCryFinish(void)
+{
+    if (IsCryFinished())
+    {
+        EndFieldMessageFastForwardPresentationWait();
+        return TRUE;
+    }
+    return FALSE;
+}
+
 void PlayFirstMonCry(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
@@ -2807,8 +2828,8 @@ bool8 ScrCmd_waitmoncry(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
-    CancelFieldMessageFastForward();
-    SetupNativeScript(ctx, IsCryFinished);
+    BeginFieldMessageFastForwardPresentationWait();
+    SetupNativeScript(ctx, WaitForMonCryFinish);
     return TRUE;
 }
 
@@ -2837,7 +2858,6 @@ bool8 ScrCmd_opendoor(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE | SCREFF_HARDWARE);
 
-    CancelFieldMessageFastForward();
     AutomationBeacon_SetScriptStep(AUTOMATION_BEACON_SCRIPT_STEP_OPEN_DOOR);
     x += MAP_OFFSET;
     y += MAP_OFFSET;
@@ -2853,7 +2873,6 @@ bool8 ScrCmd_closedoor(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE | SCREFF_HARDWARE);
 
-    CancelFieldMessageFastForward();
     AutomationBeacon_SetScriptStep(AUTOMATION_BEACON_SCRIPT_STEP_CLOSE_DOOR);
     x += MAP_OFFSET;
     y += MAP_OFFSET;
@@ -2864,7 +2883,10 @@ bool8 ScrCmd_closedoor(struct ScriptContext *ctx)
 static bool8 IsDoorAnimationStopped(void)
 {
     if (!FieldIsDoorAnimationRunning())
+    {
+        EndFieldMessageFastForwardPresentationWait();
         return TRUE;
+    }
     else
         return FALSE;
 }
@@ -2873,7 +2895,7 @@ bool8 ScrCmd_waitdooranim(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
-    CancelFieldMessageFastForward();
+    BeginFieldMessageFastForwardPresentationWait();
     AutomationBeacon_SetScriptStep(AUTOMATION_BEACON_SCRIPT_STEP_WAIT_DOOR);
     SetupNativeScript(ctx, IsDoorAnimationStopped);
     return TRUE;
