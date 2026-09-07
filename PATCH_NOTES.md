@@ -1,3 +1,6 @@
+- Tests: Inject VBlank processing at every compiled DMA enqueue instruction boundary to detect stranded graphics requests, including queue wraparound (commit pending).
+- Graphics: Prevent VBlank from stranding DMA requests during menu transitions by ordering queue accesses inside the lock (commit pending).
+- Docs: Note the battle-menu graphics timing fix in the spoiler-free gameplay changes (commit pending).
 - Field/Dialogue: Let pre-held R reacquire ordinary dialogue fast-forward after intervening sounds and brief presentation waits (commit pending).
 - Tests: Cover pre-held R acquisition, post-presentation reacquisition, and release cancellation (commit pending).
 - Gameplay/NPCs: Organize all currently broker-available free beta stock into alphabetical held gear, one-use hold, type boost, evolution/form, medicine, resource, and all-stock views (commit pending).

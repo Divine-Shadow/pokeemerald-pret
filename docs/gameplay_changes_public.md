@@ -15,6 +15,7 @@ These notes cover gameplay rules and move access that are safe to know before st
 
 ## Battle Rules
 
+- Fixed a timing bug that could freeze battle menu transitions while music and animations continued.
 - After Intimidate's sound, animation, and message finish, press A to dismiss the remaining presentation wait. This does not skip the sound or animation.
 - In-battle friendship/affection bonuses are disabled. High friendship no longer grants random survival, evasion, critical-hit, status-curing, or bonus Exp. effects in battle.
 - Drizzle, Drought, Sand Stream, and Snow Warning now set weather for the rest of the battle instead of for a limited number of turns.
