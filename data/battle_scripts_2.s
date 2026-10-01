@@ -44,7 +44,7 @@ BattleScript_UseItemMessage:
 	getbattlerside BS_ATTACKER
 	copybyte cMULTISTRING_CHOOSER, gBattleCommunication
 	printfromtable gTrainerUsedItemStringIds
-	waitmessage B_WAIT_TIME_LONG
+	waitreadmessage B_WAIT_TIME_LONG
 	return
 
 BattleScript_ItemRestoreHPRet:
@@ -53,7 +53,7 @@ BattleScript_ItemRestoreHPRet:
 	healthbarupdate BS_SCRIPTING
 	datahpupdate BS_SCRIPTING
 	printstring STRINGID_ITEMRESTOREDSPECIESHEALTH
-	waitmessage B_WAIT_TIME_LONG
+	waitreadmessage B_WAIT_TIME_LONG
 	return
 
 BattleScript_ItemRestoreHP::
@@ -71,7 +71,7 @@ BattleScript_ItemRestoreHP_Party::
 	jumpifbyte CMP_EQUAL, gBattleCommunication, TRUE, BattleScript_ItemRestoreHP_SendOutRevivedBattler
 	clearmoveresultflags MOVE_RESULT_NO_EFFECT
 	printstring STRINGID_ITEMRESTOREDSPECIESHEALTH
-	waitmessage B_WAIT_TIME_LONG
+	waitreadmessage B_WAIT_TIME_LONG
 	return
 
 BattleScript_ItemRestoreHP_SendOutRevivedBattler:
@@ -86,7 +86,7 @@ BattleScript_ItemCureStatusAfterItemMsg:
 	itemcurestatus BattleScript_ItemCureStatusEnd
 	updatestatusicon BS_SCRIPTING
 	printstring STRINGID_ITEMCUREDSPECIESSTATUS
-	waitmessage B_WAIT_TIME_LONG
+	waitreadmessage B_WAIT_TIME_LONG
 BattleScript_ItemCureStatusEnd:
 	end
 
@@ -106,23 +106,23 @@ BattleScript_ItemIncreaseStat::
 	itemincreasestat
 	statbuffchange BS_ATTACKER, STAT_CHANGE_NOT_PROTECT_AFFECTED | STAT_CHANGE_ALLOW_PTR, BattleScript_ItemEnd
 	printfromtable gStatUpStringIds
-	waitmessage B_WAIT_TIME_LONG
+	waitreadmessage B_WAIT_TIME_LONG
 	end
 
 BattleScript_UsePokeFlute::
 	checkpokeflute
 	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 1, BattleScript_PokeFluteWakeUp
 	printstring STRINGID_POKEFLUTECATCHY
-	waitmessage B_WAIT_TIME_LONG
+	waitreadmessage B_WAIT_TIME_LONG
 	goto BattleScript_PokeFluteEnd
 
 BattleScript_PokeFluteWakeUp::
 	printstring STRINGID_POKEFLUTE
-	waitmessage B_WAIT_TIME_LONG
+	waitreadmessage B_WAIT_TIME_LONG
 	fanfare MUS_RG_POKE_FLUTE
 	waitfanfare
 	printstring STRINGID_MONHEARINGFLUTEAWOKE
-	waitmessage B_WAIT_TIME_LONG
+	waitreadmessage B_WAIT_TIME_LONG
 	updatestatusicon BS_PLAYER2
 	waitstate
 BattleScript_PokeFluteEnd::
@@ -134,7 +134,7 @@ BattleScript_ItemSetMist::
 	playmoveanimation MOVE_MIST
 	waitanimation
 	printfromtable gMistUsedStringIds
-	waitmessage B_WAIT_TIME_LONG
+	waitreadmessage B_WAIT_TIME_LONG
 	end
 
 BattleScript_ItemSetFocusEnergy::
@@ -146,14 +146,14 @@ BattleScript_ItemSetFocusEnergy::
 	waitanimation
 	copybyte sBATTLER, gBattlerAttacker
 	printstring STRINGID_PKMNUSEDXTOGETPUMPED
-	waitmessage B_WAIT_TIME_LONG
+	waitreadmessage B_WAIT_TIME_LONG
 	end
 
 BattleScript_ItemRestorePP::
 	call BattleScript_UseItemMessage
 	itemrestorepp
 	printstring STRINGID_ITEMRESTOREDSPECIESPP
-	waitmessage B_WAIT_TIME_LONG
+	waitreadmessage B_WAIT_TIME_LONG
 	end
 
 BattleScript_ItemIncreaseAllStats::
@@ -239,31 +239,31 @@ BattleScript_RunByUsingItem::
 
 BattleScript_ActionWatchesCarefully:
 	printstring STRINGID_PKMNWATCHINGCAREFULLY
-	waitmessage B_WAIT_TIME_LONG
+	waitreadmessage B_WAIT_TIME_LONG
 	end2
 
 BattleScript_ActionGetNear:
 	printfromtable gSafariGetNearStringIds
-	waitmessage B_WAIT_TIME_LONG
+	waitreadmessage B_WAIT_TIME_LONG
 	end2
 
 BattleScript_ActionThrowPokeblock:
 	printstring STRINGID_THREWPOKEBLOCKATPKMN
-	waitmessage B_WAIT_TIME_LONG
+	waitreadmessage B_WAIT_TIME_LONG
 	playanimation BS_ATTACKER, B_ANIM_POKEBLOCK_THROW, NULL
 	printfromtable gSafariPokeblockResultStringIds
-	waitmessage B_WAIT_TIME_LONG
+	waitreadmessage B_WAIT_TIME_LONG
 	end2
 
 BattleScript_ActionWallyThrow:
 	printstring STRINGID_RETURNMON
-	waitmessage B_WAIT_TIME_LONG
+	waitreadmessage B_WAIT_TIME_LONG
 	returnatktoball
 	waitstate
 	trainerslidein BS_PLAYER1
 	waitstate
 	printstring STRINGID_YOUTHROWABALLNOWRIGHT
-	waitmessage B_WAIT_TIME_LONG
+	waitreadmessage B_WAIT_TIME_LONG
 	end2
 
 BattleScript_TrainerASlideMsgRet::

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "battle_presentation.h"
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_ai_main.h"
@@ -1755,6 +1756,7 @@ void BattleMainCB2(void)
 {
     AnimateSprites();
     BuildOamBuffer();
+    UpdateBattleTextReading();
     RunTextPrinters();
     UpdatePaletteFade();
     RunTasks();
@@ -1771,6 +1773,7 @@ void BattleMainCB2(void)
 
 static void FreeRestoreBattleData(void)
 {
+    ResetBattleTextReading();
     gMain.callback1 = gPreBattleCallback1;
     gScanlineEffect.state = 3;
     gMain.inBattle = FALSE;

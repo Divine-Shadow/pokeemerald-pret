@@ -195,7 +195,7 @@ static u32 CB2_HandleCheckPageInput(struct Pokenav_MatchCallMenu *state)
 
 static u32 CB2_HandleCallExitInput(struct Pokenav_MatchCallMenu *state)
 {
-    if (JOY_NEW(A_BUTTON | B_BUTTON))
+    if (TryAdvanceMatchCallMessage())
     {
         state->callback = CB2_HandleMatchCallInput;
         return POKENAV_MC_FUNC_EXIT_CALL;

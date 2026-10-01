@@ -17,6 +17,7 @@
 #include "strings.h"
 #include "task.h"
 #include "text.h"
+#include "text_reading.h"
 #include "text_window.h"
 #include "trig.h"
 #include "window.h"
@@ -36,6 +37,7 @@ struct Pokenav_MatchCallGfx
     u8 filler8[6];
     bool8 skipHangUpSE;
     bool8 newRematchRequest;
+    struct TextReadingState reading;
     u16 locWindowId;
     u16 infoBoxWindowId;
     u16 msgBoxWindowId;
@@ -289,6 +291,7 @@ bool32 OpenMatchCall(void)
     if (!gfx)
         return FALSE;
 
+    gfx->reading = (struct TextReadingState){0};
     gfx->unused19 = 0;
     gfx->loopTaskId = CreateLoopedTask(LoopedTask_OpenMatchCall, 1);
     gfx->isTaskActiveCB = GetCurrentLoopedTaskActive;
@@ -311,6 +314,7 @@ bool32 IsMatchCallLoopedTaskActive(void)
 void FreeMatchCallSubstruct2(void)
 {
     struct Pokenav_MatchCallGfx *gfx = GetSubstructPtr(POKENAV_SUBSTRUCT_MATCH_CALL_OPEN);
+    ResetTextReading(&gfx->reading);
     FreeMatchCallSprites();
     DestroyMatchCallList();
     RemoveWindow(gfx->infoBoxWindowId);
@@ -617,6 +621,7 @@ static u32 DoMatchCallMessage(s32 state)
         if (WaitForCallingDotsText(gfx))
             return LT_PAUSE;
 
+        FinishTextReading(&gfx->reading);
         PrintMatchCallMessage(gfx);
         return LT_INC_AND_PAUSE;
     case 3:
@@ -1119,26 +1124,32 @@ static bool32 IsDma3ManagerBusyWithBgCopy2(struct Pokenav_MatchCallGfx *gfx)
     return IsDma3ManagerBusyWithBgCopy();
 }
 
+static void InitCallReadingPrinter(struct Pokenav_MatchCallGfx *gfx, const u8 *str, u8 x, u8 speed)
+{
+    AddTextPrinterParameterized(gfx->msgBoxWindowId, FONT_NORMAL, str, x, 1, speed, NULL);
+    BeginTextReading(&gfx->reading, gfx->msgBoxWindowId);
+}
+
 static void PrintCallingDots(struct Pokenav_MatchCallGfx *gfx)
 {
-    AddTextPrinterParameterized(gfx->msgBoxWindowId, FONT_NORMAL, sText_CallingDots, 32, 1, 1, NULL);
+    InitCallReadingPrinter(gfx, sText_CallingDots, 32, 1);
 }
 
 static bool32 WaitForCallingDotsText(struct Pokenav_MatchCallGfx *gfx)
 {
-    RunTextPrinters();
-    return IsTextPrinterActive(gfx->msgBoxWindowId);
+    return RunTextReadingPrinter(&gfx->reading, !IsOverworldLinkActive()
+                                 && !AUTO_SCROLL_TEXT && !gTextFlags.autoScroll);
 }
 
 static void PrintTrainerIsCloseBy(struct Pokenav_MatchCallGfx *gfx)
 {
-    AddTextPrinterParameterized(gfx->msgBoxWindowId, FONT_NORMAL, gText_TrainerCloseBy, 0, 1, 1, NULL);
+    InitCallReadingPrinter(gfx, gText_TrainerCloseBy, 0, 1);
 }
 
 static bool32 WaitForTrainerIsCloseByText(struct Pokenav_MatchCallGfx *gfx)
 {
-    RunTextPrinters();
-    return IsTextPrinterActive(gfx->msgBoxWindowId);
+    return RunTextReadingPrinter(&gfx->reading, !IsOverworldLinkActive()
+                                 && !AUTO_SCROLL_TEXT && !gTextFlags.autoScroll);
 }
 
 static void PrintMatchCallMessage(struct Pokenav_MatchCallGfx *gfx)
@@ -1146,7 +1157,7 @@ static void PrintMatchCallMessage(struct Pokenav_MatchCallGfx *gfx)
     int index = PokenavList_GetSelectedIndex();
     const u8 *str = GetMatchCallMessageText(index, &gfx->newRematchRequest);
     u8 speed = GetPlayerTextSpeedDelay();
-    AddTextPrinterParameterized(gfx->msgBoxWindowId, FONT_NORMAL, str, 32, 1, speed, NULL);
+    InitCallReadingPrinter(gfx, str, 32, speed);
 }
 
 static bool32 WaitForMatchCallMessageText(struct Pokenav_MatchCallGfx *gfx)
@@ -1156,12 +1167,43 @@ static bool32 WaitForMatchCallMessageText(struct Pokenav_MatchCallGfx *gfx)
     else
         gTextFlags.canABSpeedUpPrint = FALSE;
 
-    RunTextPrinters();
-    return IsTextPrinterActive(gfx->msgBoxWindowId);
+    return RunTextReadingPrinter(&gfx->reading, !IsOverworldLinkActive()
+                                 && !AUTO_SCROLL_TEXT && !gTextFlags.autoScroll);
+}
+
+#if TESTING
+static EWRAM_DATA struct Pokenav_MatchCallGfx sCallTestGfx = {0};
+
+void InitPokenavCallPrinterForTesting(u8 windowId, const u8 *str)
+{
+    ResetTextReading(&sCallTestGfx.reading);
+    sCallTestGfx.msgBoxWindowId = windowId;
+    InitCallReadingPrinter(&sCallTestGfx, str, 32, GetPlayerTextSpeedDelay());
+}
+
+bool32 RunPokenavCallPrinterForTesting(void)
+{
+    return WaitForMatchCallMessageText(&sCallTestGfx);
+}
+
+bool32 TryAdvancePokenavCallForTesting(bool32 presentationBusy)
+{
+    return TryAdvanceTextReading(&sCallTestGfx.reading, presentationBusy, A_BUTTON | B_BUTTON);
+}
+#endif
+
+bool32 TryAdvanceMatchCallMessage(void)
+{
+    struct Pokenav_MatchCallGfx *gfx = GetSubstructPtr(POKENAV_SUBSTRUCT_MATCH_CALL_OPEN);
+
+    UpdateTextReading(&gfx->reading, !IsOverworldLinkActive()
+                      && !AUTO_SCROLL_TEXT && !gTextFlags.autoScroll);
+    return TryAdvanceTextReading(&gfx->reading, IsSEPlaying() || IsCryPlaying(), A_BUTTON | B_BUTTON);
 }
 
 static void EraseCallMessageBox(struct Pokenav_MatchCallGfx *gfx)
 {
+    ResetTextReading(&gfx->reading);
     HideSpinningPokenavSprite();
     FillBgTilemapBufferRect_Palette0(1, 0, 0, 0, 32, 20);
     CopyBgTilemapBufferToVram(1);

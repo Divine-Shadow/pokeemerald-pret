@@ -2830,6 +2830,7 @@ static void Cmd_waitmessage(void)
                 gPauseCounterBattle = toWait;
             if (++gPauseCounterBattle >= toWait)
             {
+                ResetBattleTextReading();
                 gPauseCounterBattle = 0;
                 gBattlescriptCurrInstr = cmd->nextInstr;
                 gBattleCommunication[MSG_DISPLAY] = 0;
@@ -2852,33 +2853,68 @@ bool32 ShouldAdvanceBattlePresentationWait(u32 battleTypeFlags, u16 newKeys, boo
     return !messageActive || timeoutReached || (newKeys & A_BUTTON);
 }
 
+// New reading commands retain the original waitmessage timing in synchronized
+// battles and in the headless runner, including its counter increment order.
+void BS_WaitMessageOrButton(void);
+
+void BS_WaitReadMessage(void)
+{
+    NATIVE_ARGS(u16 time);
+
+    if (IsBattleTextReadingEligible(gBattleTypeFlags, IsBattleTextReadingHeadless()))
+    {
+        BS_WaitMessageOrButton();
+    }
+    else if (gBattleControllerExecFlags == 0)
+    {
+        if (!gBattleCommunication[MSG_DISPLAY])
+        {
+            gBattlescriptCurrInstr = cmd->nextInstr;
+        }
+        else
+        {
+            if (IsBattleTextReadingHeadless())
+                gPauseCounterBattle = cmd->time;
+            if (++gPauseCounterBattle >= cmd->time)
+            {
+                ResetBattleTextReading();
+                gPauseCounterBattle = 0;
+                gBattleCommunication[MSG_DISPLAY] = 0;
+                gBattlescriptCurrInstr = cmd->nextInstr;
+            }
+        }
+    }
+}
+
 void BS_WaitMessageOrButton(void)
 {
     NATIVE_ARGS(u16 time);
     bool32 controllerBusy = (gBattleControllerExecFlags != 0);
     bool32 textPrinterActive = IsTextPrinterActive(B_WIN_MSG);
-    bool32 soundActive = IsSEPlaying();
+    bool32 soundActive = IsSEPlaying() || IsCryPlaying() || gAnimScriptActive;
+    bool32 readingAdvance = TryAdvanceBattleTextReading(controllerBusy || textPrinterActive || soundActive);
     bool32 timeoutReached;
 
     if (!controllerBusy && !textPrinterActive && gBattleCommunication[MSG_DISPLAY])
     {
         if (gPauseCounterBattle < cmd->time)
             gPauseCounterBattle++;
-        if (gTestRunnerHeadless)
+        if (IsBattleTextReadingHeadless())
             gPauseCounterBattle = cmd->time;
     }
     timeoutReached = (gPauseCounterBattle >= cmd->time);
 
     if (ShouldAdvanceBattlePresentationWait(
             gBattleTypeFlags,
-            gMain.newKeys,
+            0,
             controllerBusy,
             textPrinterActive,
             soundActive,
             gBattleCommunication[MSG_DISPLAY],
             timeoutReached,
-            gTestRunnerHeadless))
+            IsBattleTextReadingHeadless()) || readingAdvance)
     {
+        FinishBattleTextReading();
         gPauseCounterBattle = 0;
         gBattleCommunication[MSG_DISPLAY] = 0;
         gBattlescriptCurrInstr = cmd->nextInstr;
@@ -5417,6 +5453,7 @@ static void Cmd_pause(void)
 
     if (gBattleControllerExecFlags == 0)
     {
+        ResetBattleTextReading();
         u16 value = cmd->frames;
         if (gTestRunnerHeadless)
             gPauseCounterBattle = value;
@@ -8663,6 +8700,12 @@ static void Cmd_yesnobox(void)
         BattleCreateYesNoCursorAt(0);
         break;
     case 1:
+        // The prompt may still be revealing while the choice window opens.
+        UpdateBattleTextReading();
+        if (gBattleControllerExecFlags || IsTextPrinterActive(B_WIN_MSG)
+         || IsBattleTextReadingInputUsed())
+            break;
+        ResetBattleTextReading();
         if (JOY_NEW(DPAD_UP) && gBattleCommunication[CURSOR_POSITION] != 0)
         {
             PlaySE(SE_SELECT);

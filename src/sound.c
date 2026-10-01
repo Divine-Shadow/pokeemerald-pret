@@ -520,6 +520,8 @@ bool8 IsCryPlayingOrClearCrySongs(void)
 
 bool8 IsCryPlaying(void)
 {
+    if (gMPlay_PokemonCry == NULL)
+        return FALSE;
     if (IsPokemonCryPlaying(gMPlay_PokemonCry))
         return TRUE;
     else

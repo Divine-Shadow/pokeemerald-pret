@@ -65,7 +65,8 @@ struct TextPrinterSubStruct
     u8 downArrowYPosIdx:2;
     bool8 hasFontIdBeenSet:1;
     u8 autoScrollDelay;
-    u8 fastForwardWaitFrames;
+    u8 fastForwardWaitFrames:7;
+    bool8 preserveTimedPauses:1;
 };
 
 struct TextPrinterTemplate
@@ -151,6 +152,7 @@ void RunTextPrinters(void);
 bool32 IsTextPrinterActive(u8 id);
 bool32 TryCompleteTextPrinterPage(u8 id);
 void SetTextPrinterFastForward(u8 id, bool8 enabled);
+void SetTextPrinterPreserveTimedPauses(u8 id, bool8 enabled);
 void ResetTextPrinterBurstState(u8 id);
 void GenerateFontHalfRowLookupTable(u8 fgColor, u8 bgColor, u8 shadowColor);
 void SaveTextColors(u8 *fgColor, u8 *bgColor, u8 *shadowColor);

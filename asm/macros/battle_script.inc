@@ -86,6 +86,12 @@
 	.2byte \time
 	.endm
 
+	@ Only use after an audited text-print command; presentation waits keep their own commands.
+	.macro waitreadmessage time:req
+	callnative BS_WaitReadMessage
+	.2byte \time
+	.endm
+
 	.macro waitmessageorbutton time:req
 	callnative BS_WaitMessageOrButton
 	.2byte \time

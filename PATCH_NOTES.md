@@ -1,5 +1,10 @@
-- Gameplay/Ability Swapper: Refresh the selected Pokemon's nickname before ordinary and Hidden Ability refusal messages instead of displaying stale party-menu HP text (commit pending).
-- Tests/Ability Swapper: Cover both refusal paths with stale /161 text, a custom Mudkip nickname, and unchanged ability and Heart Scale counts (commit pending).
+- Gameplay/Ability Swapper: Refresh the selected Pokemon's nickname before ordinary and Hidden Ability refusal messages instead of displaying stale party-menu HP text (commit 9831cf35c2).
+- Tests/Ability Swapper: Cover both refusal paths with stale /161 text, a custom Mudkip nickname, and unchanged ability and Heart Scale counts (commit 9831cf35c2).
+- Reading: Cancel held-R qualification when released or ineligible between messages; test release/repress, uninterrupted continuation, and deadline expiry (commit pending).
+- Tests/Reading: Isolate rendered reading fixtures from prior scene audio and reproduce setup with an active sound-effect track (commit pending).
+- Field/Calls/Battle: Extend A pane completion and held-R reading to both PokéNav call paths and audited battle message delays while preserving presentation waits and choices (commit pending).
+- Tests: Cover actual call printers, input ownership, page boundaries, held/released R, transitions, timed pauses, and battle-mode exclusions (commit pending).
+- Docs: Record the reading-delay audit and implementation/validation plan and update public reading controls (commit pending).
 - Tests: Inject VBlank processing at every compiled DMA enqueue instruction boundary to detect stranded graphics requests, including queue wraparound (commit pending).
 - Graphics: Prevent VBlank from stranding DMA requests during menu transitions by ordering queue accesses inside the lock (commit pending).
 - Docs: Note the battle-menu graphics timing fix in the spoiler-free gameplay changes (commit pending).

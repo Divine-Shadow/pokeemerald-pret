@@ -4,8 +4,8 @@ These notes cover gameplay rules and move access that are safe to know before st
 
 ## Dialogue Controls
 
-- Press A while ordinary field dialogue is appearing to reveal the rest of the current text pane. Press A again to advance it.
-- Hold R before or during ordinary field dialogue to fast-forward through text panes and directly consecutive messages. Sounds and brief presentation animations still play in full; eligible dialogue resumes fast-forwarding afterward while R remains held. Fast-forwarding stops when R is released and before choices or menus.
+- Press A while field dialogue, PokéNav calls, or battle messages are appearing to reveal the rest of the current text pane. A separate press advances the pane or confirms the end of a call.
+- Hold R before or during field dialogue, PokéNav calls, or battle messages to read faster and continue through eligible text. Sounds, cries, animations, and call/battle presentation pauses still finish normally. Release R to stop; choices and menus require their usual inputs.
 
 ## Progression Rules
 
@@ -16,7 +16,7 @@ These notes cover gameplay rules and move access that are safe to know before st
 ## Battle Rules
 
 - Fixed a timing bug that could freeze battle menu transitions while music and animations continued.
-- After Intimidate's sound, animation, and message finish, press A to dismiss the remaining presentation wait. This does not skip the sound or animation.
+- After a battle message and its sound/animation finish, A or held R can shorten its eligible reading delay. Automatic timeouts remain. Link and recorded battles keep their original timing.
 - In-battle friendship/affection bonuses are disabled. High friendship no longer grants random survival, evasion, critical-hit, status-curing, or bonus Exp. effects in battle.
 - Drizzle, Drought, Sand Stream, and Snow Warning now set weather for the rest of the battle instead of for a limited number of turns.
 - Some trainers can be configured to have their battle team match the player's current level cap.
