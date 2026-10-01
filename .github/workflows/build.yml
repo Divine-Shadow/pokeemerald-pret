@@ -17,6 +17,8 @@ jobs:
       GAME_LANGUAGE: ENGLISH
       COMPARE: 0
       UNUSED_ERROR: 1
+      # Match the documented Docker/Nix build mode and its multiboot stubs.
+      NO_MULTIBOOT: 1
     steps:
       - name: Checkout
         uses: actions/checkout@v2

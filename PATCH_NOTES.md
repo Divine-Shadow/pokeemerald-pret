@@ -1,3 +1,4 @@
+- Build/CI: Use the documented NO_MULTIBOOT=1 mode for hosted ROM, LTO, and test gates, matching Docker/Nix and avoiding duplicate payload/stub symbols (commit pending).
 - Gameplay/Ability Swapper: Refresh the selected Pokemon's nickname before ordinary and Hidden Ability refusal messages instead of displaying stale party-menu HP text (commit 9831cf35c2).
 - Tests/Ability Swapper: Cover both refusal paths with stale /161 text, a custom Mudkip nickname, and unchanged ability and Heart Scale counts (commit 9831cf35c2).
 - Reading: Cancel held-R qualification when released or ineligible between messages; test release/repress, uninterrupted continuation, and deadline expiry (commit pending).
