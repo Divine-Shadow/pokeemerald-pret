@@ -1,3 +1,5 @@
+- Gameplay/Ability Swapper: Refresh the selected Pokemon's nickname before ordinary and Hidden Ability refusal messages instead of displaying stale party-menu HP text (commit pending).
+- Tests/Ability Swapper: Cover both refusal paths with stale /161 text, a custom Mudkip nickname, and unchanged ability and Heart Scale counts (commit pending).
 - Tests: Inject VBlank processing at every compiled DMA enqueue instruction boundary to detect stranded graphics requests, including queue wraparound (commit pending).
 - Graphics: Prevent VBlank from stranding DMA requests during menu transitions by ordering queue accesses inside the lock (commit pending).
 - Docs: Note the battle-menu graphics timing fix in the spoiler-free gameplay changes (commit pending).
