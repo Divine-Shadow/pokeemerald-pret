@@ -540,7 +540,9 @@ static void RunTextPrinterBurst(struct TextPrinter *textPrinter)
             break;
         }
 
-        if (textPrinter->state == RENDER_STATE_WAIT_SE)
+        if (textPrinter->state == RENDER_STATE_WAIT_SE
+         || (subStruct->preserveTimedPauses
+          && (previousState == RENDER_STATE_PAUSE || textPrinter->state == RENDER_STATE_PAUSE)))
             break;
 
         if (previousState == RENDER_STATE_SCROLL || textPrinter->state == RENDER_STATE_SCROLL)
@@ -602,6 +604,12 @@ void SetTextPrinterFastForward(u8 id, bool8 enabled)
     subStruct->fastForwardActive = enabled;
     if (!enabled)
         subStruct->fastForwardWaitFrames = 0;
+}
+
+void SetTextPrinterPreserveTimedPauses(u8 id, bool8 enabled)
+{
+    if (id < WINDOWS_MAX)
+        ((struct TextPrinterSubStruct *)sTextPrinters[id].subStructFields)->preserveTimedPauses = enabled;
 }
 
 void ResetTextPrinterBurstState(u8 id)
@@ -1610,7 +1618,8 @@ static u16 RenderText(struct TextPrinter *textPrinter)
             textPrinter->state = RENDER_STATE_HANDLE_CHAR;
         return RENDER_UPDATE;
     case RENDER_STATE_PAUSE:
-        if (subStruct->completePagePending || subStruct->fastForwardActive)
+        if (!subStruct->preserveTimedPauses
+         && (subStruct->completePagePending || subStruct->fastForwardActive))
         {
             textPrinter->delayCounter = 0;
             textPrinter->state = RENDER_STATE_HANDLE_CHAR;

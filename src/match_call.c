@@ -9,6 +9,7 @@
 #include "event_object_movement.h"
 #include "field_player_avatar.h"
 #include "main.h"
+#include "text_reading.h"
 #include "match_call.h"
 #include "menu.h"
 #include "new_game.h"
@@ -129,6 +130,7 @@ struct BattleFrontierStreakInfo
 };
 
 static EWRAM_DATA struct MatchCallState sMatchCallState = {0};
+static EWRAM_DATA struct TextReadingState sMatchCallReading = {0};
 static EWRAM_DATA struct BattleFrontierStreakInfo sBattleFrontierStreakInfo = {0};
 
 static u32 GetCurrentTotalMinutes(struct Time *);
@@ -1183,6 +1185,7 @@ bool32 IsMatchCallTaskActive(void)
 
 static void StartMatchCall(void)
 {
+    ResetTextReading(&sMatchCallReading);
     if (!sMatchCallState.triggeredFromScript)
     {
         LockPlayerFieldControls();
@@ -1324,6 +1327,7 @@ static bool32 MatchCall_PrintIntro(u8 taskId)
         // Ready the message
         if (!sMatchCallState.triggeredFromScript)
             SelectMatchCallMessage(sMatchCallState.trainerId, gStringVar4);
+        FinishTextReading(&sMatchCallReading);
         InitMatchCallTextPrinter(tWindowId, gStringVar4);
         return TRUE;
     }
@@ -1334,10 +1338,12 @@ static bool32 MatchCall_PrintIntro(u8 taskId)
 static bool32 MatchCall_PrintMessage(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
-    if (!RunMatchCallTextPrinter(tWindowId) && !IsSEPlaying() && JOY_NEW(A_BUTTON | B_BUTTON))
+    if (!RunMatchCallTextPrinter(tWindowId)
+     && TryAdvanceTextReading(&sMatchCallReading, IsSEPlaying() || IsCryPlaying(), A_BUTTON | B_BUTTON))
     {
         FillWindowPixelBuffer(tWindowId, PIXEL_FILL(8));
         CopyWindowToVram(tWindowId, COPYWIN_GFX);
+        ResetTextReading(&sMatchCallReading);
         PlaySE(SE_POKENAV_HANG_UP);
         return TRUE;
     }
@@ -1423,6 +1429,7 @@ static void InitMatchCallTextPrinter(int windowId, const u8 *str)
     gTextFlags.useAlternateDownArrow = FALSE;
 
     AddTextPrinter(&printerTemplate, GetPlayerTextSpeedDelay(), NULL);
+    BeginTextReading(&sMatchCallReading, windowId);
 }
 
 static bool32 RunMatchCallTextPrinter(int windowId)
@@ -1432,9 +1439,28 @@ static bool32 RunMatchCallTextPrinter(int windowId)
     else
         gTextFlags.canABSpeedUpPrint = FALSE;
 
-    RunTextPrinters();
+    RunTextReadingPrinter(&sMatchCallReading, !IsOverworldLinkActive()
+                          && !AUTO_SCROLL_TEXT && !gTextFlags.autoScroll);
     return IsTextPrinterActive(windowId);
 }
+
+#if TESTING
+void InitIncomingCallPrinterForTesting(u8 windowId, const u8 *str)
+{
+    ResetTextReading(&sMatchCallReading);
+    InitMatchCallTextPrinter(windowId, str);
+}
+
+bool32 RunIncomingCallPrinterForTesting(void)
+{
+    return RunMatchCallTextPrinter(sMatchCallReading.windowId);
+}
+
+bool32 TryAdvanceIncomingCallForTesting(bool32 presentationBusy)
+{
+    return TryAdvanceTextReading(&sMatchCallReading, presentationBusy, A_BUTTON | B_BUTTON);
+}
+#endif
 
 #define tTimer     data[0]
 #define tSpinStage data[1]

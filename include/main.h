@@ -49,6 +49,8 @@ extern const u8 RomHeaderSoftwareVersion;
 extern u16 gKeyRepeatStartDelay;
 extern bool8 gLinkTransferringData;
 extern struct Main gMain;
+// Advances when keys are sampled, and stays stable during callbacks and VBlank.
+extern u32 gInputFrameCounter;
 extern u16 gKeyRepeatContinueDelay;
 extern bool8 gSoftResetDisabled;
 extern IntrFunc gIntrTable[];

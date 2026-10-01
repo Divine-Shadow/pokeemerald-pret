@@ -22,11 +22,26 @@ static struct Dma3Request sDma3Requests[MAX_DMA_REQUESTS];
 static vbool8 sDma3ManagerLocked;
 static u8 sDma3RequestCursor;
 
+static inline void LockDma3Manager(void)
+{
+    sDma3ManagerLocked = TRUE;
+    // VBlank consumes this queue. A volatile flag alone does not prevent the
+    // compiler from moving the cursor read or request accesses before the lock.
+    asm volatile ("" ::: "memory");
+}
+
+static inline void UnlockDma3Manager(void)
+{
+    // Publish the complete request before allowing VBlank to consume it.
+    asm volatile ("" ::: "memory");
+    sDma3ManagerLocked = FALSE;
+}
+
 void ClearDma3Requests(void)
 {
     int i;
 
-    sDma3ManagerLocked = TRUE;
+    LockDma3Manager();
     sDma3RequestCursor = 0;
 
     for (i = 0; i < MAX_DMA_REQUESTS; i++)
@@ -36,7 +51,7 @@ void ClearDma3Requests(void)
         sDma3Requests[i].dest = NULL;
     }
 
-    sDma3ManagerLocked = FALSE;
+    UnlockDma3Manager();
 }
 
 void ProcessDma3Requests(void)
@@ -46,6 +61,7 @@ void ProcessDma3Requests(void)
     if (sDma3ManagerLocked)
         return;
 
+    asm volatile ("" ::: "memory");
     bytesTransferred = 0;
 
     // as long as there are DMA requests to process (unless size or vblank is an issue), do not exit
@@ -100,7 +116,7 @@ s16 RequestDma3Copy(const void *src, void *dest, u16 size, u32 mode)
     int cursor;
     int i = 0;
 
-    sDma3ManagerLocked = TRUE;
+    LockDma3Manager();
     cursor = sDma3RequestCursor;
 
     while (i < MAX_DMA_REQUESTS)
@@ -116,14 +132,14 @@ s16 RequestDma3Copy(const void *src, void *dest, u16 size, u32 mode)
             else
                 sDma3Requests[cursor].mode = DMA_REQUEST_COPY16;
 
-            sDma3ManagerLocked = FALSE;
+            UnlockDma3Manager();
             return cursor;
         }
         if (++cursor >= MAX_DMA_REQUESTS) // loop back to start.
             cursor = 0;
         i++;
     }
-    sDma3ManagerLocked = FALSE;
+    UnlockDma3Manager();
     return -1;  // no free DMA request was found
 }
 
@@ -132,8 +148,8 @@ s16 RequestDma3Fill(s32 value, void *dest, u16 size, u32 mode)
     int cursor;
     int i = 0;
 
+    LockDma3Manager();
     cursor = sDma3RequestCursor;
-    sDma3ManagerLocked = TRUE;
 
     while (i < MAX_DMA_REQUESTS)
     {
@@ -149,14 +165,14 @@ s16 RequestDma3Fill(s32 value, void *dest, u16 size, u32 mode)
             else
                 sDma3Requests[cursor].mode = DMA_REQUEST_FILL16;
 
-            sDma3ManagerLocked = FALSE;
+            UnlockDma3Manager();
             return cursor;
         }
         if (++cursor >= MAX_DMA_REQUESTS) // loop back to start.
             cursor = 0;
         i++;
     }
-    sDma3ManagerLocked = FALSE;
+    UnlockDma3Manager();
     return -1;  // no free DMA request was found
 }
 

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "battle_presentation.h"
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_controllers.h"
@@ -3502,6 +3503,8 @@ void BattlePutTextOnWindow(const u8 *text, u8 windowId)
     }
 
     AddTextPrinter(&printerTemplate, speed, NULL);
+    if (windowId == B_WIN_MSG)
+        BeginBattleTextReading();
 
     if (copyToVram)
     {

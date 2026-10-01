@@ -1,6 +1,7 @@
 #include "global.h"
 #include "event_data.h"
 #include "item.h"
+#include "party_menu.h"
 #include "pokemon.h"
 #include "script_pokemon_util.h"
 #include "string_util.h"
@@ -128,4 +129,45 @@ TEST("Ability Swapper treats party cancellation as cancelled")
     gSpecialVar_0x8004 = PARTY_NOTHING_CHOSEN;
 
     EXPECT_EQ(AbilitySwapper_TryPreview(), ABILITY_SWAPPER_RESULT_CANCELLED);
+}
+
+static void CheckAbilityRefusalNickname(u8 abilityNum, u16 expectedResult)
+{
+    static const u8 nickname[] = _("PUDDLES");
+    static const u8 staleMaxHP[] = _("/161");
+    u8 attempt;
+    u8 storedNickname[POKEMON_NAME_LENGTH + 1];
+
+    CreateAbilitySwapperTestMon(SPECIES_MUDKIP, abilityNum);
+    SetMonData(&gPlayerParty[0], MON_DATA_NICKNAME, nickname);
+    EXPECT(AddBagItem(ITEM_HEART_SCALE, 2));
+
+    for (attempt = 0; attempt < 2; attempt++)
+    {
+        // The party menu leaves maximum HP here before returning the selection.
+        StringCopy(gStringVar1, staleMaxHP);
+        if (attempt == 0)
+            EXPECT_EQ(AbilitySwapper_TryPreview(), expectedResult);
+        else
+            EXPECT_EQ(AbilitySwapper_TrySwap(), expectedResult);
+        EXPECT(StringCompare(gStringVar1, nickname) == 0);
+        GetMonNickname(&gPlayerParty[0], storedNickname);
+        EXPECT(StringCompare(storedNickname, nickname) == 0);
+        EXPECT_EQ(GetMonData(&gPlayerParty[0], MON_DATA_ABILITY_NUM), abilityNum);
+        EXPECT_EQ(GetMonAbility(&gPlayerParty[0]), GetSpeciesAbility(SPECIES_MUDKIP, abilityNum));
+        EXPECT(CheckBagHasItem(ITEM_HEART_SCALE, 2));
+        EXPECT(!CheckBagHasItem(ITEM_HEART_SCALE, 3));
+    }
+}
+
+TEST("Ability Swapper refreshes Mudkip's nickname before ordinary ability refusal")
+{
+    ASSUME(GetSpeciesAbility(SPECIES_MUDKIP, 1) == ABILITY_NONE);
+    CheckAbilityRefusalNickname(0, ABILITY_SWAPPER_RESULT_NO_ORDINARY_SWAP);
+}
+
+TEST("Ability Swapper refreshes Mudkip's nickname before Hidden Ability refusal")
+{
+    ASSUME(GetSpeciesAbility(SPECIES_MUDKIP, 2) != ABILITY_NONE);
+    CheckAbilityRefusalNickname(2, ABILITY_SWAPPER_RESULT_HIDDEN_ABILITY);
 }

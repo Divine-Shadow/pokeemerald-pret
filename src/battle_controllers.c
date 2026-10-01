@@ -1,4 +1,5 @@
 #include "global.h"
+#include "battle_presentation.h"
 #include "battle.h"
 #include "battle_ai_main.h"
 #include "battle_ai_util.h"
@@ -145,6 +146,7 @@ void InitBattleControllers(void)
 
 static void InitBtlControllersInternal(void)
 {
+    ResetBattleTextReading();
     s32 i;
     bool32 isLink = (gBattleTypeFlags & BATTLE_TYPE_LINK);
     bool32 isDouble = IsDoubleBattle();
@@ -982,6 +984,7 @@ void BtlController_EmitPrintSelectionString(u32 battler, u32 bufferId, enum Stri
 // itemId only relevant for B_ACTION_USE_ITEM
 void BtlController_EmitChooseAction(u32 battler, u32 bufferId, u8 action, u16 itemId)
 {
+    ResetBattleTextReading();
     gBattleResources->transferBuffer[0] = CONTROLLER_CHOOSEACTION;
     gBattleResources->transferBuffer[1] = action;
     gBattleResources->transferBuffer[2] = itemId;
@@ -1004,6 +1007,7 @@ void BtlController_EmitChooseMove(u32 battler, u32 bufferId, bool8 isDoubleBattl
 {
     s32 i;
 
+    ResetBattleTextReading();
     gBattleResources->transferBuffer[0] = CONTROLLER_CHOOSEMOVE;
     gBattleResources->transferBuffer[1] = isDoubleBattle;
     gBattleResources->transferBuffer[2] = NoPpNumber;
@@ -1017,6 +1021,7 @@ void BtlController_EmitChooseItem(u32 battler, u32 bufferId, u8 *battlePartyOrde
 {
     s32 i;
 
+    ResetBattleTextReading();
     gBattleResources->transferBuffer[0] = CONTROLLER_OPENBAG;
     for (i = 0; i < PARTY_SIZE / 2; i++)
         gBattleResources->transferBuffer[1 + i] = battlePartyOrder[i];
@@ -1027,6 +1032,7 @@ void BtlController_EmitChoosePokemon(u32 battler, u32 bufferId, u8 caseId, u8 sl
 {
     s32 i;
 
+    ResetBattleTextReading();
     gBattleResources->transferBuffer[0] = CONTROLLER_CHOOSEPOKEMON;
     gBattleResources->transferBuffer[1] = caseId;
     gBattleResources->transferBuffer[2] = slotId;

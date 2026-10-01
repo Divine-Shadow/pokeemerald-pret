@@ -56,3 +56,12 @@ TEST("Battle presentation wait/Link and recorded battles ignore A")
     EXPECT(!ShouldAdvance(0, A_BUTTON, FALSE, FALSE, FALSE, TRUE, FALSE, TRUE));
     EXPECT(ShouldAdvance(0, A_BUTTON, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE));
 }
+
+TEST("Battle presentation wait/Reading controls exclude link recorded and headless runs")
+{
+    EXPECT(IsBattleTextReadingEligible(0, FALSE));
+    EXPECT(!IsBattleTextReadingEligible(BATTLE_TYPE_LINK, FALSE));
+    EXPECT(!IsBattleTextReadingEligible(BATTLE_TYPE_RECORDED, FALSE));
+    EXPECT(!IsBattleTextReadingEligible(BATTLE_TYPE_RECORDED | BATTLE_TYPE_LINK, FALSE));
+    EXPECT(!IsBattleTextReadingEligible(0, TRUE));
+}

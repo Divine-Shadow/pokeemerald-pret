@@ -89,6 +89,7 @@
 - [Engineering]()
     - [Shared Power Memory Audit](engineering/shared_power_memory_audit.md)
     - [Patch Distribution Options](engineering/patch_distribution_options.md)
+    - [Reading Wait Audit](engineering/reading_wait_audit.md)
  - [Design]()
    - [Agents Guide](design/AGENTS.md)
    - [Automation Reproduction Pipeline](design/automation_repro_pipeline.md)

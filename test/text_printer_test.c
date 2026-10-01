@@ -1,14 +1,18 @@
 #include "global.h"
 #include "battle.h"
 #include "main.h"
+#include "m4a.h"
+#include "sound.h"
 #include "text.h"
 #include "window.h"
 #include "test/test.h"
+#include "constants/songs.h"
 
 static const u8 sPageBoundaryText[] = _("ABC\pDEF");
 static const u8 sGlyphCountingText[] = _("A{CLEAR 1}BCDE");
 static const u8 sDwellText[] = _("A\pB");
 static const u8 sPauseText[] = _("A{PAUSE 30}B");
+static const u8 sWaitSoundText[] = _("A{WAIT_SE}B");
 static const u8 sCustomFontText[] = _("A");
 static const u8 sReplacementText[] = _("Z");
 
@@ -257,4 +261,85 @@ TEST("Dialogue text printer/Malformed repeat renderer hits the safety cap")
     EXPECT_EQ(sCustomFontCalls, 0x800);
     DeactivateAllTextPrinters();
     SetDefaultFontsPointer();
+}
+
+TEST("Dialogue text printer/Call and battle completion preserves embedded timed pauses")
+{
+    u32 i;
+
+    SetUpTextPrinterTest();
+    AddTextPrinterParameterized(0, FONT_NORMAL, sPauseText, 0, 0, 3, RecordTextPrinterCallback);
+    SetTextPrinterPreserveTimedPauses(0, TRUE);
+    EXPECT(TryCompleteTextPrinterPage(0));
+    RunTextPrinters();
+    EXPECT(IsTextPrinterActive(0));
+    EXPECT_EQ(sPrintCallbacks, 1);
+    for (i = 0; i < 30; i++)
+    {
+        RunTextPrinters();
+        EXPECT(IsTextPrinterActive(0));
+        EXPECT_EQ(sPrintCallbacks, 1);
+    }
+    RunTextPrinters();
+    RunTextPrinters();
+    EXPECT(!IsTextPrinterActive(0));
+    EXPECT_EQ(sPrintCallbacks, 2);
+}
+
+TEST("Dialogue text printer/Call and battle R preserves embedded timed pauses")
+{
+    u32 i;
+
+    SetUpTextPrinterTest();
+    AddTextPrinterParameterized(0, FONT_NORMAL, sPauseText, 0, 0, 3, RecordTextPrinterCallback);
+    SetTextPrinterPreserveTimedPauses(0, TRUE);
+    SetTextPrinterFastForward(0, TRUE);
+    RunTextPrinters();
+    for (i = 0; i < 30; i++)
+    {
+        RunTextPrinters();
+        EXPECT(IsTextPrinterActive(0));
+        EXPECT_EQ(sPrintCallbacks, 1);
+    }
+    RunTextPrinters();
+    RunTextPrinters();
+    EXPECT(!IsTextPrinterActive(0));
+    EXPECT_EQ(sPrintCallbacks, 2);
+}
+
+static void CheckSoundWait(bool32 completePage)
+{
+    u32 i;
+
+    SetUpTextPrinterTest();
+    PlaySE(SE_SELECT);
+    m4aSoundMain();
+    AddTextPrinterParameterized(0, FONT_NORMAL, sWaitSoundText, 0, 0, 3, RecordTextPrinterCallback);
+    SetTextPrinterPreserveTimedPauses(0, TRUE);
+    if (completePage)
+        TryCompleteTextPrinterPage(0);
+    else
+        SetTextPrinterFastForward(0, TRUE);
+    RunTextPrinters();
+    EXPECT(IsSEPlaying());
+    EXPECT(IsTextPrinterActive(0));
+    EXPECT_EQ(sPrintCallbacks, 1);
+    for (i = 0; i < 2; i++)
+    {
+        RunTextPrinters();
+        EXPECT(IsTextPrinterActive(0));
+        EXPECT_EQ(sPrintCallbacks, 1);
+    }
+    m4aMPlayStop(&gMPlayInfo_SE1);
+    m4aMPlayStop(&gMPlayInfo_SE2);
+    RunTextPrinters();
+    RunTextPrinters();
+    EXPECT(!IsTextPrinterActive(0));
+    EXPECT_EQ(sPrintCallbacks, 2);
+}
+
+TEST("Dialogue text printer/A and R preserve actual WAIT_SE and resume after sound")
+{
+    CheckSoundWait(TRUE);
+    CheckSoundWait(FALSE);
 }

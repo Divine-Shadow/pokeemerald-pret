@@ -410,6 +410,7 @@ void ResetBldCnt_(void);
 bool32 PokenavCallback_Init_MatchCall(void);
 u32 GetMatchCallCallback(void);
 void FreeMatchCallSubstruct1(void);
+bool32 TryAdvanceMatchCallMessage(void);
 int IsMatchCallListInitFinished(void);
 int GetNumberRegistered(void);
 struct PokenavMatchCallEntry *GetMatchCallList(void);
@@ -499,5 +500,11 @@ bool32 OpenRibbonsSummaryMenu(void);
 void CreateRibbonsSummaryLoopedTask(s32 id);
 u32 IsRibbonsSummaryLoopedTaskActive(void);
 void FreeRibbonsSummaryScreen2(void);
+
+#if TESTING
+void InitPokenavCallPrinterForTesting(u8 windowId, const u8 *str);
+bool32 RunPokenavCallPrinterForTesting(void);
+bool32 TryAdvancePokenavCallForTesting(bool32 presentationBusy);
+#endif
 
 #endif // GUARD_POKENAV_H
